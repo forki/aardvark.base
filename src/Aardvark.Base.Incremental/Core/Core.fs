@@ -124,7 +124,7 @@ module IncrementalLog =
 /// LevelChangedException is internally used by the system
 /// to handle level changes during the change propagation.
 /// </summary>
-exception LevelChangedException of IAdaptiveObject
+exception LevelChangedException of IAdaptiveObject * int
 
 [<AutoOpen>]
 module private AdaptiveSystemState =
@@ -149,6 +149,7 @@ type Transaction() =
     // already been enqueued
     let contained = HashSet<IAdaptiveObject>()
     let mutable current = None
+    let mutable currentLevel = -1
 
     let getAndClear (set : ICollection<'a>) =
         let mutable content = []
@@ -170,7 +171,7 @@ type Transaction() =
             q.Enqueue e
 
     member x.CurrentAdapiveObject = current
-        
+    member x.CurrentLevel = currentLevel
 
     /// <summary>
     /// performs the entire marking process causing
@@ -192,6 +193,7 @@ type Transaction() =
             // dequeue the next element (having the minimal level)
             let l, e = q.Dequeue()
             current <- Some e
+            currentLevel <- l
 
             let outputs = 
                 // since we're about to access the outOfDate flag
@@ -229,10 +231,17 @@ type Transaction() =
                                     if e.Mark() then
                                         let mutable failed = false
                                         let callbacks = e.MarkingCallbacks |> getAndClear
+                                        let mutable largestInput = None
+                                        let mutable largestInputDistance = 0
                                         for cb in callbacks do 
                                             try cb()
-                                            with :? LevelChangedException -> failed <- true
-                                        if failed then raise <| LevelChangedException e
+                                            with LevelChangedException(o,d) -> 
+                                                let minLevel = o.Level + d
+                                                if minLevel > largestInputDistance then
+                                                    largestInput <- Some o
+                                                    largestInputDistance <- minLevel
+                                                failed <- true
+                                        if failed then raise <| LevelChangedException(largestInput.Value, largestInputDistance - largestInput.Value.Level)
 
                                         // if everything succeeded we return all current outputs
                                         // which will cause them to be enqueued 
@@ -242,10 +251,11 @@ type Transaction() =
                                         // if Mark told us not to continue we're done here
                                         Seq.empty
 
-                                with :? LevelChangedException ->
+                                with LevelChangedException(inner, dist) ->
                                     // if the level was changed either by a callback
                                     // or Mark we re-enqueue the object with the new level and
                                     // mark it upToDate again (since it would otherwise not be processed again)
+                                    e.Level <- inner.Level + dist
                                     e.OutOfDate <- false
                                     q.Enqueue e
                                     Seq.empty
@@ -278,8 +288,39 @@ type AdaptiveObject() =
     let outputs = WeakSet<IAdaptiveObject>() :> ICollection<_>
     let callbacks = ConcurrentHashSet<unit -> unit>() :> ICollection<_>
 
-    static let time = AdaptiveObject() :> IAdaptiveObject
+    static let currentLevel = new Threading.ThreadLocal<int>(fun _ -> -1)
+    static let currentEvalDepth = new Threading.ThreadLocal<int>(fun _ -> 0)
 
+    static let eval (self : AdaptiveObject) (f : unit -> 'a) =
+        lock self (fun () ->
+            currentEvalDepth.Value <- currentEvalDepth.Value + 1
+            try
+                let transactionLevel = 
+                    match Transaction.Running with
+                        | Some t -> t.CurrentLevel
+                        | None -> Int32.MaxValue 
+
+                if self.Level > transactionLevel then
+                    raise <| LevelChangedException(self, currentEvalDepth.Value)
+
+                let oldLevel = currentLevel.Value
+                currentLevel.Value <- -1
+                let res = f()
+                
+                let newLevel = max oldLevel (max self.Level (currentLevel.Value + 1))
+                self.Level <- newLevel
+                
+                if self.Level > transactionLevel then
+                    raise <| LevelChangedException(self, currentEvalDepth.Value)
+           
+                currentLevel.Value <- self.Level
+                res
+            finally
+                currentEvalDepth.Value <- currentEvalDepth.Value - 1
+        )
+
+    static let time = AdaptiveObject() :> IAdaptiveObject
+    
     static member Time = time
 
     /// <summary>
@@ -294,7 +335,7 @@ type AdaptiveObject() =
         if top then isTopLevel.Value <- false
 
         let res =
-            lock x (fun () ->
+            eval x (fun () ->
                 if x.OutOfDate then
                     IncrementalLog.startEvaluate x
                     let r = f()
@@ -325,7 +366,7 @@ type AdaptiveObject() =
         if top then isTopLevel.Value <- false
 
         let res =
-            lock x (fun () ->
+            eval x (fun () ->
                 IncrementalLog.startEvaluate x
                 let res = f()
                 x.OutOfDate <- false
@@ -606,16 +647,17 @@ module Marking =
             m.Inputs.Add x |> ignore
             x.Outputs.Add m |> ignore
 
-            // if the element was actually relabeled and we're
-            // currently inside a running transaction we need to
-            // raise a LevelChangedException.
-            if relabel m (x.Level + 1) then
-                match Transaction.Running with
-                    | Some t ->
-                        match t.CurrentAdapiveObject with
-                            | Some m' when m = m' -> raise <| LevelChangedException m
-                            | _ -> ()
-                    | _ -> ()
+//            // if the element was actually relabeled and we're
+//            // currently inside a running transaction we need to
+//            // raise a LevelChangedException.
+            m.Level <- max (x.Level + 1) m.Level
+//            if relabel m (x.Level + 1) then
+//                match Transaction.Running with
+//                    | Some t ->
+//                        match t.CurrentAdapiveObject with
+//                            | Some m' when m = m' -> raise <| LevelChangedException m
+//                            | _ -> ()
+//                    | _ -> ()
 
             m.MarkOutdated()
 
