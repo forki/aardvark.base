@@ -124,7 +124,7 @@ module IncrementalLog =
 /// LevelChangedException is internally used by the system
 /// to handle level changes during the change propagation.
 /// </summary>
-exception LevelChangedException of IAdaptiveObject * int
+exception LevelChangedException of int
 
 [<AutoOpen>]
 module private AdaptiveSystemState =
@@ -235,13 +235,11 @@ type Transaction() =
                                         let mutable largestInputDistance = 0
                                         for cb in callbacks do 
                                             try cb()
-                                            with LevelChangedException(o,d) -> 
-                                                let minLevel = o.Level + d
+                                            with LevelChangedException(minLevel) -> 
                                                 if minLevel > largestInputDistance then
-                                                    largestInput <- Some o
                                                     largestInputDistance <- minLevel
                                                 failed <- true
-                                        if failed then raise <| LevelChangedException(largestInput.Value, largestInputDistance - largestInput.Value.Level)
+                                        if failed then raise <| LevelChangedException(largestInputDistance - 1)
 
                                         // if everything succeeded we return all current outputs
                                         // which will cause them to be enqueued 
@@ -251,11 +249,11 @@ type Transaction() =
                                         // if Mark told us not to continue we're done here
                                         Seq.empty
 
-                                with LevelChangedException(inner, dist) ->
+                                with LevelChangedException(dist) ->
                                     // if the level was changed either by a callback
                                     // or Mark we re-enqueue the object with the new level and
                                     // mark it upToDate again (since it would otherwise not be processed again)
-                                    e.Level <- inner.Level + dist
+                                    e.Level <- dist
                                     e.OutOfDate <- false
                                     q.Enqueue e
                                     Seq.empty
@@ -293,25 +291,32 @@ type AdaptiveObject() =
 
     static let eval (self : AdaptiveObject) (f : unit -> 'a) =
         lock self (fun () ->
+
+            let transactionLevel = 
+                match Transaction.Running with
+                    | Some t -> t.CurrentLevel
+                    | None -> Int32.MaxValue 
+
+            if self.Level > transactionLevel then
+                raise <| LevelChangedException(self.Level + currentEvalDepth.Value + 1)
+
             currentEvalDepth.Value <- currentEvalDepth.Value + 1
             try
-                let transactionLevel = 
-                    match Transaction.Running with
-                        | Some t -> t.CurrentLevel
-                        | None -> Int32.MaxValue 
-
-                if self.Level > transactionLevel then
-                    raise <| LevelChangedException(self, currentEvalDepth.Value)
 
                 let oldLevel = currentLevel.Value
                 currentLevel.Value <- -1
                 let res = f()
-                
-                let newLevel = max oldLevel (max self.Level (currentLevel.Value + 1))
+                let newLevel = 
+                    if (self :> IAdaptiveObject).Inputs.Count > 0 then 1 + (self.Inputs |> Seq.map (fun (i : IAdaptiveObject) -> i.Level) |> Seq.max)
+                    else 0
+
+                let newLevel' = max oldLevel (max self.Level (currentLevel.Value + 1))
+                if newLevel <> newLevel' then
+                    printfn "asdsadasd"
                 self.Level <- newLevel
                 
                 if self.Level > transactionLevel then
-                    raise <| LevelChangedException(self, currentEvalDepth.Value)
+                    raise <| LevelChangedException(self.Level + currentEvalDepth.Value)
            
                 currentLevel.Value <- self.Level
                 res
