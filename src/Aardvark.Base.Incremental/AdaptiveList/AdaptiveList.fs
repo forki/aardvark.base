@@ -79,9 +79,6 @@ module AList =
         interface IDisposable with
             member x.Dispose() = x.Dispose()
 
-        override x.Finalize() =
-            try x.Dispose()
-            with _ -> ()
 
 
     let empty<'a> : alist<'a> =

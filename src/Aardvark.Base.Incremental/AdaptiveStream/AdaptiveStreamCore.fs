@@ -137,9 +137,6 @@ module AStreamReaders =
                 deltas
             )
 
-        override x.Finalize() =
-            try x.Dispose()
-            with _ -> ()
 
         member x.Dispose() =
             x.Release()

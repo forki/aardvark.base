@@ -310,7 +310,7 @@ type AdaptiveObject() =
                     if (self :> IAdaptiveObject).Inputs.Count > 0 then 1 + (self.Inputs |> Seq.map (fun (i : IAdaptiveObject) -> i.Level) |> Seq.max)
                     else 0
 
-                let newLevel' = max oldLevel (max self.Level (currentLevel.Value + 1))
+                let newLevel' = max oldLevel (max self.Level (currentLevel.Value + 1))               
                 self.Level <- newLevel
                 
                 if self.Level > transactionLevel then

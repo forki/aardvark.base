@@ -82,8 +82,6 @@ module EventAdapters =
                  | :? IAdaptiveObject as o -> compare x.Id o.Id
                  | _ -> failwith "uncomparable"
 
-        override x.Finalize() =
-            s.Dispose()
 
     type private AdapterEvent<'a>(m : IMod<'a>, value : 'a) =
         inherit EventSource<'a>(value)
@@ -96,9 +94,6 @@ module EventAdapters =
 
         member x.Mod = m
 
-        override x.Finalize() =
-            if s <> null then
-                s.Dispose()
 
     let (|EventOf|_|) (t : Type) =
         if t.IsGenericType && t.GetGenericTypeDefinition() = typedefof<IEvent<_>> then
