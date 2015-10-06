@@ -311,8 +311,6 @@ type AdaptiveObject() =
                     else 0
 
                 let newLevel' = max oldLevel (max self.Level (currentLevel.Value + 1))
-                if newLevel <> newLevel' then
-                    printfn "asdsadasd"
                 self.Level <- newLevel
                 
                 if self.Level > transactionLevel then
