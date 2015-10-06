@@ -54,7 +54,7 @@ namespace Aardvark.Base
 
         IEnumerable<object> Objects { get; }
 
-        bool AddObject(object obj);
+        void AddObject(object obj);
         void Clear();
     }
 
@@ -65,7 +65,7 @@ namespace Aardvark.Base
     public interface IDictSet<TKey>
     {
         IEnumerable<TKey> Items { get; }
-        bool Add(TKey item);
+        void Add(TKey item);
         bool Contains(TKey item);
         bool Remove(TKey item);
     }

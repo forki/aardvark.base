@@ -79,7 +79,7 @@ namespace Aardvark.Base
     public class __type__/*# if (isGeneric) { */</*# if (hasKey) { */TKey/*# } if (hasValue) { if (hasKey) { */, /*# } */TValue/*# } */>/*# } */
             //# if (!wrapped) {
             : /*# if (!big) { */IIntCountable, /*# } */__idict__,/*# if (!hasValue) { */ IDictSet<__tkey__>,/*# } else { */ IDict<__tkey__, TValue>,/*# } */
-              IEnumerable, IEnumerable</*# if (hasValue) { */KeyValuePair</*# } */__tkey__/*# if (hasValue) { */, TValue>/*# } */>/*# if (!big && !concurrent) { */,
+              IEnumerable, IEnumerable</*# if (hasValue) { */KeyValuePair</*# } */__tkey__/*# if (hasValue) { */, TValue>/*# } */>/*# if (!big) { */,
               ICollection, ICollection</*# if (hasValue) { */KeyValuePair</*# } */__tkey__/*# if (hasValue) { */, TValue>/*# } */>/*# } */
         //# }
         //# if (equatable) {
@@ -278,6 +278,15 @@ namespace Aardvark.Base
             }
         }
 
+        /// <summary>
+        /// Always returns false. Part of the ICollection implementation.
+        /// </summary>
+        public bool IsReadOnly { get { return false; } }
+
+        public bool IsSynchronized { get { return false; } }
+
+        public object SyncRoot { get { return this; } }
+
         //# if (!wrapped) {
         /// <summary>
         /// Setting the maximal fill factor makes it possible to fine-tune
@@ -322,16 +331,6 @@ namespace Aardvark.Base
             }
         }
 
-        //# if (!concurrent) {
-        /// <summary>
-        /// Always returns false. Part of the ICollection implementation.
-        /// </summary>
-        public bool IsReadOnly { get { return false; } }
-
-        public bool IsSynchronized { get { return false; } }
-
-        public object SyncRoot { get { return this; } }
-        //# }
         //# if (!hasValue) {
         public IEnumerable<__tkey__> Items { get { return Keys; } }
         //# } else { // hasValue
@@ -690,16 +689,15 @@ namespace Aardvark.Base
         //# } // hasValue
         #region Public Methods
 
-        //# var aortype = hasValue ? "void" : "bool";
         /// <summary>
         /// Add the item with supplied key/*# if (hasValue) { */ and the supplied value/*# } */
         /// both supplied as generic objects, to the __type__. Note that the supplied key
         /// and value are cast to the concrete type of the keys and values used in the __type__
         /// and this will fail if they are of different types.
         /// </summary>
-        public __aortype__ AddObject(object objkey/*# if (hasValue) { */, object objvalue/*# } */)
+        public void AddObject(object objkey/*# if (hasValue) { */, object objvalue/*# } */)
         {
-            /*# if (!hasValue) { */return /*# } */Add((__tkey__)objkey/*# if (hasValue) { */, (__tvalue__)objvalue/*# } */);
+            Add((__tkey__)objkey/*# if (hasValue) { */, (__tvalue__)objvalue/*# } */);
         }
 
         //# if (!hasValue && !big && !concurrent) {
@@ -710,7 +708,7 @@ namespace Aardvark.Base
 
         //# }
         //# foreach (var isTry in new[] { false, true }) {
-        //# var rtype = (isTry || !hasValue) ? "bool" : "void";
+        //# var rtype = isTry ? "bool" : "void";
         //# var tryPrefix = isTry ? "Try" : "";
         //# foreach (var hasHashPar in new[] { false, true }) { if (hasHashPar && !hasKey) continue;
         /// <summary>
@@ -726,7 +724,7 @@ namespace Aardvark.Base
             try
             {
                 m_lock.Enter(ref locked);
-                /*# if (isTry || !hasValue) { */return /*# } */m_dict.__tryPrefix__Add(key/*#
+                /*# if (isTry) { */return /*# } */m_dict.__tryPrefix__Add(key/*#
                         if (hasHashPar) { */, hash/*# } if (hasValue) { */, value/*# } */);
             }
             finally { if (locked) m_lock.Exit(); }
@@ -751,7 +749,7 @@ namespace Aardvark.Base
                 //# if (hasValue) {
                 m_firstArray[fi].Item.Value = value;
                 //# }
-                return/*# if (isTry || !hasValue) { */ true/*# } */;
+                return/*# if (isTry) { */ true/*# } */;
             }
             //# if (hasValue) {
             if (m_doNotStackDuplicateKeys)
@@ -764,7 +762,7 @@ namespace Aardvark.Base
                     //# if (hasValue && !isTry) {
                     throw new ArgumentException("duplicate key");
                     //# } else {
-                    return/*# if (isTry || !hasValue) { */ false/*# } */;
+                    return/*# if (isTry) { */ false/*# } */;
                     //# }
                 }
                 while (ei > 0)
@@ -775,7 +773,7 @@ namespace Aardvark.Base
                         //# if (hasValue && !isTry) {
                         throw new ArgumentException("duplicate key");
                         //# } else {
-                        return/*# if (isTry || !hasValue) { */ false/*# } */;
+                        return/*# if (isTry) { */ false/*# } */;
                         //# }
                     }
                     ei = m_extraArray[ei].Next;
@@ -805,7 +803,7 @@ namespace Aardvark.Base
             //# if (concurrent) {
             } finally { if (locked) m_lock.Exit(); }
             //# }
-            //# if (isTry || !hasValue) {
+            //# if (isTry) {
             return true;
             //# }
             //# } // !wrapped
@@ -1752,7 +1750,6 @@ namespace Aardvark.Base
         }
 
         //# } // hasValue
-        //# if (!concurrent) {
         /// <summary>
         /// Copy items into supplied array starting at supplied index.
         /// </summary>
@@ -1765,6 +1762,7 @@ namespace Aardvark.Base
                 throw new ArgumentException();
         }
 
+        //# if (!concurrent) {
         /// <summary>
         /// Retuns a concurrent wrapper around the __type__ to enable
         /// concurrent modifications.

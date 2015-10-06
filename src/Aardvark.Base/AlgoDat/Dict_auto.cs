@@ -142,6 +142,15 @@ namespace Aardvark.Base
         }
 
         /// <summary>
+        /// Always returns false. Part of the ICollection implementation.
+        /// </summary>
+        public bool IsReadOnly { get { return false; } }
+
+        public bool IsSynchronized { get { return false; } }
+
+        public object SyncRoot { get { return this; } }
+
+        /// <summary>
         /// Setting the maximal fill factor makes it possible to fine-tune
         /// the performance for certain applications. Normally this should
         /// not be necessary.
@@ -172,14 +181,6 @@ namespace Aardvark.Base
             }
         }
 
-        /// <summary>
-        /// Always returns false. Part of the ICollection implementation.
-        /// </summary>
-        public bool IsReadOnly { get { return false; } }
-
-        public bool IsSynchronized { get { return false; } }
-
-        public object SyncRoot { get { return this; } }
         public IEnumerable<KeyValuePair<TKey, TValue>> Items { get { return KeyValuePairs; } }
         /// <summary>
         /// Returns all keys in the dictionary.
@@ -1858,6 +1859,15 @@ namespace Aardvark.Base
         }
 
         /// <summary>
+        /// Always returns false. Part of the ICollection implementation.
+        /// </summary>
+        public bool IsReadOnly { get { return false; } }
+
+        public bool IsSynchronized { get { return false; } }
+
+        public object SyncRoot { get { return this; } }
+
+        /// <summary>
         /// Setting the maximal fill factor makes it possible to fine-tune
         /// the performance for certain applications. Normally this should
         /// not be necessary.
@@ -1888,14 +1898,6 @@ namespace Aardvark.Base
             }
         }
 
-        /// <summary>
-        /// Always returns false. Part of the ICollection implementation.
-        /// </summary>
-        public bool IsReadOnly { get { return false; } }
-
-        public bool IsSynchronized { get { return false; } }
-
-        public object SyncRoot { get { return this; } }
         public IEnumerable<TKey> Items { get { return Keys; } }
         /// <summary>
         /// Returns all keys in the dictionary.
@@ -1939,9 +1941,9 @@ namespace Aardvark.Base
         /// and value are cast to the concrete type of the keys and values used in the DictSet
         /// and this will fail if they are of different types.
         /// </summary>
-        public bool AddObject(object objkey)
+        public void AddObject(object objkey)
         {
-            return Add((TKey)objkey);
+            Add((TKey)objkey);
         }
 
         void ICollection<TKey>.Add(TKey key)
@@ -1953,7 +1955,7 @@ namespace Aardvark.Base
         /// Add the item with the supplied key
         /// to the DictSet.
         /// </summary>
-        public bool Add(TKey key)
+        public void Add(TKey key)
         {
             var hash = key.GetHashCode();
             if (m_count >= m_increaseThreshold) IncreaseCapacity();
@@ -1965,21 +1967,21 @@ namespace Aardvark.Base
                 m_firstArray[fi].Next = -1;
                 m_firstArray[fi].Item.Hash = hash;
                 m_firstArray[fi].Item.Key = key;
-                return true;
+                return;
             }
             {
                 // no duplicate keys, check for existing entries
                 if (m_firstArray[fi].Item.Hash == hash
                     && key.Equals(m_firstArray[fi].Item.Key))
                 {
-                    return false;
+                    return;
                 }
                 while (ei > 0)
                 {
                     if (m_extraArray[ei].Item.Hash == hash
                         && key.Equals(m_extraArray[ei].Item.Key))
                     {
-                        return false;
+                        return;
                     }
                     ei = m_extraArray[ei].Next;
                 }
@@ -2000,14 +2002,13 @@ namespace Aardvark.Base
             m_firstArray[fi].Next = ni;
             m_firstArray[fi].Item.Hash = hash;
             m_firstArray[fi].Item.Key = key;
-            return true;
         }
 
         /// <summary>
         /// Add the item with the supplied key
         /// to the DictSet.
         /// </summary>
-        public bool Add(TKey key, int hash)
+        public void Add(TKey key, int hash)
         {
             if (m_count >= m_increaseThreshold) IncreaseCapacity();
             var fi = ((uint)hash) % m_capacity;
@@ -2018,21 +2019,21 @@ namespace Aardvark.Base
                 m_firstArray[fi].Next = -1;
                 m_firstArray[fi].Item.Hash = hash;
                 m_firstArray[fi].Item.Key = key;
-                return true;
+                return;
             }
             {
                 // no duplicate keys, check for existing entries
                 if (m_firstArray[fi].Item.Hash == hash
                     && key.Equals(m_firstArray[fi].Item.Key))
                 {
-                    return false;
+                    return;
                 }
                 while (ei > 0)
                 {
                     if (m_extraArray[ei].Item.Hash == hash
                         && key.Equals(m_extraArray[ei].Item.Key))
                     {
-                        return false;
+                        return;
                     }
                     ei = m_extraArray[ei].Next;
                 }
@@ -2053,7 +2054,6 @@ namespace Aardvark.Base
             m_firstArray[fi].Next = ni;
             m_firstArray[fi].Item.Hash = hash;
             m_firstArray[fi].Item.Key = key;
-            return true;
         }
 
         /// <summary>
@@ -2759,6 +2759,15 @@ namespace Aardvark.Base
         }
 
         /// <summary>
+        /// Always returns false. Part of the ICollection implementation.
+        /// </summary>
+        public bool IsReadOnly { get { return false; } }
+
+        public bool IsSynchronized { get { return false; } }
+
+        public object SyncRoot { get { return this; } }
+
+        /// <summary>
         /// Setting the maximal fill factor makes it possible to fine-tune
         /// the performance for certain applications. Normally this should
         /// not be necessary.
@@ -2789,14 +2798,6 @@ namespace Aardvark.Base
             }
         }
 
-        /// <summary>
-        /// Always returns false. Part of the ICollection implementation.
-        /// </summary>
-        public bool IsReadOnly { get { return false; } }
-
-        public bool IsSynchronized { get { return false; } }
-
-        public object SyncRoot { get { return this; } }
         public IEnumerable<KeyValuePair<int, TValue>> Items { get { return KeyValuePairs; } }
         /// <summary>
         /// Returns all keys in the dictionary.
@@ -3975,6 +3976,15 @@ namespace Aardvark.Base
         }
 
         /// <summary>
+        /// Always returns false. Part of the ICollection implementation.
+        /// </summary>
+        public bool IsReadOnly { get { return false; } }
+
+        public bool IsSynchronized { get { return false; } }
+
+        public object SyncRoot { get { return this; } }
+
+        /// <summary>
         /// Setting the maximal fill factor makes it possible to fine-tune
         /// the performance for certain applications. Normally this should
         /// not be necessary.
@@ -4005,14 +4015,6 @@ namespace Aardvark.Base
             }
         }
 
-        /// <summary>
-        /// Always returns false. Part of the ICollection implementation.
-        /// </summary>
-        public bool IsReadOnly { get { return false; } }
-
-        public bool IsSynchronized { get { return false; } }
-
-        public object SyncRoot { get { return this; } }
         public IEnumerable<int> Items { get { return Keys; } }
         /// <summary>
         /// Returns all keys in the dictionary.
@@ -4056,9 +4058,9 @@ namespace Aardvark.Base
         /// and value are cast to the concrete type of the keys and values used in the IntSet
         /// and this will fail if they are of different types.
         /// </summary>
-        public bool AddObject(object objkey)
+        public void AddObject(object objkey)
         {
-            return Add((int)objkey);
+            Add((int)objkey);
         }
 
         void ICollection<int>.Add(int key)
@@ -4070,7 +4072,7 @@ namespace Aardvark.Base
         /// Add the item with the supplied key
         /// to the IntSet.
         /// </summary>
-        public bool Add(int key)
+        public void Add(int key)
         {
             var hash = key;
             if (m_count >= m_increaseThreshold) IncreaseCapacity();
@@ -4081,19 +4083,19 @@ namespace Aardvark.Base
                 ++m_count;
                 m_firstArray[fi].Next = -1;
                 m_firstArray[fi].Item = key;
-                return true;
+                return;
             }
             {
                 // no duplicate keys, check for existing entries
                 if (m_firstArray[fi].Item == hash)
                 {
-                    return false;
+                    return;
                 }
                 while (ei > 0)
                 {
                     if (m_extraArray[ei].Item == hash)
                     {
-                        return false;
+                        return;
                     }
                     ei = m_extraArray[ei].Next;
                 }
@@ -4113,7 +4115,6 @@ namespace Aardvark.Base
             m_extraArray[ni].Next = ei;
             m_firstArray[fi].Next = ni;
             m_firstArray[fi].Item = key;
-            return true;
         }
 
         /// <summary>
@@ -4676,6 +4677,15 @@ namespace Aardvark.Base
         }
 
         /// <summary>
+        /// Always returns false. Part of the ICollection implementation.
+        /// </summary>
+        public bool IsReadOnly { get { return false; } }
+
+        public bool IsSynchronized { get { return false; } }
+
+        public object SyncRoot { get { return this; } }
+
+        /// <summary>
         /// Setting the maximal fill factor makes it possible to fine-tune
         /// the performance for certain applications. Normally this should
         /// not be necessary.
@@ -4706,14 +4716,6 @@ namespace Aardvark.Base
             }
         }
 
-        /// <summary>
-        /// Always returns false. Part of the ICollection implementation.
-        /// </summary>
-        public bool IsReadOnly { get { return false; } }
-
-        public bool IsSynchronized { get { return false; } }
-
-        public object SyncRoot { get { return this; } }
         public IEnumerable<KeyValuePair<Symbol, TValue>> Items { get { return KeyValuePairs; } }
         /// <summary>
         /// Returns all keys in the dictionary.
@@ -6004,6 +6006,15 @@ namespace Aardvark.Base
         }
 
         /// <summary>
+        /// Always returns false. Part of the ICollection implementation.
+        /// </summary>
+        public bool IsReadOnly { get { return false; } }
+
+        public bool IsSynchronized { get { return false; } }
+
+        public object SyncRoot { get { return this; } }
+
+        /// <summary>
         /// Setting the maximal fill factor makes it possible to fine-tune
         /// the performance for certain applications. Normally this should
         /// not be necessary.
@@ -6034,14 +6045,6 @@ namespace Aardvark.Base
             }
         }
 
-        /// <summary>
-        /// Always returns false. Part of the ICollection implementation.
-        /// </summary>
-        public bool IsReadOnly { get { return false; } }
-
-        public bool IsSynchronized { get { return false; } }
-
-        public object SyncRoot { get { return this; } }
         public IEnumerable<Symbol> Items { get { return Keys; } }
         /// <summary>
         /// Returns all keys in the dictionary.
@@ -6085,9 +6088,9 @@ namespace Aardvark.Base
         /// and value are cast to the concrete type of the keys and values used in the SymbolSet
         /// and this will fail if they are of different types.
         /// </summary>
-        public bool AddObject(object objkey)
+        public void AddObject(object objkey)
         {
-            return Add((Symbol)objkey);
+            Add((Symbol)objkey);
         }
 
         void ICollection<Symbol>.Add(Symbol key)
@@ -6099,7 +6102,7 @@ namespace Aardvark.Base
         /// Add the item with the supplied key
         /// to the SymbolSet.
         /// </summary>
-        public bool Add(Symbol key)
+        public void Add(Symbol key)
         {
             var hash = key.Id;
             if (m_count >= m_increaseThreshold) IncreaseCapacity();
@@ -6110,19 +6113,19 @@ namespace Aardvark.Base
                 ++m_count;
                 m_firstArray[fi].Next = -1;
                 m_firstArray[fi].Item = key;
-                return true;
+                return;
             }
             {
                 // no duplicate keys, check for existing entries
                 if (m_firstArray[fi].Item.Id == hash)
                 {
-                    return false;
+                    return;
                 }
                 while (ei > 0)
                 {
                     if (m_extraArray[ei].Item.Id == hash)
                     {
-                        return false;
+                        return;
                     }
                     ei = m_extraArray[ei].Next;
                 }
@@ -6142,7 +6145,6 @@ namespace Aardvark.Base
             m_extraArray[ni].Next = ei;
             m_firstArray[fi].Next = ni;
             m_firstArray[fi].Item = key;
-            return true;
         }
 
         /// <summary>
@@ -6689,6 +6691,15 @@ namespace Aardvark.Base
         }
 
         /// <summary>
+        /// Always returns false. Part of the ICollection implementation.
+        /// </summary>
+        public bool IsReadOnly { get { return false; } }
+
+        public bool IsSynchronized { get { return false; } }
+
+        public object SyncRoot { get { return this; } }
+
+        /// <summary>
         /// Setting the maximal fill factor makes it possible to fine-tune
         /// the performance for certain applications. Normally this should
         /// not be necessary.
@@ -6719,14 +6730,6 @@ namespace Aardvark.Base
             }
         }
 
-        /// <summary>
-        /// Always returns false. Part of the ICollection implementation.
-        /// </summary>
-        public bool IsReadOnly { get { return false; } }
-
-        public bool IsSynchronized { get { return false; } }
-
-        public object SyncRoot { get { return this; } }
         public IEnumerable<KeyValuePair<TKey, TValue>> Items { get { return KeyValuePairs; } }
         /// <summary>
         /// Returns all keys in the dictionary.
@@ -8395,6 +8398,15 @@ namespace Aardvark.Base
         }
 
         /// <summary>
+        /// Always returns false. Part of the ICollection implementation.
+        /// </summary>
+        public bool IsReadOnly { get { return false; } }
+
+        public bool IsSynchronized { get { return false; } }
+
+        public object SyncRoot { get { return this; } }
+
+        /// <summary>
         /// Setting the maximal fill factor makes it possible to fine-tune
         /// the performance for certain applications. Normally this should
         /// not be necessary.
@@ -8425,14 +8437,6 @@ namespace Aardvark.Base
             }
         }
 
-        /// <summary>
-        /// Always returns false. Part of the ICollection implementation.
-        /// </summary>
-        public bool IsReadOnly { get { return false; } }
-
-        public bool IsSynchronized { get { return false; } }
-
-        public object SyncRoot { get { return this; } }
         public IEnumerable<TKey> Items { get { return Keys; } }
         /// <summary>
         /// Returns all keys in the dictionary.
@@ -8476,16 +8480,16 @@ namespace Aardvark.Base
         /// and value are cast to the concrete type of the keys and values used in the BigDictSet
         /// and this will fail if they are of different types.
         /// </summary>
-        public bool AddObject(object objkey)
+        public void AddObject(object objkey)
         {
-            return Add((TKey)objkey);
+            Add((TKey)objkey);
         }
 
         /// <summary>
         /// Add the item with the supplied key
         /// to the BigDictSet.
         /// </summary>
-        public bool Add(TKey key)
+        public void Add(TKey key)
         {
             var hash = m_hfun(key);
             if (m_count >= m_increaseThreshold) IncreaseCapacity();
@@ -8497,21 +8501,21 @@ namespace Aardvark.Base
                 m_firstArray[fi].Next = -1;
                 m_firstArray[fi].Item.Hash = hash;
                 m_firstArray[fi].Item.Key = key;
-                return true;
+                return;
             }
             {
                 // no duplicate keys, check for existing entries
                 if (m_firstArray[fi].Item.Hash == hash
                     && key.Equals(m_firstArray[fi].Item.Key))
                 {
-                    return false;
+                    return;
                 }
                 while (ei > 0)
                 {
                     if (m_extraArray[ei].Item.Hash == hash
                         && key.Equals(m_extraArray[ei].Item.Key))
                     {
-                        return false;
+                        return;
                     }
                     ei = m_extraArray[ei].Next;
                 }
@@ -8532,14 +8536,13 @@ namespace Aardvark.Base
             m_firstArray[fi].Next = ni;
             m_firstArray[fi].Item.Hash = hash;
             m_firstArray[fi].Item.Key = key;
-            return true;
         }
 
         /// <summary>
         /// Add the item with the supplied key
         /// to the BigDictSet.
         /// </summary>
-        public bool Add(TKey key, long hash)
+        public void Add(TKey key, long hash)
         {
             if (m_count >= m_increaseThreshold) IncreaseCapacity();
             var fi = ((ulong)hash) % m_capacity;
@@ -8550,21 +8553,21 @@ namespace Aardvark.Base
                 m_firstArray[fi].Next = -1;
                 m_firstArray[fi].Item.Hash = hash;
                 m_firstArray[fi].Item.Key = key;
-                return true;
+                return;
             }
             {
                 // no duplicate keys, check for existing entries
                 if (m_firstArray[fi].Item.Hash == hash
                     && key.Equals(m_firstArray[fi].Item.Key))
                 {
-                    return false;
+                    return;
                 }
                 while (ei > 0)
                 {
                     if (m_extraArray[ei].Item.Hash == hash
                         && key.Equals(m_extraArray[ei].Item.Key))
                     {
-                        return false;
+                        return;
                     }
                     ei = m_extraArray[ei].Next;
                 }
@@ -8585,7 +8588,6 @@ namespace Aardvark.Base
             m_firstArray[fi].Next = ni;
             m_firstArray[fi].Item.Hash = hash;
             m_firstArray[fi].Item.Key = key;
-            return true;
         }
 
         /// <summary>
@@ -9279,6 +9281,15 @@ namespace Aardvark.Base
         }
 
         /// <summary>
+        /// Always returns false. Part of the ICollection implementation.
+        /// </summary>
+        public bool IsReadOnly { get { return false; } }
+
+        public bool IsSynchronized { get { return false; } }
+
+        public object SyncRoot { get { return this; } }
+
+        /// <summary>
         /// Setting the maximal fill factor makes it possible to fine-tune
         /// the performance for certain applications. Normally this should
         /// not be necessary.
@@ -9309,14 +9320,6 @@ namespace Aardvark.Base
             }
         }
 
-        /// <summary>
-        /// Always returns false. Part of the ICollection implementation.
-        /// </summary>
-        public bool IsReadOnly { get { return false; } }
-
-        public bool IsSynchronized { get { return false; } }
-
-        public object SyncRoot { get { return this; } }
         public IEnumerable<KeyValuePair<long, TValue>> Items { get { return KeyValuePairs; } }
         /// <summary>
         /// Returns all keys in the dictionary.
@@ -10483,6 +10486,15 @@ namespace Aardvark.Base
         }
 
         /// <summary>
+        /// Always returns false. Part of the ICollection implementation.
+        /// </summary>
+        public bool IsReadOnly { get { return false; } }
+
+        public bool IsSynchronized { get { return false; } }
+
+        public object SyncRoot { get { return this; } }
+
+        /// <summary>
         /// Setting the maximal fill factor makes it possible to fine-tune
         /// the performance for certain applications. Normally this should
         /// not be necessary.
@@ -10513,14 +10525,6 @@ namespace Aardvark.Base
             }
         }
 
-        /// <summary>
-        /// Always returns false. Part of the ICollection implementation.
-        /// </summary>
-        public bool IsReadOnly { get { return false; } }
-
-        public bool IsSynchronized { get { return false; } }
-
-        public object SyncRoot { get { return this; } }
         public IEnumerable<long> Items { get { return Keys; } }
         /// <summary>
         /// Returns all keys in the dictionary.
@@ -10564,16 +10568,16 @@ namespace Aardvark.Base
         /// and value are cast to the concrete type of the keys and values used in the LongSet
         /// and this will fail if they are of different types.
         /// </summary>
-        public bool AddObject(object objkey)
+        public void AddObject(object objkey)
         {
-            return Add((long)objkey);
+            Add((long)objkey);
         }
 
         /// <summary>
         /// Add the item with the supplied key
         /// to the LongSet.
         /// </summary>
-        public bool Add(long key)
+        public void Add(long key)
         {
             var hash = key;
             if (m_count >= m_increaseThreshold) IncreaseCapacity();
@@ -10584,19 +10588,19 @@ namespace Aardvark.Base
                 ++m_count;
                 m_firstArray[fi].Next = -1;
                 m_firstArray[fi].Item = key;
-                return true;
+                return;
             }
             {
                 // no duplicate keys, check for existing entries
                 if (m_firstArray[fi].Item == hash)
                 {
-                    return false;
+                    return;
                 }
                 while (ei > 0)
                 {
                     if (m_extraArray[ei].Item == hash)
                     {
-                        return false;
+                        return;
                     }
                     ei = m_extraArray[ei].Next;
                 }
@@ -10616,7 +10620,6 @@ namespace Aardvark.Base
             m_extraArray[ni].Next = ei;
             m_firstArray[fi].Next = ni;
             m_firstArray[fi].Item = key;
-            return true;
         }
 
         /// <summary>
@@ -11084,6 +11087,15 @@ namespace Aardvark.Base
                 return m_dict.LongCount;
             }
         }
+
+        /// <summary>
+        /// Always returns false. Part of the ICollection implementation.
+        /// </summary>
+        public bool IsReadOnly { get { return false; } }
+
+        public bool IsSynchronized { get { return false; } }
+
+        public object SyncRoot { get { return this; } }
 
         /// <summary>
         /// Return the non-concurrent contained ConcurrentDict.
@@ -11727,6 +11739,18 @@ namespace Aardvark.Base
             finally { if (locked) m_lock.Exit(); }
         }
 
+        /// <summary>
+        /// Copy items into supplied array starting at supplied index.
+        /// </summary>
+        public void CopyTo(Array array, int index)
+        {
+            var typedArray = array as KeyValuePair<TKey, TValue>[];
+            if (typedArray != null)
+                CopyTo(typedArray, index);
+            else
+                throw new ArgumentException();
+        }
+
         #endregion
     }
 
@@ -11784,6 +11808,15 @@ namespace Aardvark.Base
         }
 
         /// <summary>
+        /// Always returns false. Part of the ICollection implementation.
+        /// </summary>
+        public bool IsReadOnly { get { return false; } }
+
+        public bool IsSynchronized { get { return false; } }
+
+        public object SyncRoot { get { return this; } }
+
+        /// <summary>
         /// Return the non-concurrent contained ConcurrentDictSet.
         /// </summary>
         public DictSet<TKey> NonConcurrent
@@ -11801,22 +11834,22 @@ namespace Aardvark.Base
         /// and value are cast to the concrete type of the keys and values used in the ConcurrentDictSet
         /// and this will fail if they are of different types.
         /// </summary>
-        public bool AddObject(object objkey)
+        public void AddObject(object objkey)
         {
-            return Add((TKey)objkey);
+            Add((TKey)objkey);
         }
 
         /// <summary>
         /// Add the item with the supplied key
         /// to the ConcurrentDictSet.
         /// </summary>
-        public bool Add(TKey key)
+        public void Add(TKey key)
         {
             var locked = false;
             try
             {
                 m_lock.Enter(ref locked);
-                return m_dict.Add(key);
+                m_dict.Add(key);
             }
             finally { if (locked) m_lock.Exit(); }
         }
@@ -11825,13 +11858,13 @@ namespace Aardvark.Base
         /// Add the item with the supplied key
         /// to the ConcurrentDictSet.
         /// </summary>
-        public bool Add(TKey key, int hash)
+        public void Add(TKey key, int hash)
         {
             var locked = false;
             try
             {
                 m_lock.Enter(ref locked);
-                return m_dict.Add(key, hash);
+                m_dict.Add(key, hash);
             }
             finally { if (locked) m_lock.Exit(); }
         }
@@ -12007,6 +12040,18 @@ namespace Aardvark.Base
             finally { if (locked) m_lock.Exit(); }
         }
 
+        /// <summary>
+        /// Copy items into supplied array starting at supplied index.
+        /// </summary>
+        public void CopyTo(Array array, int index)
+        {
+            var typedArray = array as TKey[];
+            if (typedArray != null)
+                CopyTo(typedArray, index);
+            else
+                throw new ArgumentException();
+        }
+
         #endregion
     }
 
@@ -12063,6 +12108,15 @@ namespace Aardvark.Base
                 return m_dict.LongCount;
             }
         }
+
+        /// <summary>
+        /// Always returns false. Part of the ICollection implementation.
+        /// </summary>
+        public bool IsReadOnly { get { return false; } }
+
+        public bool IsSynchronized { get { return false; } }
+
+        public object SyncRoot { get { return this; } }
 
         /// <summary>
         /// Return the non-concurrent contained ConcurrentIntDict.
@@ -12504,6 +12558,18 @@ namespace Aardvark.Base
             finally { if (locked) m_lock.Exit(); }
         }
 
+        /// <summary>
+        /// Copy items into supplied array starting at supplied index.
+        /// </summary>
+        public void CopyTo(Array array, int index)
+        {
+            var typedArray = array as KeyValuePair<int, TValue>[];
+            if (typedArray != null)
+                CopyTo(typedArray, index);
+            else
+                throw new ArgumentException();
+        }
+
         #endregion
     }
 
@@ -12561,6 +12627,15 @@ namespace Aardvark.Base
         }
 
         /// <summary>
+        /// Always returns false. Part of the ICollection implementation.
+        /// </summary>
+        public bool IsReadOnly { get { return false; } }
+
+        public bool IsSynchronized { get { return false; } }
+
+        public object SyncRoot { get { return this; } }
+
+        /// <summary>
         /// Return the non-concurrent contained ConcurrentIntSet.
         /// </summary>
         public IntSet NonConcurrent
@@ -12578,22 +12653,22 @@ namespace Aardvark.Base
         /// and value are cast to the concrete type of the keys and values used in the ConcurrentIntSet
         /// and this will fail if they are of different types.
         /// </summary>
-        public bool AddObject(object objkey)
+        public void AddObject(object objkey)
         {
-            return Add((int)objkey);
+            Add((int)objkey);
         }
 
         /// <summary>
         /// Add the item with the supplied key
         /// to the ConcurrentIntSet.
         /// </summary>
-        public bool Add(int key)
+        public void Add(int key)
         {
             var locked = false;
             try
             {
                 m_lock.Enter(ref locked);
-                return m_dict.Add(key);
+                m_dict.Add(key);
             }
             finally { if (locked) m_lock.Exit(); }
         }
@@ -12708,6 +12783,18 @@ namespace Aardvark.Base
             finally { if (locked) m_lock.Exit(); }
         }
 
+        /// <summary>
+        /// Copy items into supplied array starting at supplied index.
+        /// </summary>
+        public void CopyTo(Array array, int index)
+        {
+            var typedArray = array as int[];
+            if (typedArray != null)
+                CopyTo(typedArray, index);
+            else
+                throw new ArgumentException();
+        }
+
         #endregion
     }
 
@@ -12764,6 +12851,15 @@ namespace Aardvark.Base
                 return m_dict.LongCount;
             }
         }
+
+        /// <summary>
+        /// Always returns false. Part of the ICollection implementation.
+        /// </summary>
+        public bool IsReadOnly { get { return false; } }
+
+        public bool IsSynchronized { get { return false; } }
+
+        public object SyncRoot { get { return this; } }
 
         /// <summary>
         /// Return the non-concurrent contained ConcurrentSymbolDict.
@@ -13235,6 +13331,18 @@ namespace Aardvark.Base
             finally { if (locked) m_lock.Exit(); }
         }
 
+        /// <summary>
+        /// Copy items into supplied array starting at supplied index.
+        /// </summary>
+        public void CopyTo(Array array, int index)
+        {
+            var typedArray = array as KeyValuePair<Symbol, TValue>[];
+            if (typedArray != null)
+                CopyTo(typedArray, index);
+            else
+                throw new ArgumentException();
+        }
+
         public void Add<TType>(TypedSymbol<TType> key, TType value)
             where TType : TValue
         {
@@ -13375,6 +13483,15 @@ namespace Aardvark.Base
         }
 
         /// <summary>
+        /// Always returns false. Part of the ICollection implementation.
+        /// </summary>
+        public bool IsReadOnly { get { return false; } }
+
+        public bool IsSynchronized { get { return false; } }
+
+        public object SyncRoot { get { return this; } }
+
+        /// <summary>
         /// Return the non-concurrent contained ConcurrentSymbolSet.
         /// </summary>
         public SymbolSet NonConcurrent
@@ -13392,22 +13509,22 @@ namespace Aardvark.Base
         /// and value are cast to the concrete type of the keys and values used in the ConcurrentSymbolSet
         /// and this will fail if they are of different types.
         /// </summary>
-        public bool AddObject(object objkey)
+        public void AddObject(object objkey)
         {
-            return Add((Symbol)objkey);
+            Add((Symbol)objkey);
         }
 
         /// <summary>
         /// Add the item with the supplied key
         /// to the ConcurrentSymbolSet.
         /// </summary>
-        public bool Add(Symbol key)
+        public void Add(Symbol key)
         {
             var locked = false;
             try
             {
                 m_lock.Enter(ref locked);
-                return m_dict.Add(key);
+                m_dict.Add(key);
             }
             finally { if (locked) m_lock.Exit(); }
         }
@@ -13537,6 +13654,18 @@ namespace Aardvark.Base
             finally { if (locked) m_lock.Exit(); }
         }
 
+        /// <summary>
+        /// Copy items into supplied array starting at supplied index.
+        /// </summary>
+        public void CopyTo(Array array, int index)
+        {
+            var typedArray = array as Symbol[];
+            if (typedArray != null)
+                CopyTo(typedArray, index);
+            else
+                throw new ArgumentException();
+        }
+
         #endregion
     }
 
@@ -13582,6 +13711,15 @@ namespace Aardvark.Base
                 return m_dict.LongCount;
             }
         }
+
+        /// <summary>
+        /// Always returns false. Part of the ICollection implementation.
+        /// </summary>
+        public bool IsReadOnly { get { return false; } }
+
+        public bool IsSynchronized { get { return false; } }
+
+        public object SyncRoot { get { return this; } }
 
         /// <summary>
         /// Return the non-concurrent contained ConcurrentBigDict.
@@ -14225,6 +14363,18 @@ namespace Aardvark.Base
             finally { if (locked) m_lock.Exit(); }
         }
 
+        /// <summary>
+        /// Copy items into supplied array starting at supplied index.
+        /// </summary>
+        public void CopyTo(Array array, int index)
+        {
+            var typedArray = array as KeyValuePair<TKey, TValue>[];
+            if (typedArray != null)
+                CopyTo(typedArray, (long)index);
+            else
+                throw new ArgumentException();
+        }
+
         #endregion
     }
 
@@ -14271,6 +14421,15 @@ namespace Aardvark.Base
         }
 
         /// <summary>
+        /// Always returns false. Part of the ICollection implementation.
+        /// </summary>
+        public bool IsReadOnly { get { return false; } }
+
+        public bool IsSynchronized { get { return false; } }
+
+        public object SyncRoot { get { return this; } }
+
+        /// <summary>
         /// Return the non-concurrent contained ConcurrentBigDictSet.
         /// </summary>
         public BigDictSet<TKey> NonConcurrent
@@ -14288,22 +14447,22 @@ namespace Aardvark.Base
         /// and value are cast to the concrete type of the keys and values used in the ConcurrentBigDictSet
         /// and this will fail if they are of different types.
         /// </summary>
-        public bool AddObject(object objkey)
+        public void AddObject(object objkey)
         {
-            return Add((TKey)objkey);
+            Add((TKey)objkey);
         }
 
         /// <summary>
         /// Add the item with the supplied key
         /// to the ConcurrentBigDictSet.
         /// </summary>
-        public bool Add(TKey key)
+        public void Add(TKey key)
         {
             var locked = false;
             try
             {
                 m_lock.Enter(ref locked);
-                return m_dict.Add(key);
+                m_dict.Add(key);
             }
             finally { if (locked) m_lock.Exit(); }
         }
@@ -14312,13 +14471,13 @@ namespace Aardvark.Base
         /// Add the item with the supplied key
         /// to the ConcurrentBigDictSet.
         /// </summary>
-        public bool Add(TKey key, long hash)
+        public void Add(TKey key, long hash)
         {
             var locked = false;
             try
             {
                 m_lock.Enter(ref locked);
-                return m_dict.Add(key, hash);
+                m_dict.Add(key, hash);
             }
             finally { if (locked) m_lock.Exit(); }
         }
@@ -14494,6 +14653,18 @@ namespace Aardvark.Base
             finally { if (locked) m_lock.Exit(); }
         }
 
+        /// <summary>
+        /// Copy items into supplied array starting at supplied index.
+        /// </summary>
+        public void CopyTo(Array array, int index)
+        {
+            var typedArray = array as TKey[];
+            if (typedArray != null)
+                CopyTo(typedArray, (long)index);
+            else
+                throw new ArgumentException();
+        }
+
         #endregion
     }
 
@@ -14539,6 +14710,15 @@ namespace Aardvark.Base
                 return m_dict.LongCount;
             }
         }
+
+        /// <summary>
+        /// Always returns false. Part of the ICollection implementation.
+        /// </summary>
+        public bool IsReadOnly { get { return false; } }
+
+        public bool IsSynchronized { get { return false; } }
+
+        public object SyncRoot { get { return this; } }
 
         /// <summary>
         /// Return the non-concurrent contained ConcurrentLongDict.
@@ -14980,6 +15160,18 @@ namespace Aardvark.Base
             finally { if (locked) m_lock.Exit(); }
         }
 
+        /// <summary>
+        /// Copy items into supplied array starting at supplied index.
+        /// </summary>
+        public void CopyTo(Array array, int index)
+        {
+            var typedArray = array as KeyValuePair<long, TValue>[];
+            if (typedArray != null)
+                CopyTo(typedArray, (long)index);
+            else
+                throw new ArgumentException();
+        }
+
         #endregion
     }
 
@@ -15026,6 +15218,15 @@ namespace Aardvark.Base
         }
 
         /// <summary>
+        /// Always returns false. Part of the ICollection implementation.
+        /// </summary>
+        public bool IsReadOnly { get { return false; } }
+
+        public bool IsSynchronized { get { return false; } }
+
+        public object SyncRoot { get { return this; } }
+
+        /// <summary>
         /// Return the non-concurrent contained ConcurrentLongSet.
         /// </summary>
         public LongSet NonConcurrent
@@ -15043,22 +15244,22 @@ namespace Aardvark.Base
         /// and value are cast to the concrete type of the keys and values used in the ConcurrentLongSet
         /// and this will fail if they are of different types.
         /// </summary>
-        public bool AddObject(object objkey)
+        public void AddObject(object objkey)
         {
-            return Add((long)objkey);
+            Add((long)objkey);
         }
 
         /// <summary>
         /// Add the item with the supplied key
         /// to the ConcurrentLongSet.
         /// </summary>
-        public bool Add(long key)
+        public void Add(long key)
         {
             var locked = false;
             try
             {
                 m_lock.Enter(ref locked);
-                return m_dict.Add(key);
+                m_dict.Add(key);
             }
             finally { if (locked) m_lock.Exit(); }
         }
@@ -15173,6 +15374,18 @@ namespace Aardvark.Base
             finally { if (locked) m_lock.Exit(); }
         }
 
+        /// <summary>
+        /// Copy items into supplied array starting at supplied index.
+        /// </summary>
+        public void CopyTo(Array array, int index)
+        {
+            var typedArray = array as long[];
+            if (typedArray != null)
+                CopyTo(typedArray, (long)index);
+            else
+                throw new ArgumentException();
+        }
+
         #endregion
     }
 
@@ -15188,7 +15401,8 @@ namespace Aardvark.Base
     /// </summary>
     public class FastConcurrentDict<TKey, TValue>
             : IIntCountable, ICountableDict, IDict<TKey, TValue>,
-              IEnumerable, IEnumerable<KeyValuePair<TKey, TValue>>
+              IEnumerable, IEnumerable<KeyValuePair<TKey, TValue>>,
+              ICollection, ICollection<KeyValuePair<TKey, TValue>>
     {
         private SpinLock m_lock;
         private long m_version;
@@ -15310,6 +15524,15 @@ namespace Aardvark.Base
                 return (long)m_count;
             }
         }
+
+        /// <summary>
+        /// Always returns false. Part of the ICollection implementation.
+        /// </summary>
+        public bool IsReadOnly { get { return false; } }
+
+        public bool IsSynchronized { get { return false; } }
+
+        public object SyncRoot { get { return this; } }
 
         /// <summary>
         /// Setting the maximal fill factor makes it possible to fine-tune
@@ -16852,6 +17075,18 @@ namespace Aardvark.Base
             finally { if (locked) m_lock.Exit(); }
         }
 
+        /// <summary>
+        /// Copy items into supplied array starting at supplied index.
+        /// </summary>
+        public void CopyTo(Array array, int index)
+        {
+            var typedArray = array as KeyValuePair<TKey, TValue>[];
+            if (typedArray != null)
+                CopyTo(typedArray, index);
+            else
+                throw new ArgumentException();
+        }
+
         #endregion
 
         #region IEnumerable<KeyValuePair<TKey, TValue>> Members
@@ -17062,7 +17297,8 @@ namespace Aardvark.Base
     /// </summary>
     public class FastConcurrentDictSet<TKey>
             : IIntCountable, ICountableDictSet, IDictSet<TKey>,
-              IEnumerable, IEnumerable<TKey>
+              IEnumerable, IEnumerable<TKey>,
+              ICollection, ICollection<TKey>
     {
         private SpinLock m_lock;
         private long m_version;
@@ -17162,6 +17398,15 @@ namespace Aardvark.Base
         }
 
         /// <summary>
+        /// Always returns false. Part of the ICollection implementation.
+        /// </summary>
+        public bool IsReadOnly { get { return false; } }
+
+        public bool IsSynchronized { get { return false; } }
+
+        public object SyncRoot { get { return this; } }
+
+        /// <summary>
         /// Setting the maximal fill factor makes it possible to fine-tune
         /// the performance for certain applications. Normally this should
         /// not be necessary.
@@ -17249,16 +17494,16 @@ namespace Aardvark.Base
         /// and value are cast to the concrete type of the keys and values used in the FastConcurrentDictSet
         /// and this will fail if they are of different types.
         /// </summary>
-        public bool AddObject(object objkey)
+        public void AddObject(object objkey)
         {
-            return Add((TKey)objkey);
+            Add((TKey)objkey);
         }
 
         /// <summary>
         /// Add the item with the supplied key
         /// to the FastConcurrentDictSet.
         /// </summary>
-        public bool Add(TKey key)
+        public void Add(TKey key)
         {
             var hash = key.GetHashCode();
             var locked = false; try { m_lock.Enter(ref locked); ++m_version;
@@ -17271,21 +17516,21 @@ namespace Aardvark.Base
                 m_firstArray[fi].Next = -1;
                 m_firstArray[fi].Item.Hash = hash;
                 m_firstArray[fi].Item.Key = key;
-                return true;
+                return;
             }
             {
                 // no duplicate keys, check for existing entries
                 if (m_firstArray[fi].Item.Hash == hash
                     && key.Equals(m_firstArray[fi].Item.Key))
                 {
-                    return false;
+                    return;
                 }
                 while (ei > 0)
                 {
                     if (m_extraArray[ei].Item.Hash == hash
                         && key.Equals(m_extraArray[ei].Item.Key))
                     {
-                        return false;
+                        return;
                     }
                     ei = m_extraArray[ei].Next;
                 }
@@ -17307,14 +17552,13 @@ namespace Aardvark.Base
             m_firstArray[fi].Item.Hash = hash;
             m_firstArray[fi].Item.Key = key;
             } finally { if (locked) m_lock.Exit(); }
-            return true;
         }
 
         /// <summary>
         /// Add the item with the supplied key
         /// to the FastConcurrentDictSet.
         /// </summary>
-        public bool Add(TKey key, int hash)
+        public void Add(TKey key, int hash)
         {
             var locked = false; try { m_lock.Enter(ref locked); ++m_version;
             if (m_count >= m_increaseThreshold) IncreaseCapacity();
@@ -17326,21 +17570,21 @@ namespace Aardvark.Base
                 m_firstArray[fi].Next = -1;
                 m_firstArray[fi].Item.Hash = hash;
                 m_firstArray[fi].Item.Key = key;
-                return true;
+                return;
             }
             {
                 // no duplicate keys, check for existing entries
                 if (m_firstArray[fi].Item.Hash == hash
                     && key.Equals(m_firstArray[fi].Item.Key))
                 {
-                    return false;
+                    return;
                 }
                 while (ei > 0)
                 {
                     if (m_extraArray[ei].Item.Hash == hash
                         && key.Equals(m_extraArray[ei].Item.Key))
                     {
-                        return false;
+                        return;
                     }
                     ei = m_extraArray[ei].Next;
                 }
@@ -17362,7 +17606,6 @@ namespace Aardvark.Base
             m_firstArray[fi].Item.Hash = hash;
             m_firstArray[fi].Item.Key = key;
             } finally { if (locked) m_lock.Exit(); }
-            return true;
         }
 
         /// <summary>
@@ -17748,6 +17991,18 @@ namespace Aardvark.Base
             finally { if (locked) m_lock.Exit(); }
         }
 
+        /// <summary>
+        /// Copy items into supplied array starting at supplied index.
+        /// </summary>
+        public void CopyTo(Array array, int index)
+        {
+            var typedArray = array as TKey[];
+            if (typedArray != null)
+                CopyTo(typedArray, index);
+            else
+                throw new ArgumentException();
+        }
+
         #endregion
 
         #region IEnumerable<TKey> Members
@@ -17959,7 +18214,8 @@ namespace Aardvark.Base
     /// </summary>
     public class FastConcurrentIntDict<TValue>
             : IIntCountable, ICountableDict, IDict<int, TValue>,
-              IEnumerable, IEnumerable<KeyValuePair<int, TValue>>
+              IEnumerable, IEnumerable<KeyValuePair<int, TValue>>,
+              ICollection, ICollection<KeyValuePair<int, TValue>>
     {
         private SpinLock m_lock;
         private long m_version;
@@ -18081,6 +18337,15 @@ namespace Aardvark.Base
                 return (long)m_count;
             }
         }
+
+        /// <summary>
+        /// Always returns false. Part of the ICollection implementation.
+        /// </summary>
+        public bool IsReadOnly { get { return false; } }
+
+        public bool IsSynchronized { get { return false; } }
+
+        public object SyncRoot { get { return this; } }
 
         /// <summary>
         /// Setting the maximal fill factor makes it possible to fine-tune
@@ -19095,6 +19360,18 @@ namespace Aardvark.Base
             finally { if (locked) m_lock.Exit(); }
         }
 
+        /// <summary>
+        /// Copy items into supplied array starting at supplied index.
+        /// </summary>
+        public void CopyTo(Array array, int index)
+        {
+            var typedArray = array as KeyValuePair<int, TValue>[];
+            if (typedArray != null)
+                CopyTo(typedArray, index);
+            else
+                throw new ArgumentException();
+        }
+
         #endregion
 
         #region IEnumerable<KeyValuePair<int, TValue>> Members
@@ -19305,7 +19582,8 @@ namespace Aardvark.Base
     /// </summary>
     public class FastConcurrentIntSet
             : IIntCountable, ICountableDictSet, IDictSet<int>,
-              IEnumerable, IEnumerable<int>
+              IEnumerable, IEnumerable<int>,
+              ICollection, ICollection<int>
     {
         private SpinLock m_lock;
         private long m_version;
@@ -19405,6 +19683,15 @@ namespace Aardvark.Base
         }
 
         /// <summary>
+        /// Always returns false. Part of the ICollection implementation.
+        /// </summary>
+        public bool IsReadOnly { get { return false; } }
+
+        public bool IsSynchronized { get { return false; } }
+
+        public object SyncRoot { get { return this; } }
+
+        /// <summary>
         /// Setting the maximal fill factor makes it possible to fine-tune
         /// the performance for certain applications. Normally this should
         /// not be necessary.
@@ -19492,16 +19779,16 @@ namespace Aardvark.Base
         /// and value are cast to the concrete type of the keys and values used in the FastConcurrentIntSet
         /// and this will fail if they are of different types.
         /// </summary>
-        public bool AddObject(object objkey)
+        public void AddObject(object objkey)
         {
-            return Add((int)objkey);
+            Add((int)objkey);
         }
 
         /// <summary>
         /// Add the item with the supplied key
         /// to the FastConcurrentIntSet.
         /// </summary>
-        public bool Add(int key)
+        public void Add(int key)
         {
             var hash = key;
             var locked = false; try { m_lock.Enter(ref locked); ++m_version;
@@ -19513,19 +19800,19 @@ namespace Aardvark.Base
                 ++m_count;
                 m_firstArray[fi].Next = -1;
                 m_firstArray[fi].Item = key;
-                return true;
+                return;
             }
             {
                 // no duplicate keys, check for existing entries
                 if (m_firstArray[fi].Item == hash)
                 {
-                    return false;
+                    return;
                 }
                 while (ei > 0)
                 {
                     if (m_extraArray[ei].Item == hash)
                     {
-                        return false;
+                        return;
                     }
                     ei = m_extraArray[ei].Next;
                 }
@@ -19546,7 +19833,6 @@ namespace Aardvark.Base
             m_firstArray[fi].Next = ni;
             m_firstArray[fi].Item = key;
             } finally { if (locked) m_lock.Exit(); }
-            return true;
         }
 
         /// <summary>
@@ -19765,6 +20051,18 @@ namespace Aardvark.Base
             finally { if (locked) m_lock.Exit(); }
         }
 
+        /// <summary>
+        /// Copy items into supplied array starting at supplied index.
+        /// </summary>
+        public void CopyTo(Array array, int index)
+        {
+            var typedArray = array as int[];
+            if (typedArray != null)
+                CopyTo(typedArray, index);
+            else
+                throw new ArgumentException();
+        }
+
         #endregion
 
         #region IEnumerable<int> Members
@@ -19976,7 +20274,8 @@ namespace Aardvark.Base
     /// </summary>
     public class FastConcurrentSymbolDict<TValue>
             : IIntCountable, ICountableDict, IDict<Symbol, TValue>,
-              IEnumerable, IEnumerable<KeyValuePair<Symbol, TValue>>
+              IEnumerable, IEnumerable<KeyValuePair<Symbol, TValue>>,
+              ICollection, ICollection<KeyValuePair<Symbol, TValue>>
     {
         private SpinLock m_lock;
         private long m_version;
@@ -20113,6 +20412,15 @@ namespace Aardvark.Base
                 return (long)m_count;
             }
         }
+
+        /// <summary>
+        /// Always returns false. Part of the ICollection implementation.
+        /// </summary>
+        public bool IsReadOnly { get { return false; } }
+
+        public bool IsSynchronized { get { return false; } }
+
+        public object SyncRoot { get { return this; } }
 
         /// <summary>
         /// Setting the maximal fill factor makes it possible to fine-tune
@@ -21145,6 +21453,18 @@ namespace Aardvark.Base
             finally { if (locked) m_lock.Exit(); }
         }
 
+        /// <summary>
+        /// Copy items into supplied array starting at supplied index.
+        /// </summary>
+        public void CopyTo(Array array, int index)
+        {
+            var typedArray = array as KeyValuePair<Symbol, TValue>[];
+            if (typedArray != null)
+                CopyTo(typedArray, index);
+            else
+                throw new ArgumentException();
+        }
+
         public void Add<TType>(TypedSymbol<TType> key, TType value)
             where TType : TValue
         {
@@ -21438,7 +21758,8 @@ namespace Aardvark.Base
     /// </summary>
     public class FastConcurrentSymbolSet
             : IIntCountable, ICountableDictSet, IDictSet<Symbol>,
-              IEnumerable, IEnumerable<Symbol>
+              IEnumerable, IEnumerable<Symbol>,
+              ICollection, ICollection<Symbol>
     {
         private SpinLock m_lock;
         private long m_version;
@@ -21549,6 +21870,15 @@ namespace Aardvark.Base
         }
 
         /// <summary>
+        /// Always returns false. Part of the ICollection implementation.
+        /// </summary>
+        public bool IsReadOnly { get { return false; } }
+
+        public bool IsSynchronized { get { return false; } }
+
+        public object SyncRoot { get { return this; } }
+
+        /// <summary>
         /// Setting the maximal fill factor makes it possible to fine-tune
         /// the performance for certain applications. Normally this should
         /// not be necessary.
@@ -21636,16 +21966,16 @@ namespace Aardvark.Base
         /// and value are cast to the concrete type of the keys and values used in the FastConcurrentSymbolSet
         /// and this will fail if they are of different types.
         /// </summary>
-        public bool AddObject(object objkey)
+        public void AddObject(object objkey)
         {
-            return Add((Symbol)objkey);
+            Add((Symbol)objkey);
         }
 
         /// <summary>
         /// Add the item with the supplied key
         /// to the FastConcurrentSymbolSet.
         /// </summary>
-        public bool Add(Symbol key)
+        public void Add(Symbol key)
         {
             var hash = key.Id;
             var locked = false; try { m_lock.Enter(ref locked); ++m_version;
@@ -21657,19 +21987,19 @@ namespace Aardvark.Base
                 ++m_count;
                 m_firstArray[fi].Next = -1;
                 m_firstArray[fi].Item = key;
-                return true;
+                return;
             }
             {
                 // no duplicate keys, check for existing entries
                 if (m_firstArray[fi].Item.Id == hash)
                 {
-                    return false;
+                    return;
                 }
                 while (ei > 0)
                 {
                     if (m_extraArray[ei].Item.Id == hash)
                     {
-                        return false;
+                        return;
                     }
                     ei = m_extraArray[ei].Next;
                 }
@@ -21690,7 +22020,6 @@ namespace Aardvark.Base
             m_firstArray[fi].Next = ni;
             m_firstArray[fi].Item = key;
             } finally { if (locked) m_lock.Exit(); }
-            return true;
         }
 
         /// <summary>
@@ -21916,6 +22245,18 @@ namespace Aardvark.Base
             }
             }
             finally { if (locked) m_lock.Exit(); }
+        }
+
+        /// <summary>
+        /// Copy items into supplied array starting at supplied index.
+        /// </summary>
+        public void CopyTo(Array array, int index)
+        {
+            var typedArray = array as Symbol[];
+            if (typedArray != null)
+                CopyTo(typedArray, index);
+            else
+                throw new ArgumentException();
         }
 
         #endregion
@@ -22242,6 +22583,15 @@ namespace Aardvark.Base
                 return (long)m_count;
             }
         }
+
+        /// <summary>
+        /// Always returns false. Part of the ICollection implementation.
+        /// </summary>
+        public bool IsReadOnly { get { return false; } }
+
+        public bool IsSynchronized { get { return false; } }
+
+        public object SyncRoot { get { return this; } }
 
         /// <summary>
         /// Setting the maximal fill factor makes it possible to fine-tune
@@ -23784,6 +24134,18 @@ namespace Aardvark.Base
             finally { if (locked) m_lock.Exit(); }
         }
 
+        /// <summary>
+        /// Copy items into supplied array starting at supplied index.
+        /// </summary>
+        public void CopyTo(Array array, int index)
+        {
+            var typedArray = array as KeyValuePair<TKey, TValue>[];
+            if (typedArray != null)
+                CopyTo(typedArray, (long)index);
+            else
+                throw new ArgumentException();
+        }
+
         #endregion
 
         #region IEnumerable<KeyValuePair<TKey, TValue>> Members
@@ -24085,6 +24447,15 @@ namespace Aardvark.Base
         }
 
         /// <summary>
+        /// Always returns false. Part of the ICollection implementation.
+        /// </summary>
+        public bool IsReadOnly { get { return false; } }
+
+        public bool IsSynchronized { get { return false; } }
+
+        public object SyncRoot { get { return this; } }
+
+        /// <summary>
         /// Setting the maximal fill factor makes it possible to fine-tune
         /// the performance for certain applications. Normally this should
         /// not be necessary.
@@ -24172,16 +24543,16 @@ namespace Aardvark.Base
         /// and value are cast to the concrete type of the keys and values used in the FastConcurrentBigDictSet
         /// and this will fail if they are of different types.
         /// </summary>
-        public bool AddObject(object objkey)
+        public void AddObject(object objkey)
         {
-            return Add((TKey)objkey);
+            Add((TKey)objkey);
         }
 
         /// <summary>
         /// Add the item with the supplied key
         /// to the FastConcurrentBigDictSet.
         /// </summary>
-        public bool Add(TKey key)
+        public void Add(TKey key)
         {
             var hash = m_hfun(key);
             var locked = false; try { m_lock.Enter(ref locked); ++m_version;
@@ -24194,21 +24565,21 @@ namespace Aardvark.Base
                 m_firstArray[fi].Next = -1;
                 m_firstArray[fi].Item.Hash = hash;
                 m_firstArray[fi].Item.Key = key;
-                return true;
+                return;
             }
             {
                 // no duplicate keys, check for existing entries
                 if (m_firstArray[fi].Item.Hash == hash
                     && key.Equals(m_firstArray[fi].Item.Key))
                 {
-                    return false;
+                    return;
                 }
                 while (ei > 0)
                 {
                     if (m_extraArray[ei].Item.Hash == hash
                         && key.Equals(m_extraArray[ei].Item.Key))
                     {
-                        return false;
+                        return;
                     }
                     ei = m_extraArray[ei].Next;
                 }
@@ -24230,14 +24601,13 @@ namespace Aardvark.Base
             m_firstArray[fi].Item.Hash = hash;
             m_firstArray[fi].Item.Key = key;
             } finally { if (locked) m_lock.Exit(); }
-            return true;
         }
 
         /// <summary>
         /// Add the item with the supplied key
         /// to the FastConcurrentBigDictSet.
         /// </summary>
-        public bool Add(TKey key, long hash)
+        public void Add(TKey key, long hash)
         {
             var locked = false; try { m_lock.Enter(ref locked); ++m_version;
             if (m_count >= m_increaseThreshold) IncreaseCapacity();
@@ -24249,21 +24619,21 @@ namespace Aardvark.Base
                 m_firstArray[fi].Next = -1;
                 m_firstArray[fi].Item.Hash = hash;
                 m_firstArray[fi].Item.Key = key;
-                return true;
+                return;
             }
             {
                 // no duplicate keys, check for existing entries
                 if (m_firstArray[fi].Item.Hash == hash
                     && key.Equals(m_firstArray[fi].Item.Key))
                 {
-                    return false;
+                    return;
                 }
                 while (ei > 0)
                 {
                     if (m_extraArray[ei].Item.Hash == hash
                         && key.Equals(m_extraArray[ei].Item.Key))
                     {
-                        return false;
+                        return;
                     }
                     ei = m_extraArray[ei].Next;
                 }
@@ -24285,7 +24655,6 @@ namespace Aardvark.Base
             m_firstArray[fi].Item.Hash = hash;
             m_firstArray[fi].Item.Key = key;
             } finally { if (locked) m_lock.Exit(); }
-            return true;
         }
 
         /// <summary>
@@ -24671,6 +25040,18 @@ namespace Aardvark.Base
             finally { if (locked) m_lock.Exit(); }
         }
 
+        /// <summary>
+        /// Copy items into supplied array starting at supplied index.
+        /// </summary>
+        public void CopyTo(Array array, int index)
+        {
+            var typedArray = array as TKey[];
+            if (typedArray != null)
+                CopyTo(typedArray, (long)index);
+            else
+                throw new ArgumentException();
+        }
+
         #endregion
 
         #region IEnumerable<TKey> Members
@@ -24993,6 +25374,15 @@ namespace Aardvark.Base
                 return (long)m_count;
             }
         }
+
+        /// <summary>
+        /// Always returns false. Part of the ICollection implementation.
+        /// </summary>
+        public bool IsReadOnly { get { return false; } }
+
+        public bool IsSynchronized { get { return false; } }
+
+        public object SyncRoot { get { return this; } }
 
         /// <summary>
         /// Setting the maximal fill factor makes it possible to fine-tune
@@ -26007,6 +26397,18 @@ namespace Aardvark.Base
             finally { if (locked) m_lock.Exit(); }
         }
 
+        /// <summary>
+        /// Copy items into supplied array starting at supplied index.
+        /// </summary>
+        public void CopyTo(Array array, int index)
+        {
+            var typedArray = array as KeyValuePair<long, TValue>[];
+            if (typedArray != null)
+                CopyTo(typedArray, (long)index);
+            else
+                throw new ArgumentException();
+        }
+
         #endregion
 
         #region IEnumerable<KeyValuePair<long, TValue>> Members
@@ -26306,6 +26708,15 @@ namespace Aardvark.Base
         }
 
         /// <summary>
+        /// Always returns false. Part of the ICollection implementation.
+        /// </summary>
+        public bool IsReadOnly { get { return false; } }
+
+        public bool IsSynchronized { get { return false; } }
+
+        public object SyncRoot { get { return this; } }
+
+        /// <summary>
         /// Setting the maximal fill factor makes it possible to fine-tune
         /// the performance for certain applications. Normally this should
         /// not be necessary.
@@ -26393,16 +26804,16 @@ namespace Aardvark.Base
         /// and value are cast to the concrete type of the keys and values used in the FastConcurrentLongSet
         /// and this will fail if they are of different types.
         /// </summary>
-        public bool AddObject(object objkey)
+        public void AddObject(object objkey)
         {
-            return Add((long)objkey);
+            Add((long)objkey);
         }
 
         /// <summary>
         /// Add the item with the supplied key
         /// to the FastConcurrentLongSet.
         /// </summary>
-        public bool Add(long key)
+        public void Add(long key)
         {
             var hash = key;
             var locked = false; try { m_lock.Enter(ref locked); ++m_version;
@@ -26414,19 +26825,19 @@ namespace Aardvark.Base
                 ++m_count;
                 m_firstArray[fi].Next = -1;
                 m_firstArray[fi].Item = key;
-                return true;
+                return;
             }
             {
                 // no duplicate keys, check for existing entries
                 if (m_firstArray[fi].Item == hash)
                 {
-                    return false;
+                    return;
                 }
                 while (ei > 0)
                 {
                     if (m_extraArray[ei].Item == hash)
                     {
-                        return false;
+                        return;
                     }
                     ei = m_extraArray[ei].Next;
                 }
@@ -26447,7 +26858,6 @@ namespace Aardvark.Base
             m_firstArray[fi].Next = ni;
             m_firstArray[fi].Item = key;
             } finally { if (locked) m_lock.Exit(); }
-            return true;
         }
 
         /// <summary>
@@ -26664,6 +27074,18 @@ namespace Aardvark.Base
             }
             }
             finally { if (locked) m_lock.Exit(); }
+        }
+
+        /// <summary>
+        /// Copy items into supplied array starting at supplied index.
+        /// </summary>
+        public void CopyTo(Array array, int index)
+        {
+            var typedArray = array as long[];
+            if (typedArray != null)
+                CopyTo(typedArray, (long)index);
+            else
+                throw new ArgumentException();
         }
 
         #endregion
@@ -26999,6 +27421,15 @@ namespace Aardvark.Base
         }
 
         /// <summary>
+        /// Always returns false. Part of the ICollection implementation.
+        /// </summary>
+        public bool IsReadOnly { get { return false; } }
+
+        public bool IsSynchronized { get { return false; } }
+
+        public object SyncRoot { get { return this; } }
+
+        /// <summary>
         /// Setting the maximal fill factor makes it possible to fine-tune
         /// the performance for certain applications. Normally this should
         /// not be necessary.
@@ -27029,14 +27460,6 @@ namespace Aardvark.Base
             }
         }
 
-        /// <summary>
-        /// Always returns false. Part of the ICollection implementation.
-        /// </summary>
-        public bool IsReadOnly { get { return false; } }
-
-        public bool IsSynchronized { get { return false; } }
-
-        public object SyncRoot { get { return this; } }
         public IEnumerable<KeyValuePair<TKey, TValue>> Items { get { return KeyValuePairs; } }
         /// <summary>
         /// Returns all keys in the dictionary.
@@ -28716,6 +29139,15 @@ namespace Aardvark.Base
         }
 
         /// <summary>
+        /// Always returns false. Part of the ICollection implementation.
+        /// </summary>
+        public bool IsReadOnly { get { return false; } }
+
+        public bool IsSynchronized { get { return false; } }
+
+        public object SyncRoot { get { return this; } }
+
+        /// <summary>
         /// Setting the maximal fill factor makes it possible to fine-tune
         /// the performance for certain applications. Normally this should
         /// not be necessary.
@@ -28746,14 +29178,6 @@ namespace Aardvark.Base
             }
         }
 
-        /// <summary>
-        /// Always returns false. Part of the ICollection implementation.
-        /// </summary>
-        public bool IsReadOnly { get { return false; } }
-
-        public bool IsSynchronized { get { return false; } }
-
-        public object SyncRoot { get { return this; } }
         public IEnumerable<TKey> Items { get { return Keys; } }
         /// <summary>
         /// Returns all keys in the dictionary.
@@ -28797,9 +29221,9 @@ namespace Aardvark.Base
         /// and value are cast to the concrete type of the keys and values used in the DictSetIEq
         /// and this will fail if they are of different types.
         /// </summary>
-        public bool AddObject(object objkey)
+        public void AddObject(object objkey)
         {
-            return Add((TKey)objkey);
+            Add((TKey)objkey);
         }
 
         void ICollection<TKey>.Add(TKey key)
@@ -28811,7 +29235,7 @@ namespace Aardvark.Base
         /// Add the item with the supplied key
         /// to the DictSetIEq.
         /// </summary>
-        public bool Add(TKey key)
+        public void Add(TKey key)
         {
             var hash = key.GetHashCode();
             if (m_count >= m_increaseThreshold) IncreaseCapacity();
@@ -28823,21 +29247,21 @@ namespace Aardvark.Base
                 m_firstArray[fi].Next = -1;
                 m_firstArray[fi].Item.Hash = hash;
                 m_firstArray[fi].Item.Key = key;
-                return true;
+                return;
             }
             {
                 // no duplicate keys, check for existing entries
                 if (m_firstArray[fi].Item.Hash == hash
                     && key.Equals(m_firstArray[fi].Item.Key))
                 {
-                    return false;
+                    return;
                 }
                 while (ei > 0)
                 {
                     if (m_extraArray[ei].Item.Hash == hash
                         && key.Equals(m_extraArray[ei].Item.Key))
                     {
-                        return false;
+                        return;
                     }
                     ei = m_extraArray[ei].Next;
                 }
@@ -28858,14 +29282,13 @@ namespace Aardvark.Base
             m_firstArray[fi].Next = ni;
             m_firstArray[fi].Item.Hash = hash;
             m_firstArray[fi].Item.Key = key;
-            return true;
         }
 
         /// <summary>
         /// Add the item with the supplied key
         /// to the DictSetIEq.
         /// </summary>
-        public bool Add(TKey key, int hash)
+        public void Add(TKey key, int hash)
         {
             if (m_count >= m_increaseThreshold) IncreaseCapacity();
             var fi = ((uint)hash) % m_capacity;
@@ -28876,21 +29299,21 @@ namespace Aardvark.Base
                 m_firstArray[fi].Next = -1;
                 m_firstArray[fi].Item.Hash = hash;
                 m_firstArray[fi].Item.Key = key;
-                return true;
+                return;
             }
             {
                 // no duplicate keys, check for existing entries
                 if (m_firstArray[fi].Item.Hash == hash
                     && key.Equals(m_firstArray[fi].Item.Key))
                 {
-                    return false;
+                    return;
                 }
                 while (ei > 0)
                 {
                     if (m_extraArray[ei].Item.Hash == hash
                         && key.Equals(m_extraArray[ei].Item.Key))
                     {
-                        return false;
+                        return;
                     }
                     ei = m_extraArray[ei].Next;
                 }
@@ -28911,7 +29334,6 @@ namespace Aardvark.Base
             m_firstArray[fi].Next = ni;
             m_firstArray[fi].Item.Hash = hash;
             m_firstArray[fi].Item.Key = key;
-            return true;
         }
 
         /// <summary>
@@ -29608,6 +30030,15 @@ namespace Aardvark.Base
         }
 
         /// <summary>
+        /// Always returns false. Part of the ICollection implementation.
+        /// </summary>
+        public bool IsReadOnly { get { return false; } }
+
+        public bool IsSynchronized { get { return false; } }
+
+        public object SyncRoot { get { return this; } }
+
+        /// <summary>
         /// Setting the maximal fill factor makes it possible to fine-tune
         /// the performance for certain applications. Normally this should
         /// not be necessary.
@@ -29638,14 +30069,6 @@ namespace Aardvark.Base
             }
         }
 
-        /// <summary>
-        /// Always returns false. Part of the ICollection implementation.
-        /// </summary>
-        public bool IsReadOnly { get { return false; } }
-
-        public bool IsSynchronized { get { return false; } }
-
-        public object SyncRoot { get { return this; } }
         public IEnumerable<KeyValuePair<TKey, TValue>> Items { get { return KeyValuePairs; } }
         /// <summary>
         /// Returns all keys in the dictionary.
@@ -31315,6 +31738,15 @@ namespace Aardvark.Base
         }
 
         /// <summary>
+        /// Always returns false. Part of the ICollection implementation.
+        /// </summary>
+        public bool IsReadOnly { get { return false; } }
+
+        public bool IsSynchronized { get { return false; } }
+
+        public object SyncRoot { get { return this; } }
+
+        /// <summary>
         /// Setting the maximal fill factor makes it possible to fine-tune
         /// the performance for certain applications. Normally this should
         /// not be necessary.
@@ -31345,14 +31777,6 @@ namespace Aardvark.Base
             }
         }
 
-        /// <summary>
-        /// Always returns false. Part of the ICollection implementation.
-        /// </summary>
-        public bool IsReadOnly { get { return false; } }
-
-        public bool IsSynchronized { get { return false; } }
-
-        public object SyncRoot { get { return this; } }
         public IEnumerable<TKey> Items { get { return Keys; } }
         /// <summary>
         /// Returns all keys in the dictionary.
@@ -31396,16 +31820,16 @@ namespace Aardvark.Base
         /// and value are cast to the concrete type of the keys and values used in the BigDictSetIEq
         /// and this will fail if they are of different types.
         /// </summary>
-        public bool AddObject(object objkey)
+        public void AddObject(object objkey)
         {
-            return Add((TKey)objkey);
+            Add((TKey)objkey);
         }
 
         /// <summary>
         /// Add the item with the supplied key
         /// to the BigDictSetIEq.
         /// </summary>
-        public bool Add(TKey key)
+        public void Add(TKey key)
         {
             var hash = m_hfun(key);
             if (m_count >= m_increaseThreshold) IncreaseCapacity();
@@ -31417,21 +31841,21 @@ namespace Aardvark.Base
                 m_firstArray[fi].Next = -1;
                 m_firstArray[fi].Item.Hash = hash;
                 m_firstArray[fi].Item.Key = key;
-                return true;
+                return;
             }
             {
                 // no duplicate keys, check for existing entries
                 if (m_firstArray[fi].Item.Hash == hash
                     && key.Equals(m_firstArray[fi].Item.Key))
                 {
-                    return false;
+                    return;
                 }
                 while (ei > 0)
                 {
                     if (m_extraArray[ei].Item.Hash == hash
                         && key.Equals(m_extraArray[ei].Item.Key))
                     {
-                        return false;
+                        return;
                     }
                     ei = m_extraArray[ei].Next;
                 }
@@ -31452,14 +31876,13 @@ namespace Aardvark.Base
             m_firstArray[fi].Next = ni;
             m_firstArray[fi].Item.Hash = hash;
             m_firstArray[fi].Item.Key = key;
-            return true;
         }
 
         /// <summary>
         /// Add the item with the supplied key
         /// to the BigDictSetIEq.
         /// </summary>
-        public bool Add(TKey key, long hash)
+        public void Add(TKey key, long hash)
         {
             if (m_count >= m_increaseThreshold) IncreaseCapacity();
             var fi = ((ulong)hash) % m_capacity;
@@ -31470,21 +31893,21 @@ namespace Aardvark.Base
                 m_firstArray[fi].Next = -1;
                 m_firstArray[fi].Item.Hash = hash;
                 m_firstArray[fi].Item.Key = key;
-                return true;
+                return;
             }
             {
                 // no duplicate keys, check for existing entries
                 if (m_firstArray[fi].Item.Hash == hash
                     && key.Equals(m_firstArray[fi].Item.Key))
                 {
-                    return false;
+                    return;
                 }
                 while (ei > 0)
                 {
                     if (m_extraArray[ei].Item.Hash == hash
                         && key.Equals(m_extraArray[ei].Item.Key))
                     {
-                        return false;
+                        return;
                     }
                     ei = m_extraArray[ei].Next;
                 }
@@ -31505,7 +31928,6 @@ namespace Aardvark.Base
             m_firstArray[fi].Next = ni;
             m_firstArray[fi].Item.Hash = hash;
             m_firstArray[fi].Item.Key = key;
-            return true;
         }
 
         /// <summary>
@@ -32132,6 +32554,15 @@ namespace Aardvark.Base
                 return m_dict.LongCount;
             }
         }
+
+        /// <summary>
+        /// Always returns false. Part of the ICollection implementation.
+        /// </summary>
+        public bool IsReadOnly { get { return false; } }
+
+        public bool IsSynchronized { get { return false; } }
+
+        public object SyncRoot { get { return this; } }
 
         /// <summary>
         /// Return the non-concurrent contained ConcurrentDictIEq.
@@ -32775,6 +33206,18 @@ namespace Aardvark.Base
             finally { if (locked) m_lock.Exit(); }
         }
 
+        /// <summary>
+        /// Copy items into supplied array starting at supplied index.
+        /// </summary>
+        public void CopyTo(Array array, int index)
+        {
+            var typedArray = array as KeyValuePair<TKey, TValue>[];
+            if (typedArray != null)
+                CopyTo(typedArray, index);
+            else
+                throw new ArgumentException();
+        }
+
         #endregion
     }
 
@@ -32833,6 +33276,15 @@ namespace Aardvark.Base
         }
 
         /// <summary>
+        /// Always returns false. Part of the ICollection implementation.
+        /// </summary>
+        public bool IsReadOnly { get { return false; } }
+
+        public bool IsSynchronized { get { return false; } }
+
+        public object SyncRoot { get { return this; } }
+
+        /// <summary>
         /// Return the non-concurrent contained ConcurrentDictSetIEq.
         /// </summary>
         public DictSetIEq<TKey> NonConcurrent
@@ -32850,22 +33302,22 @@ namespace Aardvark.Base
         /// and value are cast to the concrete type of the keys and values used in the ConcurrentDictSetIEq
         /// and this will fail if they are of different types.
         /// </summary>
-        public bool AddObject(object objkey)
+        public void AddObject(object objkey)
         {
-            return Add((TKey)objkey);
+            Add((TKey)objkey);
         }
 
         /// <summary>
         /// Add the item with the supplied key
         /// to the ConcurrentDictSetIEq.
         /// </summary>
-        public bool Add(TKey key)
+        public void Add(TKey key)
         {
             var locked = false;
             try
             {
                 m_lock.Enter(ref locked);
-                return m_dict.Add(key);
+                m_dict.Add(key);
             }
             finally { if (locked) m_lock.Exit(); }
         }
@@ -32874,13 +33326,13 @@ namespace Aardvark.Base
         /// Add the item with the supplied key
         /// to the ConcurrentDictSetIEq.
         /// </summary>
-        public bool Add(TKey key, int hash)
+        public void Add(TKey key, int hash)
         {
             var locked = false;
             try
             {
                 m_lock.Enter(ref locked);
-                return m_dict.Add(key, hash);
+                m_dict.Add(key, hash);
             }
             finally { if (locked) m_lock.Exit(); }
         }
@@ -33056,6 +33508,18 @@ namespace Aardvark.Base
             finally { if (locked) m_lock.Exit(); }
         }
 
+        /// <summary>
+        /// Copy items into supplied array starting at supplied index.
+        /// </summary>
+        public void CopyTo(Array array, int index)
+        {
+            var typedArray = array as TKey[];
+            if (typedArray != null)
+                CopyTo(typedArray, index);
+            else
+                throw new ArgumentException();
+        }
+
         #endregion
     }
 
@@ -33102,6 +33566,15 @@ namespace Aardvark.Base
                 return m_dict.LongCount;
             }
         }
+
+        /// <summary>
+        /// Always returns false. Part of the ICollection implementation.
+        /// </summary>
+        public bool IsReadOnly { get { return false; } }
+
+        public bool IsSynchronized { get { return false; } }
+
+        public object SyncRoot { get { return this; } }
 
         /// <summary>
         /// Return the non-concurrent contained ConcurrentBigDictIEq.
@@ -33745,6 +34218,18 @@ namespace Aardvark.Base
             finally { if (locked) m_lock.Exit(); }
         }
 
+        /// <summary>
+        /// Copy items into supplied array starting at supplied index.
+        /// </summary>
+        public void CopyTo(Array array, int index)
+        {
+            var typedArray = array as KeyValuePair<TKey, TValue>[];
+            if (typedArray != null)
+                CopyTo(typedArray, (long)index);
+            else
+                throw new ArgumentException();
+        }
+
         #endregion
     }
 
@@ -33792,6 +34277,15 @@ namespace Aardvark.Base
         }
 
         /// <summary>
+        /// Always returns false. Part of the ICollection implementation.
+        /// </summary>
+        public bool IsReadOnly { get { return false; } }
+
+        public bool IsSynchronized { get { return false; } }
+
+        public object SyncRoot { get { return this; } }
+
+        /// <summary>
         /// Return the non-concurrent contained ConcurrentBigDictSetIEq.
         /// </summary>
         public BigDictSetIEq<TKey> NonConcurrent
@@ -33809,22 +34303,22 @@ namespace Aardvark.Base
         /// and value are cast to the concrete type of the keys and values used in the ConcurrentBigDictSetIEq
         /// and this will fail if they are of different types.
         /// </summary>
-        public bool AddObject(object objkey)
+        public void AddObject(object objkey)
         {
-            return Add((TKey)objkey);
+            Add((TKey)objkey);
         }
 
         /// <summary>
         /// Add the item with the supplied key
         /// to the ConcurrentBigDictSetIEq.
         /// </summary>
-        public bool Add(TKey key)
+        public void Add(TKey key)
         {
             var locked = false;
             try
             {
                 m_lock.Enter(ref locked);
-                return m_dict.Add(key);
+                m_dict.Add(key);
             }
             finally { if (locked) m_lock.Exit(); }
         }
@@ -33833,13 +34327,13 @@ namespace Aardvark.Base
         /// Add the item with the supplied key
         /// to the ConcurrentBigDictSetIEq.
         /// </summary>
-        public bool Add(TKey key, long hash)
+        public void Add(TKey key, long hash)
         {
             var locked = false;
             try
             {
                 m_lock.Enter(ref locked);
-                return m_dict.Add(key, hash);
+                m_dict.Add(key, hash);
             }
             finally { if (locked) m_lock.Exit(); }
         }
@@ -34015,6 +34509,18 @@ namespace Aardvark.Base
             finally { if (locked) m_lock.Exit(); }
         }
 
+        /// <summary>
+        /// Copy items into supplied array starting at supplied index.
+        /// </summary>
+        public void CopyTo(Array array, int index)
+        {
+            var typedArray = array as TKey[];
+            if (typedArray != null)
+                CopyTo(typedArray, (long)index);
+            else
+                throw new ArgumentException();
+        }
+
         #endregion
     }
 
@@ -34030,7 +34536,8 @@ namespace Aardvark.Base
     /// </summary>
     public class FastConcurrentDictIEq<TKey, TValue>
             : IIntCountable, ICountableDict, IDict<TKey, TValue>,
-              IEnumerable, IEnumerable<KeyValuePair<TKey, TValue>>
+              IEnumerable, IEnumerable<KeyValuePair<TKey, TValue>>,
+              ICollection, ICollection<KeyValuePair<TKey, TValue>>
         where TKey : IEquatable<TKey>
     {
         private SpinLock m_lock;
@@ -34153,6 +34660,15 @@ namespace Aardvark.Base
                 return (long)m_count;
             }
         }
+
+        /// <summary>
+        /// Always returns false. Part of the ICollection implementation.
+        /// </summary>
+        public bool IsReadOnly { get { return false; } }
+
+        public bool IsSynchronized { get { return false; } }
+
+        public object SyncRoot { get { return this; } }
 
         /// <summary>
         /// Setting the maximal fill factor makes it possible to fine-tune
@@ -35695,6 +36211,18 @@ namespace Aardvark.Base
             finally { if (locked) m_lock.Exit(); }
         }
 
+        /// <summary>
+        /// Copy items into supplied array starting at supplied index.
+        /// </summary>
+        public void CopyTo(Array array, int index)
+        {
+            var typedArray = array as KeyValuePair<TKey, TValue>[];
+            if (typedArray != null)
+                CopyTo(typedArray, index);
+            else
+                throw new ArgumentException();
+        }
+
         #endregion
 
         #region IEnumerable<KeyValuePair<TKey, TValue>> Members
@@ -35905,7 +36433,8 @@ namespace Aardvark.Base
     /// </summary>
     public class FastConcurrentDictSetIEq<TKey>
             : IIntCountable, ICountableDictSet, IDictSet<TKey>,
-              IEnumerable, IEnumerable<TKey>
+              IEnumerable, IEnumerable<TKey>,
+              ICollection, ICollection<TKey>
         where TKey : IEquatable<TKey>
     {
         private SpinLock m_lock;
@@ -36006,6 +36535,15 @@ namespace Aardvark.Base
         }
 
         /// <summary>
+        /// Always returns false. Part of the ICollection implementation.
+        /// </summary>
+        public bool IsReadOnly { get { return false; } }
+
+        public bool IsSynchronized { get { return false; } }
+
+        public object SyncRoot { get { return this; } }
+
+        /// <summary>
         /// Setting the maximal fill factor makes it possible to fine-tune
         /// the performance for certain applications. Normally this should
         /// not be necessary.
@@ -36093,16 +36631,16 @@ namespace Aardvark.Base
         /// and value are cast to the concrete type of the keys and values used in the FastConcurrentDictSetIEq
         /// and this will fail if they are of different types.
         /// </summary>
-        public bool AddObject(object objkey)
+        public void AddObject(object objkey)
         {
-            return Add((TKey)objkey);
+            Add((TKey)objkey);
         }
 
         /// <summary>
         /// Add the item with the supplied key
         /// to the FastConcurrentDictSetIEq.
         /// </summary>
-        public bool Add(TKey key)
+        public void Add(TKey key)
         {
             var hash = key.GetHashCode();
             var locked = false; try { m_lock.Enter(ref locked); ++m_version;
@@ -36115,21 +36653,21 @@ namespace Aardvark.Base
                 m_firstArray[fi].Next = -1;
                 m_firstArray[fi].Item.Hash = hash;
                 m_firstArray[fi].Item.Key = key;
-                return true;
+                return;
             }
             {
                 // no duplicate keys, check for existing entries
                 if (m_firstArray[fi].Item.Hash == hash
                     && key.Equals(m_firstArray[fi].Item.Key))
                 {
-                    return false;
+                    return;
                 }
                 while (ei > 0)
                 {
                     if (m_extraArray[ei].Item.Hash == hash
                         && key.Equals(m_extraArray[ei].Item.Key))
                     {
-                        return false;
+                        return;
                     }
                     ei = m_extraArray[ei].Next;
                 }
@@ -36151,14 +36689,13 @@ namespace Aardvark.Base
             m_firstArray[fi].Item.Hash = hash;
             m_firstArray[fi].Item.Key = key;
             } finally { if (locked) m_lock.Exit(); }
-            return true;
         }
 
         /// <summary>
         /// Add the item with the supplied key
         /// to the FastConcurrentDictSetIEq.
         /// </summary>
-        public bool Add(TKey key, int hash)
+        public void Add(TKey key, int hash)
         {
             var locked = false; try { m_lock.Enter(ref locked); ++m_version;
             if (m_count >= m_increaseThreshold) IncreaseCapacity();
@@ -36170,21 +36707,21 @@ namespace Aardvark.Base
                 m_firstArray[fi].Next = -1;
                 m_firstArray[fi].Item.Hash = hash;
                 m_firstArray[fi].Item.Key = key;
-                return true;
+                return;
             }
             {
                 // no duplicate keys, check for existing entries
                 if (m_firstArray[fi].Item.Hash == hash
                     && key.Equals(m_firstArray[fi].Item.Key))
                 {
-                    return false;
+                    return;
                 }
                 while (ei > 0)
                 {
                     if (m_extraArray[ei].Item.Hash == hash
                         && key.Equals(m_extraArray[ei].Item.Key))
                     {
-                        return false;
+                        return;
                     }
                     ei = m_extraArray[ei].Next;
                 }
@@ -36206,7 +36743,6 @@ namespace Aardvark.Base
             m_firstArray[fi].Item.Hash = hash;
             m_firstArray[fi].Item.Key = key;
             } finally { if (locked) m_lock.Exit(); }
-            return true;
         }
 
         /// <summary>
@@ -36592,6 +37128,18 @@ namespace Aardvark.Base
             finally { if (locked) m_lock.Exit(); }
         }
 
+        /// <summary>
+        /// Copy items into supplied array starting at supplied index.
+        /// </summary>
+        public void CopyTo(Array array, int index)
+        {
+            var typedArray = array as TKey[];
+            if (typedArray != null)
+                CopyTo(typedArray, index);
+            else
+                throw new ArgumentException();
+        }
+
         #endregion
 
         #region IEnumerable<TKey> Members
@@ -36917,6 +37465,15 @@ namespace Aardvark.Base
                 return (long)m_count;
             }
         }
+
+        /// <summary>
+        /// Always returns false. Part of the ICollection implementation.
+        /// </summary>
+        public bool IsReadOnly { get { return false; } }
+
+        public bool IsSynchronized { get { return false; } }
+
+        public object SyncRoot { get { return this; } }
 
         /// <summary>
         /// Setting the maximal fill factor makes it possible to fine-tune
@@ -38459,6 +39016,18 @@ namespace Aardvark.Base
             finally { if (locked) m_lock.Exit(); }
         }
 
+        /// <summary>
+        /// Copy items into supplied array starting at supplied index.
+        /// </summary>
+        public void CopyTo(Array array, int index)
+        {
+            var typedArray = array as KeyValuePair<TKey, TValue>[];
+            if (typedArray != null)
+                CopyTo(typedArray, (long)index);
+            else
+                throw new ArgumentException();
+        }
+
         #endregion
 
         #region IEnumerable<KeyValuePair<TKey, TValue>> Members
@@ -38761,6 +39330,15 @@ namespace Aardvark.Base
         }
 
         /// <summary>
+        /// Always returns false. Part of the ICollection implementation.
+        /// </summary>
+        public bool IsReadOnly { get { return false; } }
+
+        public bool IsSynchronized { get { return false; } }
+
+        public object SyncRoot { get { return this; } }
+
+        /// <summary>
         /// Setting the maximal fill factor makes it possible to fine-tune
         /// the performance for certain applications. Normally this should
         /// not be necessary.
@@ -38848,16 +39426,16 @@ namespace Aardvark.Base
         /// and value are cast to the concrete type of the keys and values used in the FastConcurrentBigDictSetIEq
         /// and this will fail if they are of different types.
         /// </summary>
-        public bool AddObject(object objkey)
+        public void AddObject(object objkey)
         {
-            return Add((TKey)objkey);
+            Add((TKey)objkey);
         }
 
         /// <summary>
         /// Add the item with the supplied key
         /// to the FastConcurrentBigDictSetIEq.
         /// </summary>
-        public bool Add(TKey key)
+        public void Add(TKey key)
         {
             var hash = m_hfun(key);
             var locked = false; try { m_lock.Enter(ref locked); ++m_version;
@@ -38870,21 +39448,21 @@ namespace Aardvark.Base
                 m_firstArray[fi].Next = -1;
                 m_firstArray[fi].Item.Hash = hash;
                 m_firstArray[fi].Item.Key = key;
-                return true;
+                return;
             }
             {
                 // no duplicate keys, check for existing entries
                 if (m_firstArray[fi].Item.Hash == hash
                     && key.Equals(m_firstArray[fi].Item.Key))
                 {
-                    return false;
+                    return;
                 }
                 while (ei > 0)
                 {
                     if (m_extraArray[ei].Item.Hash == hash
                         && key.Equals(m_extraArray[ei].Item.Key))
                     {
-                        return false;
+                        return;
                     }
                     ei = m_extraArray[ei].Next;
                 }
@@ -38906,14 +39484,13 @@ namespace Aardvark.Base
             m_firstArray[fi].Item.Hash = hash;
             m_firstArray[fi].Item.Key = key;
             } finally { if (locked) m_lock.Exit(); }
-            return true;
         }
 
         /// <summary>
         /// Add the item with the supplied key
         /// to the FastConcurrentBigDictSetIEq.
         /// </summary>
-        public bool Add(TKey key, long hash)
+        public void Add(TKey key, long hash)
         {
             var locked = false; try { m_lock.Enter(ref locked); ++m_version;
             if (m_count >= m_increaseThreshold) IncreaseCapacity();
@@ -38925,21 +39502,21 @@ namespace Aardvark.Base
                 m_firstArray[fi].Next = -1;
                 m_firstArray[fi].Item.Hash = hash;
                 m_firstArray[fi].Item.Key = key;
-                return true;
+                return;
             }
             {
                 // no duplicate keys, check for existing entries
                 if (m_firstArray[fi].Item.Hash == hash
                     && key.Equals(m_firstArray[fi].Item.Key))
                 {
-                    return false;
+                    return;
                 }
                 while (ei > 0)
                 {
                     if (m_extraArray[ei].Item.Hash == hash
                         && key.Equals(m_extraArray[ei].Item.Key))
                     {
-                        return false;
+                        return;
                     }
                     ei = m_extraArray[ei].Next;
                 }
@@ -38961,7 +39538,6 @@ namespace Aardvark.Base
             m_firstArray[fi].Item.Hash = hash;
             m_firstArray[fi].Item.Key = key;
             } finally { if (locked) m_lock.Exit(); }
-            return true;
         }
 
         /// <summary>
@@ -39345,6 +39921,18 @@ namespace Aardvark.Base
             }
             }
             finally { if (locked) m_lock.Exit(); }
+        }
+
+        /// <summary>
+        /// Copy items into supplied array starting at supplied index.
+        /// </summary>
+        public void CopyTo(Array array, int index)
+        {
+            var typedArray = array as TKey[];
+            if (typedArray != null)
+                CopyTo(typedArray, (long)index);
+            else
+                throw new ArgumentException();
         }
 
         #endregion
