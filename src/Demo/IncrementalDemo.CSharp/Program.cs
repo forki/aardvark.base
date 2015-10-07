@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Aardvark.Base;
 using Aardvark.Base.Incremental;
 using Aardvark.Base.Incremental.CSharp;
-
+using Aardvark.Base.Incremental.Validation;
 
 namespace IncrementalDemo.CSharp
 {
@@ -163,6 +163,7 @@ namespace IncrementalDemo.CSharp
             Report.End();
 
 
+            reader.Dump();
         }
 
 
