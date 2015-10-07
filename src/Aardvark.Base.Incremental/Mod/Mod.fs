@@ -363,9 +363,6 @@ module Mod =
         interface IDisposable with
             member x.Dispose() = x.Dispose()
 
-        override x.Finalize() =
-            try x.Dispose()
-            with _ -> ()
 
 
     /// <summary>

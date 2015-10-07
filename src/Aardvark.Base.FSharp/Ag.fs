@@ -40,10 +40,6 @@ module Ag =
         member x.AddCache (name : string) (value : Option<obj>) =
             if enableCacheWrites then x.cache.[name] <- value
             value
-
-        override x.Finalize() =
-            freeCWT x.children
-            ()
         
         member x.Path = 
             match x.path with

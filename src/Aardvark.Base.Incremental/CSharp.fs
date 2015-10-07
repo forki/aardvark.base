@@ -398,6 +398,10 @@ type ChangeableSetExtensions private() =
 [<Extension; AbstractClass; Sealed>]
 type AdaptiveListExtensions private() =
 
+        [<Extension>]
+    static member ToIEnumerable (this : alist<'a>, f : Func<'a, 'b>) =
+        AList.map f.Invoke this
+
     [<Extension>]
     static member Select (this : alist<'a>, f : Func<'a, 'b>) =
         AList.map f.Invoke this

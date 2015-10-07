@@ -43,8 +43,8 @@ module AgHelpers =
         member x.Clear() =
             dict.Clear()
 
-    let private m_semanticObjects = System.Collections.Concurrent.ConcurrentDictionary<Type, obj>()
-    let private m_semanticMap = System.Collections.Concurrent.ConcurrentDictionary<string, List<MethodBase>>()
+    let private m_semanticObjects = Aardvark.Base.FastConcurrentDict<Type, obj>()
+    let private m_semanticMap = Aardvark.Base.FastConcurrentDict<string, List<MethodBase>>()
 
     let sprintSemanticFunctions (methodName : string) =
         match m_semanticMap.TryGetValue methodName with

@@ -13,11 +13,11 @@ open System.Collections.Concurrent
 /// scenarios where one needs to enumerate a set of things
 /// which shall be allowed to be garbage-collected.
 /// </summary>
-type WeakSet<'a when 'a : not struct> private(inner : ConcurrentDictionary<Weak<'a>, int>) =
+type WeakSet<'a when 'a : not struct> private(inner : Dictionary<Weak<'a>, int>) =
     
     let keys() = inner.Keys |> Seq.choose(function (Strong o) -> Some o | _ -> None)
 
-    let contains (item : 'a) = inner.ContainsKey (Weak item)
+    let contains (item : 'a) = lock inner (fun () -> inner.ContainsKey (Weak item))
         
 
     let compareSeq (other : seq<'a>) =
@@ -52,27 +52,27 @@ type WeakSet<'a when 'a : not struct> private(inner : ConcurrentDictionary<Weak<
     member internal x.Inner = inner
 
     interface ICollection<'a> with
-        member x.Add v = x.Add v |> ignore
-        member x.Remove v = x.Remove v
-        member x.Contains v = x.Contains v
-        member x.Clear() = x.Clear()
-        member x.CopyTo(arr,idx) = x.CopyTo(arr,idx)
-        member x.Count = x.Count
+        member x.Add v = lock inner (fun () ->  x.Add v |> ignore)
+        member x.Remove v = lock inner (fun () -> x.Remove v)
+        member x.Contains v = lock inner (fun () -> x.Contains v)
+        member x.Clear() = lock inner (fun () -> x.Clear())
+        member x.CopyTo(arr,idx) = lock inner (fun () -> x.CopyTo(arr,idx))
+        member x.Count = lock inner (fun () -> x.Count)
         member x.IsReadOnly = false
 
     interface ISet<'a> with
-        member x.Add item = x.Add item
-        member x.ExceptWith other = x.ExceptWith other
-        member x.IntersectWith other = x.IntersectWith other
-        member x.UnionWith other = x.UnionWith other
-        member x.SymmetricExceptWith other = x.SymmetricExceptWith other
+        member x.Add item = lock inner (fun () -> x.Add item; true)
+        member x.ExceptWith other = lock inner (fun () -> x.ExceptWith other)
+        member x.IntersectWith other = lock inner (fun () -> x.IntersectWith other)
+        member x.UnionWith other = lock inner (fun () -> x.UnionWith other)
+        member x.SymmetricExceptWith other = lock inner (fun () -> x.SymmetricExceptWith other)
 
-        member x.IsProperSubsetOf other = x.IsProperSubsetOf other
-        member x.IsProperSupersetOf other = x.IsProperSupersetOf other
-        member x.IsSubsetOf other = x.IsSubsetOf other
-        member x.IsSupersetOf other = x.IsSupersetOf other
-        member x.Overlaps other = x.Overlaps other
-        member x.SetEquals other = x.SetEquals other
+        member x.IsProperSubsetOf other = lock inner (fun () -> x.IsProperSubsetOf other)
+        member x.IsProperSupersetOf other = lock inner (fun () -> x.IsProperSupersetOf other)
+        member x.IsSubsetOf other = lock inner (fun () -> x.IsSubsetOf other)
+        member x.IsSupersetOf other = lock inner (fun () -> x.IsSupersetOf other)
+        member x.Overlaps other = lock inner (fun () -> x.Overlaps other)
+        member x.SetEquals other = lock inner (fun () -> x.SetEquals other)
 
     interface IEnumerable with
         member x.GetEnumerator() = new WeakSetEnumerator<'a>(x) :> _
@@ -97,11 +97,11 @@ type WeakSet<'a when 'a : not struct> private(inner : ConcurrentDictionary<Weak<
         inner.ContainsKey (Weak value)
 
     member x.Add (value : 'a) =
-        inner.TryAdd (Weak value, 0)
+        inner.Add (Weak value, 0)
 
     member x.Remove (value : 'a) =
-        let mutable foo = 0
-        inner.TryRemove (Weak value, &foo)
+
+        inner.Remove (Weak value)
 
     member x.Clear() =
         inner.Clear()
@@ -109,13 +109,13 @@ type WeakSet<'a when 'a : not struct> private(inner : ConcurrentDictionary<Weak<
     member x.UnionWith (elements : #seq<'a>) =
         let add = elements |> Seq.map (fun e -> Weak e)
         for r in add do
-            inner.TryAdd(r, 0) |> ignore
+            inner.Add(r, 0) |> ignore
             
     member x.ExceptWith (elements : #seq<'a>) =
         let rem = elements |> Seq.map (fun e -> Weak e)
         let mutable foo = 0
         for r in rem do
-            inner.TryRemove (r, &foo) |> ignore
+            inner.Remove (r) |> ignore
             
     member x.IntersectWith (other : seq<'a>) =
         let other =
@@ -136,7 +136,7 @@ type WeakSet<'a when 'a : not struct> private(inner : ConcurrentDictionary<Weak<
 
         let mutable foo = 0
         for w in removals do
-            inner.TryRemove (w, &foo) |> ignore
+            inner.TryRemove (w) |> ignore
 
     member x.SymmetricExceptWith (other : seq<'a>) =
         let other =
@@ -181,12 +181,12 @@ type WeakSet<'a when 'a : not struct> private(inner : ConcurrentDictionary<Weak<
     member x.IsEmpty =
         inner.Count = 0
 
-    new() = WeakSet(ConcurrentDictionary(1,0))
+    new() = WeakSet(Dictionary())
 
 // defines an enumerator cleaning the WeakSet during its enumeration
 and private WeakSetEnumerator<'a when 'a : not struct> =
     struct
-        val mutable public inputSet : ConcurrentDictionary<Weak<'a>, int>
+        val mutable public inputSet : Dictionary<Weak<'a>, int>
         val mutable public e : IEnumerator<KeyValuePair<Weak<'a>, int>>
         val mutable public current : 'a
 

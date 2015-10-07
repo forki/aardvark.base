@@ -90,9 +90,7 @@ module AListReaders =
 
         default x.Update() = x.GetDelta() |> ignore
 
-        override x.Finalize() =
-            try x.Dispose()
-            with _ -> ()
+
 
         member x.Dispose() =
             x.Release()

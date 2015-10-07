@@ -296,6 +296,45 @@ type Transaction() =
         running.Value <- old
         isTopLevel.Value <- top
 
+module LazyConcurrent =
+    let inline lock o f = lock o (fun () -> f ())
+    type HashSet<'a>() =
+        let mutable hs = Unchecked.defaultof<_>
+
+        member x.content () =
+            if isNull hs then
+                hs <- System.Collections.Generic.HashSet<'a>() :> ICollection<_>
+                hs
+            else hs
+
+        interface ICollection<'a> with
+            member x.Add y = lock hs (fun () -> x.content().Add y)
+            member x.Clear () = lock hs (fun () -> x.content().Clear())
+            member x.Contains y = 
+                lock hs (fun () -> x.content().Contains y) 
+            member x.CopyTo(arr,i) =
+                lock hs (fun () -> x.content().CopyTo(arr,i))
+            member x.Remove y =
+                lock hs (fun () -> x.content().Remove y)
+            member x.GetEnumerator () : IEnumerator<'a> =
+                lock hs (fun () -> 
+                    if isNull hs then 
+                        Seq.empty.GetEnumerator()
+                    else (x.content() |> Seq.toArray |> Array.copy |> Array.toSeq).GetEnumerator()
+                 )
+//                { new IEnumerator<'a> with
+//                    
+//                    member x.Reset() = ()
+//                    member x.MoveNext() = true
+//                    member x.Dispose() = ()
+//                    member x.Current : 'a = Unchecked.defaultof<'a>
+//                    member x.Current =  failwith<obj> "crazy world without generics not supported"
+//                }
+            member x.Count = lock hs (fun () -> x.content().Count)
+            member x.IsReadOnly = false
+            member x.GetEnumerator () : System.Collections.IEnumerator = failwith "crazy world without generics not supported"
+                
+
 /// <summary>
 /// defines a base class for all adaptive objects implementing
 /// IAdaptiveObject.
@@ -306,7 +345,9 @@ type AdaptiveObject() =
     let mutable level = 0
     let inputs = HashSet<IAdaptiveObject>() :> ICollection<_>
     let outputs = WeakSet<IAdaptiveObject>() :> ICollection<_>
-    let callbacks = ConcurrentHashSet<unit -> unit>() :> ICollection<_>
+    let mutable callbacks = LazyConcurrent.HashSet<unit->unit>() :> ICollection<_>
+
+
 
     static let time = AdaptiveObject() :> IAdaptiveObject
 
