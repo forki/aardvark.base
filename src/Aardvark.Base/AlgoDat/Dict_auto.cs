@@ -11691,8 +11691,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Copies all keys in the dictionary to the supplied
         /// array starting at the supplied index.
-        /// This may throw a ConcurrentDataModifiedException if data is
-        /// modified by another task during the operation.
+        /// This locks the dictionary and copies a snapshot of the current state.
         /// </summary>
         public void CopyKeysTo(TKey[] array, int index)
         {
@@ -11708,8 +11707,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Copies all values in the dictionary to the supplied
         /// array starting at the supplied index.
-        /// This may throw a ConcurrentDataModifiedException if data is
-        /// modified by another task during the operation.
+        /// This locks the dictionary and copies a snapshot of the current state.
         /// </summary>
         public void CopyValuesTo(TValue[] array, int index)
         {
@@ -11725,8 +11723,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Copies all KeyValuePairs in the dictionary into the supplied
         /// array starting at the supplied index.
-        /// This may throw a ConcurrentDataModifiedException if data is
-        /// modified by another task during the operation.
+        /// This locks the dictionary and copies a snapshot of the current state.
         /// </summary>
         public void CopyTo(KeyValuePair<TKey, TValue>[] array, int index)
         {
@@ -12026,8 +12023,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Copies all keys in the dictionary to the supplied
         /// array starting at the supplied index.
-        /// This may throw a ConcurrentDataModifiedException if data is
-        /// modified by another task during the operation.
+        /// This locks the dictionary and copies a snapshot of the current state.
         /// </summary>
         public void CopyTo(TKey[] array, int index)
         {
@@ -12510,8 +12506,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Copies all keys in the dictionary to the supplied
         /// array starting at the supplied index.
-        /// This may throw a ConcurrentDataModifiedException if data is
-        /// modified by another task during the operation.
+        /// This locks the dictionary and copies a snapshot of the current state.
         /// </summary>
         public void CopyKeysTo(int[] array, int index)
         {
@@ -12527,8 +12522,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Copies all values in the dictionary to the supplied
         /// array starting at the supplied index.
-        /// This may throw a ConcurrentDataModifiedException if data is
-        /// modified by another task during the operation.
+        /// This locks the dictionary and copies a snapshot of the current state.
         /// </summary>
         public void CopyValuesTo(TValue[] array, int index)
         {
@@ -12544,8 +12538,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Copies all KeyValuePairs in the dictionary into the supplied
         /// array starting at the supplied index.
-        /// This may throw a ConcurrentDataModifiedException if data is
-        /// modified by another task during the operation.
+        /// This locks the dictionary and copies a snapshot of the current state.
         /// </summary>
         public void CopyTo(KeyValuePair<int, TValue>[] array, int index)
         {
@@ -12769,8 +12762,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Copies all keys in the dictionary to the supplied
         /// array starting at the supplied index.
-        /// This may throw a ConcurrentDataModifiedException if data is
-        /// modified by another task during the operation.
+        /// This locks the dictionary and copies a snapshot of the current state.
         /// </summary>
         public void CopyTo(int[] array, int index)
         {
@@ -13283,8 +13275,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Copies all keys in the dictionary to the supplied
         /// array starting at the supplied index.
-        /// This may throw a ConcurrentDataModifiedException if data is
-        /// modified by another task during the operation.
+        /// This locks the dictionary and copies a snapshot of the current state.
         /// </summary>
         public void CopyKeysTo(Symbol[] array, int index)
         {
@@ -13300,8 +13291,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Copies all values in the dictionary to the supplied
         /// array starting at the supplied index.
-        /// This may throw a ConcurrentDataModifiedException if data is
-        /// modified by another task during the operation.
+        /// This locks the dictionary and copies a snapshot of the current state.
         /// </summary>
         public void CopyValuesTo(TValue[] array, int index)
         {
@@ -13317,8 +13307,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Copies all KeyValuePairs in the dictionary into the supplied
         /// array starting at the supplied index.
-        /// This may throw a ConcurrentDataModifiedException if data is
-        /// modified by another task during the operation.
+        /// This locks the dictionary and copies a snapshot of the current state.
         /// </summary>
         public void CopyTo(KeyValuePair<Symbol, TValue>[] array, int index)
         {
@@ -13640,8 +13629,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Copies all keys in the dictionary to the supplied
         /// array starting at the supplied index.
-        /// This may throw a ConcurrentDataModifiedException if data is
-        /// modified by another task during the operation.
+        /// This locks the dictionary and copies a snapshot of the current state.
         /// </summary>
         public void CopyTo(Symbol[] array, int index)
         {
@@ -14315,8 +14303,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Copies all keys in the dictionary to the supplied
         /// array starting at the supplied index.
-        /// This may throw a ConcurrentDataModifiedException if data is
-        /// modified by another task during the operation.
+        /// This locks the dictionary and copies a snapshot of the current state.
         /// </summary>
         public void CopyKeysTo(TKey[] array, long index)
         {
@@ -14332,8 +14319,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Copies all values in the dictionary to the supplied
         /// array starting at the supplied index.
-        /// This may throw a ConcurrentDataModifiedException if data is
-        /// modified by another task during the operation.
+        /// This locks the dictionary and copies a snapshot of the current state.
         /// </summary>
         public void CopyValuesTo(TValue[] array, long index)
         {
@@ -14349,8 +14335,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Copies all KeyValuePairs in the dictionary into the supplied
         /// array starting at the supplied index.
-        /// This may throw a ConcurrentDataModifiedException if data is
-        /// modified by another task during the operation.
+        /// This locks the dictionary and copies a snapshot of the current state.
         /// </summary>
         public void CopyTo(KeyValuePair<TKey, TValue>[] array, long index)
         {
@@ -14639,8 +14624,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Copies all keys in the dictionary to the supplied
         /// array starting at the supplied index.
-        /// This may throw a ConcurrentDataModifiedException if data is
-        /// modified by another task during the operation.
+        /// This locks the dictionary and copies a snapshot of the current state.
         /// </summary>
         public void CopyTo(TKey[] array, long index)
         {
@@ -15112,8 +15096,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Copies all keys in the dictionary to the supplied
         /// array starting at the supplied index.
-        /// This may throw a ConcurrentDataModifiedException if data is
-        /// modified by another task during the operation.
+        /// This locks the dictionary and copies a snapshot of the current state.
         /// </summary>
         public void CopyKeysTo(long[] array, long index)
         {
@@ -15129,8 +15112,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Copies all values in the dictionary to the supplied
         /// array starting at the supplied index.
-        /// This may throw a ConcurrentDataModifiedException if data is
-        /// modified by another task during the operation.
+        /// This locks the dictionary and copies a snapshot of the current state.
         /// </summary>
         public void CopyValuesTo(TValue[] array, long index)
         {
@@ -15146,8 +15128,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Copies all KeyValuePairs in the dictionary into the supplied
         /// array starting at the supplied index.
-        /// This may throw a ConcurrentDataModifiedException if data is
-        /// modified by another task during the operation.
+        /// This locks the dictionary and copies a snapshot of the current state.
         /// </summary>
         public void CopyTo(KeyValuePair<long, TValue>[] array, long index)
         {
@@ -15360,8 +15341,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Copies all keys in the dictionary to the supplied
         /// array starting at the supplied index.
-        /// This may throw a ConcurrentDataModifiedException if data is
-        /// modified by another task during the operation.
+        /// This locks the dictionary and copies a snapshot of the current state.
         /// </summary>
         public void CopyTo(long[] array, long index)
         {
@@ -16986,26 +16966,21 @@ namespace Aardvark.Base
         /// <summary>
         /// Copies all keys in the dictionary to the supplied
         /// array starting at the supplied index.
-        /// This may throw a ConcurrentDataModifiedException if data is
-        /// modified by another task during the operation.
+        /// This locks the dictionary and copies a snapshot of the current state.
         /// </summary>
         public void CopyKeysTo(TKey[] array, int index)
         {
             var locked = false; try
             {
-            m_lock.Enter(ref locked); var version = m_version;
+            m_lock.Enter(ref locked);
             for (uint fi = 0; fi < m_capacity; fi++)
             {
                 var ei = m_firstArray[fi].Next;
                 if (ei == 0) continue;
-                var k = m_firstArray[fi].Item.Key;
-                m_lock.Exit(); locked = false; array[index++] = k; m_lock.Enter(ref locked);
-                if (version != m_version) throw new ConcurrentDataModifiedException();
+                array[index++] = m_firstArray[fi].Item.Key;
                 while (ei > 0)
                 {
-                    k = m_extraArray[ei].Item.Key;
-                    m_lock.Exit(); locked = false; array[index++] = k; m_lock.Enter(ref locked);
-                    if (version != m_version) throw new ConcurrentDataModifiedException();
+                    array[index++] = m_extraArray[ei].Item.Key;
                     ei = m_extraArray[ei].Next;
                 }
             }
@@ -17016,26 +16991,21 @@ namespace Aardvark.Base
         /// <summary>
         /// Copies all values in the dictionary to the supplied
         /// array starting at the supplied index.
-        /// This may throw a ConcurrentDataModifiedException if data is
-        /// modified by another task during the operation.
+        /// This locks the dictionary and copies a snapshot of the current state.
         /// </summary>
         public void CopyValuesTo(TValue[] array, int index)
         {
             var locked = false; try
             {
-            m_lock.Enter(ref locked); var version = m_version;
+            m_lock.Enter(ref locked);
             for (uint fi = 0; fi < m_capacity; fi++)
             {
                 var ei = m_firstArray[fi].Next;
                 if (ei == 0) continue;
-                var k = m_firstArray[fi].Item.Value;
-                m_lock.Exit(); locked = false; array[index++] = k; m_lock.Enter(ref locked);
-                if (version != m_version) throw new ConcurrentDataModifiedException();
+                array[index++] = m_firstArray[fi].Item.Value;
                 while (ei > 0)
                 {
-                    k = m_extraArray[ei].Item.Value;
-                    m_lock.Exit(); locked = false; array[index++] = k; m_lock.Enter(ref locked);
-                    if (version != m_version) throw new ConcurrentDataModifiedException();
+                    array[index++] = m_extraArray[ei].Item.Value;
                     ei = m_extraArray[ei].Next;
                 }
             }
@@ -17046,28 +17016,23 @@ namespace Aardvark.Base
         /// <summary>
         /// Copies all KeyValuePairs in the dictionary into the supplied
         /// array starting at the supplied index.
-        /// This may throw a ConcurrentDataModifiedException if data is
-        /// modified by another task during the operation.
+        /// This locks the dictionary and copies a snapshot of the current state.
         /// </summary>
         public void CopyTo(KeyValuePair<TKey, TValue>[] array, int index)
         {
             var locked = false; try
             {
-            m_lock.Enter(ref locked); var version = m_version;
+            m_lock.Enter(ref locked);
             for (uint fi = 0; fi < m_capacity; fi++)
             {
                 var ei = m_firstArray[fi].Next;
                 if (ei == 0) continue;
-                var k = new KeyValuePair<TKey, TValue>(
-                            m_firstArray[fi].Item.Key, m_firstArray[fi].Item.Value);
-                m_lock.Exit(); locked = false; array[index++] = k; m_lock.Enter(ref locked);
-                if (version != m_version) throw new ConcurrentDataModifiedException();
+                array[index++] = new KeyValuePair<TKey, TValue>(
+                                m_firstArray[fi].Item.Key, m_firstArray[fi].Item.Value);
                 while (ei > 0)
                 {
-                    k = new KeyValuePair<TKey, TValue>(
-                            m_extraArray[ei].Item.Key, m_extraArray[ei].Item.Value);
-                    m_lock.Exit(); locked = false; array[index++] = k; m_lock.Enter(ref locked);
-                    if (version != m_version) throw new ConcurrentDataModifiedException();
+                    array[index++] = new KeyValuePair<TKey, TValue>(
+                                    m_extraArray[ei].Item.Key, m_extraArray[ei].Item.Value);
                     ei = m_extraArray[ei].Next;
                 }
             }
@@ -17964,26 +17929,21 @@ namespace Aardvark.Base
         /// <summary>
         /// Copies all keys in the dictionary to the supplied
         /// array starting at the supplied index.
-        /// This may throw a ConcurrentDataModifiedException if data is
-        /// modified by another task during the operation.
+        /// This locks the dictionary and copies a snapshot of the current state.
         /// </summary>
         public void CopyTo(TKey[] array, int index)
         {
             var locked = false; try
             {
-            m_lock.Enter(ref locked); var version = m_version;
+            m_lock.Enter(ref locked);
             for (uint fi = 0; fi < m_capacity; fi++)
             {
                 var ei = m_firstArray[fi].Next;
                 if (ei == 0) continue;
-                var k = m_firstArray[fi].Item.Key;
-                m_lock.Exit(); locked = false; array[index++] = k; m_lock.Enter(ref locked);
-                if (version != m_version) throw new ConcurrentDataModifiedException();
+                array[index++] = m_firstArray[fi].Item.Key;
                 while (ei > 0)
                 {
-                    k = m_extraArray[ei].Item.Key;
-                    m_lock.Exit(); locked = false; array[index++] = k; m_lock.Enter(ref locked);
-                    if (version != m_version) throw new ConcurrentDataModifiedException();
+                    array[index++] = m_extraArray[ei].Item.Key;
                     ei = m_extraArray[ei].Next;
                 }
             }
@@ -19271,26 +19231,21 @@ namespace Aardvark.Base
         /// <summary>
         /// Copies all keys in the dictionary to the supplied
         /// array starting at the supplied index.
-        /// This may throw a ConcurrentDataModifiedException if data is
-        /// modified by another task during the operation.
+        /// This locks the dictionary and copies a snapshot of the current state.
         /// </summary>
         public void CopyKeysTo(int[] array, int index)
         {
             var locked = false; try
             {
-            m_lock.Enter(ref locked); var version = m_version;
+            m_lock.Enter(ref locked);
             for (uint fi = 0; fi < m_capacity; fi++)
             {
                 var ei = m_firstArray[fi].Next;
                 if (ei == 0) continue;
-                var k = m_firstArray[fi].Item.Key;
-                m_lock.Exit(); locked = false; array[index++] = k; m_lock.Enter(ref locked);
-                if (version != m_version) throw new ConcurrentDataModifiedException();
+                array[index++] = m_firstArray[fi].Item.Key;
                 while (ei > 0)
                 {
-                    k = m_extraArray[ei].Item.Key;
-                    m_lock.Exit(); locked = false; array[index++] = k; m_lock.Enter(ref locked);
-                    if (version != m_version) throw new ConcurrentDataModifiedException();
+                    array[index++] = m_extraArray[ei].Item.Key;
                     ei = m_extraArray[ei].Next;
                 }
             }
@@ -19301,26 +19256,21 @@ namespace Aardvark.Base
         /// <summary>
         /// Copies all values in the dictionary to the supplied
         /// array starting at the supplied index.
-        /// This may throw a ConcurrentDataModifiedException if data is
-        /// modified by another task during the operation.
+        /// This locks the dictionary and copies a snapshot of the current state.
         /// </summary>
         public void CopyValuesTo(TValue[] array, int index)
         {
             var locked = false; try
             {
-            m_lock.Enter(ref locked); var version = m_version;
+            m_lock.Enter(ref locked);
             for (uint fi = 0; fi < m_capacity; fi++)
             {
                 var ei = m_firstArray[fi].Next;
                 if (ei == 0) continue;
-                var k = m_firstArray[fi].Item.Value;
-                m_lock.Exit(); locked = false; array[index++] = k; m_lock.Enter(ref locked);
-                if (version != m_version) throw new ConcurrentDataModifiedException();
+                array[index++] = m_firstArray[fi].Item.Value;
                 while (ei > 0)
                 {
-                    k = m_extraArray[ei].Item.Value;
-                    m_lock.Exit(); locked = false; array[index++] = k; m_lock.Enter(ref locked);
-                    if (version != m_version) throw new ConcurrentDataModifiedException();
+                    array[index++] = m_extraArray[ei].Item.Value;
                     ei = m_extraArray[ei].Next;
                 }
             }
@@ -19331,28 +19281,23 @@ namespace Aardvark.Base
         /// <summary>
         /// Copies all KeyValuePairs in the dictionary into the supplied
         /// array starting at the supplied index.
-        /// This may throw a ConcurrentDataModifiedException if data is
-        /// modified by another task during the operation.
+        /// This locks the dictionary and copies a snapshot of the current state.
         /// </summary>
         public void CopyTo(KeyValuePair<int, TValue>[] array, int index)
         {
             var locked = false; try
             {
-            m_lock.Enter(ref locked); var version = m_version;
+            m_lock.Enter(ref locked);
             for (uint fi = 0; fi < m_capacity; fi++)
             {
                 var ei = m_firstArray[fi].Next;
                 if (ei == 0) continue;
-                var k = new KeyValuePair<int, TValue>(
-                            m_firstArray[fi].Item.Key, m_firstArray[fi].Item.Value);
-                m_lock.Exit(); locked = false; array[index++] = k; m_lock.Enter(ref locked);
-                if (version != m_version) throw new ConcurrentDataModifiedException();
+                array[index++] = new KeyValuePair<int, TValue>(
+                                m_firstArray[fi].Item.Key, m_firstArray[fi].Item.Value);
                 while (ei > 0)
                 {
-                    k = new KeyValuePair<int, TValue>(
-                            m_extraArray[ei].Item.Key, m_extraArray[ei].Item.Value);
-                    m_lock.Exit(); locked = false; array[index++] = k; m_lock.Enter(ref locked);
-                    if (version != m_version) throw new ConcurrentDataModifiedException();
+                    array[index++] = new KeyValuePair<int, TValue>(
+                                    m_extraArray[ei].Item.Key, m_extraArray[ei].Item.Value);
                     ei = m_extraArray[ei].Next;
                 }
             }
@@ -20024,26 +19969,21 @@ namespace Aardvark.Base
         /// <summary>
         /// Copies all keys in the dictionary to the supplied
         /// array starting at the supplied index.
-        /// This may throw a ConcurrentDataModifiedException if data is
-        /// modified by another task during the operation.
+        /// This locks the dictionary and copies a snapshot of the current state.
         /// </summary>
         public void CopyTo(int[] array, int index)
         {
             var locked = false; try
             {
-            m_lock.Enter(ref locked); var version = m_version;
+            m_lock.Enter(ref locked);
             for (uint fi = 0; fi < m_capacity; fi++)
             {
                 var ei = m_firstArray[fi].Next;
                 if (ei == 0) continue;
-                var k = m_firstArray[fi].Item;
-                m_lock.Exit(); locked = false; array[index++] = k; m_lock.Enter(ref locked);
-                if (version != m_version) throw new ConcurrentDataModifiedException();
+                array[index++] = m_firstArray[fi].Item;
                 while (ei > 0)
                 {
-                    k = m_extraArray[ei].Item;
-                    m_lock.Exit(); locked = false; array[index++] = k; m_lock.Enter(ref locked);
-                    if (version != m_version) throw new ConcurrentDataModifiedException();
+                    array[index++] = m_extraArray[ei].Item;
                     ei = m_extraArray[ei].Next;
                 }
             }
@@ -21364,26 +21304,21 @@ namespace Aardvark.Base
         /// <summary>
         /// Copies all keys in the dictionary to the supplied
         /// array starting at the supplied index.
-        /// This may throw a ConcurrentDataModifiedException if data is
-        /// modified by another task during the operation.
+        /// This locks the dictionary and copies a snapshot of the current state.
         /// </summary>
         public void CopyKeysTo(Symbol[] array, int index)
         {
             var locked = false; try
             {
-            m_lock.Enter(ref locked); var version = m_version;
+            m_lock.Enter(ref locked);
             for (uint fi = 0; fi < m_capacity; fi++)
             {
                 var ei = m_firstArray[fi].Next;
                 if (ei == 0) continue;
-                var k = m_firstArray[fi].Item.Key;
-                m_lock.Exit(); locked = false; array[index++] = k; m_lock.Enter(ref locked);
-                if (version != m_version) throw new ConcurrentDataModifiedException();
+                array[index++] = m_firstArray[fi].Item.Key;
                 while (ei > 0)
                 {
-                    k = m_extraArray[ei].Item.Key;
-                    m_lock.Exit(); locked = false; array[index++] = k; m_lock.Enter(ref locked);
-                    if (version != m_version) throw new ConcurrentDataModifiedException();
+                    array[index++] = m_extraArray[ei].Item.Key;
                     ei = m_extraArray[ei].Next;
                 }
             }
@@ -21394,26 +21329,21 @@ namespace Aardvark.Base
         /// <summary>
         /// Copies all values in the dictionary to the supplied
         /// array starting at the supplied index.
-        /// This may throw a ConcurrentDataModifiedException if data is
-        /// modified by another task during the operation.
+        /// This locks the dictionary and copies a snapshot of the current state.
         /// </summary>
         public void CopyValuesTo(TValue[] array, int index)
         {
             var locked = false; try
             {
-            m_lock.Enter(ref locked); var version = m_version;
+            m_lock.Enter(ref locked);
             for (uint fi = 0; fi < m_capacity; fi++)
             {
                 var ei = m_firstArray[fi].Next;
                 if (ei == 0) continue;
-                var k = m_firstArray[fi].Item.Value;
-                m_lock.Exit(); locked = false; array[index++] = k; m_lock.Enter(ref locked);
-                if (version != m_version) throw new ConcurrentDataModifiedException();
+                array[index++] = m_firstArray[fi].Item.Value;
                 while (ei > 0)
                 {
-                    k = m_extraArray[ei].Item.Value;
-                    m_lock.Exit(); locked = false; array[index++] = k; m_lock.Enter(ref locked);
-                    if (version != m_version) throw new ConcurrentDataModifiedException();
+                    array[index++] = m_extraArray[ei].Item.Value;
                     ei = m_extraArray[ei].Next;
                 }
             }
@@ -21424,28 +21354,23 @@ namespace Aardvark.Base
         /// <summary>
         /// Copies all KeyValuePairs in the dictionary into the supplied
         /// array starting at the supplied index.
-        /// This may throw a ConcurrentDataModifiedException if data is
-        /// modified by another task during the operation.
+        /// This locks the dictionary and copies a snapshot of the current state.
         /// </summary>
         public void CopyTo(KeyValuePair<Symbol, TValue>[] array, int index)
         {
             var locked = false; try
             {
-            m_lock.Enter(ref locked); var version = m_version;
+            m_lock.Enter(ref locked);
             for (uint fi = 0; fi < m_capacity; fi++)
             {
                 var ei = m_firstArray[fi].Next;
                 if (ei == 0) continue;
-                var k = new KeyValuePair<Symbol, TValue>(
-                            m_firstArray[fi].Item.Key, m_firstArray[fi].Item.Value);
-                m_lock.Exit(); locked = false; array[index++] = k; m_lock.Enter(ref locked);
-                if (version != m_version) throw new ConcurrentDataModifiedException();
+                array[index++] = new KeyValuePair<Symbol, TValue>(
+                                m_firstArray[fi].Item.Key, m_firstArray[fi].Item.Value);
                 while (ei > 0)
                 {
-                    k = new KeyValuePair<Symbol, TValue>(
-                            m_extraArray[ei].Item.Key, m_extraArray[ei].Item.Value);
-                    m_lock.Exit(); locked = false; array[index++] = k; m_lock.Enter(ref locked);
-                    if (version != m_version) throw new ConcurrentDataModifiedException();
+                    array[index++] = new KeyValuePair<Symbol, TValue>(
+                                    m_extraArray[ei].Item.Key, m_extraArray[ei].Item.Value);
                     ei = m_extraArray[ei].Next;
                 }
             }
@@ -22220,26 +22145,21 @@ namespace Aardvark.Base
         /// <summary>
         /// Copies all keys in the dictionary to the supplied
         /// array starting at the supplied index.
-        /// This may throw a ConcurrentDataModifiedException if data is
-        /// modified by another task during the operation.
+        /// This locks the dictionary and copies a snapshot of the current state.
         /// </summary>
         public void CopyTo(Symbol[] array, int index)
         {
             var locked = false; try
             {
-            m_lock.Enter(ref locked); var version = m_version;
+            m_lock.Enter(ref locked);
             for (uint fi = 0; fi < m_capacity; fi++)
             {
                 var ei = m_firstArray[fi].Next;
                 if (ei == 0) continue;
-                var k = m_firstArray[fi].Item;
-                m_lock.Exit(); locked = false; array[index++] = k; m_lock.Enter(ref locked);
-                if (version != m_version) throw new ConcurrentDataModifiedException();
+                array[index++] = m_firstArray[fi].Item;
                 while (ei > 0)
                 {
-                    k = m_extraArray[ei].Item;
-                    m_lock.Exit(); locked = false; array[index++] = k; m_lock.Enter(ref locked);
-                    if (version != m_version) throw new ConcurrentDataModifiedException();
+                    array[index++] = m_extraArray[ei].Item;
                     ei = m_extraArray[ei].Next;
                 }
             }
@@ -24045,26 +23965,21 @@ namespace Aardvark.Base
         /// <summary>
         /// Copies all keys in the dictionary to the supplied
         /// array starting at the supplied index.
-        /// This may throw a ConcurrentDataModifiedException if data is
-        /// modified by another task during the operation.
+        /// This locks the dictionary and copies a snapshot of the current state.
         /// </summary>
         public void CopyKeysTo(TKey[] array, long index)
         {
             var locked = false; try
             {
-            m_lock.Enter(ref locked); var version = m_version;
+            m_lock.Enter(ref locked);
             for (ulong fi = 0; fi < m_capacity; fi++)
             {
                 var ei = m_firstArray[fi].Next;
                 if (ei == 0) continue;
-                var k = m_firstArray[fi].Item.Key;
-                m_lock.Exit(); locked = false; array[index++] = k; m_lock.Enter(ref locked);
-                if (version != m_version) throw new ConcurrentDataModifiedException();
+                array[index++] = m_firstArray[fi].Item.Key;
                 while (ei > 0)
                 {
-                    k = m_extraArray[ei].Item.Key;
-                    m_lock.Exit(); locked = false; array[index++] = k; m_lock.Enter(ref locked);
-                    if (version != m_version) throw new ConcurrentDataModifiedException();
+                    array[index++] = m_extraArray[ei].Item.Key;
                     ei = m_extraArray[ei].Next;
                 }
             }
@@ -24075,26 +23990,21 @@ namespace Aardvark.Base
         /// <summary>
         /// Copies all values in the dictionary to the supplied
         /// array starting at the supplied index.
-        /// This may throw a ConcurrentDataModifiedException if data is
-        /// modified by another task during the operation.
+        /// This locks the dictionary and copies a snapshot of the current state.
         /// </summary>
         public void CopyValuesTo(TValue[] array, long index)
         {
             var locked = false; try
             {
-            m_lock.Enter(ref locked); var version = m_version;
+            m_lock.Enter(ref locked);
             for (ulong fi = 0; fi < m_capacity; fi++)
             {
                 var ei = m_firstArray[fi].Next;
                 if (ei == 0) continue;
-                var k = m_firstArray[fi].Item.Value;
-                m_lock.Exit(); locked = false; array[index++] = k; m_lock.Enter(ref locked);
-                if (version != m_version) throw new ConcurrentDataModifiedException();
+                array[index++] = m_firstArray[fi].Item.Value;
                 while (ei > 0)
                 {
-                    k = m_extraArray[ei].Item.Value;
-                    m_lock.Exit(); locked = false; array[index++] = k; m_lock.Enter(ref locked);
-                    if (version != m_version) throw new ConcurrentDataModifiedException();
+                    array[index++] = m_extraArray[ei].Item.Value;
                     ei = m_extraArray[ei].Next;
                 }
             }
@@ -24105,28 +24015,23 @@ namespace Aardvark.Base
         /// <summary>
         /// Copies all KeyValuePairs in the dictionary into the supplied
         /// array starting at the supplied index.
-        /// This may throw a ConcurrentDataModifiedException if data is
-        /// modified by another task during the operation.
+        /// This locks the dictionary and copies a snapshot of the current state.
         /// </summary>
         public void CopyTo(KeyValuePair<TKey, TValue>[] array, long index)
         {
             var locked = false; try
             {
-            m_lock.Enter(ref locked); var version = m_version;
+            m_lock.Enter(ref locked);
             for (ulong fi = 0; fi < m_capacity; fi++)
             {
                 var ei = m_firstArray[fi].Next;
                 if (ei == 0) continue;
-                var k = new KeyValuePair<TKey, TValue>(
-                            m_firstArray[fi].Item.Key, m_firstArray[fi].Item.Value);
-                m_lock.Exit(); locked = false; array[index++] = k; m_lock.Enter(ref locked);
-                if (version != m_version) throw new ConcurrentDataModifiedException();
+                array[index++] = new KeyValuePair<TKey, TValue>(
+                                m_firstArray[fi].Item.Key, m_firstArray[fi].Item.Value);
                 while (ei > 0)
                 {
-                    k = new KeyValuePair<TKey, TValue>(
-                            m_extraArray[ei].Item.Key, m_extraArray[ei].Item.Value);
-                    m_lock.Exit(); locked = false; array[index++] = k; m_lock.Enter(ref locked);
-                    if (version != m_version) throw new ConcurrentDataModifiedException();
+                    array[index++] = new KeyValuePair<TKey, TValue>(
+                                    m_extraArray[ei].Item.Key, m_extraArray[ei].Item.Value);
                     ei = m_extraArray[ei].Next;
                 }
             }
@@ -25013,26 +24918,21 @@ namespace Aardvark.Base
         /// <summary>
         /// Copies all keys in the dictionary to the supplied
         /// array starting at the supplied index.
-        /// This may throw a ConcurrentDataModifiedException if data is
-        /// modified by another task during the operation.
+        /// This locks the dictionary and copies a snapshot of the current state.
         /// </summary>
         public void CopyTo(TKey[] array, long index)
         {
             var locked = false; try
             {
-            m_lock.Enter(ref locked); var version = m_version;
+            m_lock.Enter(ref locked);
             for (ulong fi = 0; fi < m_capacity; fi++)
             {
                 var ei = m_firstArray[fi].Next;
                 if (ei == 0) continue;
-                var k = m_firstArray[fi].Item.Key;
-                m_lock.Exit(); locked = false; array[index++] = k; m_lock.Enter(ref locked);
-                if (version != m_version) throw new ConcurrentDataModifiedException();
+                array[index++] = m_firstArray[fi].Item.Key;
                 while (ei > 0)
                 {
-                    k = m_extraArray[ei].Item.Key;
-                    m_lock.Exit(); locked = false; array[index++] = k; m_lock.Enter(ref locked);
-                    if (version != m_version) throw new ConcurrentDataModifiedException();
+                    array[index++] = m_extraArray[ei].Item.Key;
                     ei = m_extraArray[ei].Next;
                 }
             }
@@ -26308,26 +26208,21 @@ namespace Aardvark.Base
         /// <summary>
         /// Copies all keys in the dictionary to the supplied
         /// array starting at the supplied index.
-        /// This may throw a ConcurrentDataModifiedException if data is
-        /// modified by another task during the operation.
+        /// This locks the dictionary and copies a snapshot of the current state.
         /// </summary>
         public void CopyKeysTo(long[] array, long index)
         {
             var locked = false; try
             {
-            m_lock.Enter(ref locked); var version = m_version;
+            m_lock.Enter(ref locked);
             for (ulong fi = 0; fi < m_capacity; fi++)
             {
                 var ei = m_firstArray[fi].Next;
                 if (ei == 0) continue;
-                var k = m_firstArray[fi].Item.Key;
-                m_lock.Exit(); locked = false; array[index++] = k; m_lock.Enter(ref locked);
-                if (version != m_version) throw new ConcurrentDataModifiedException();
+                array[index++] = m_firstArray[fi].Item.Key;
                 while (ei > 0)
                 {
-                    k = m_extraArray[ei].Item.Key;
-                    m_lock.Exit(); locked = false; array[index++] = k; m_lock.Enter(ref locked);
-                    if (version != m_version) throw new ConcurrentDataModifiedException();
+                    array[index++] = m_extraArray[ei].Item.Key;
                     ei = m_extraArray[ei].Next;
                 }
             }
@@ -26338,26 +26233,21 @@ namespace Aardvark.Base
         /// <summary>
         /// Copies all values in the dictionary to the supplied
         /// array starting at the supplied index.
-        /// This may throw a ConcurrentDataModifiedException if data is
-        /// modified by another task during the operation.
+        /// This locks the dictionary and copies a snapshot of the current state.
         /// </summary>
         public void CopyValuesTo(TValue[] array, long index)
         {
             var locked = false; try
             {
-            m_lock.Enter(ref locked); var version = m_version;
+            m_lock.Enter(ref locked);
             for (ulong fi = 0; fi < m_capacity; fi++)
             {
                 var ei = m_firstArray[fi].Next;
                 if (ei == 0) continue;
-                var k = m_firstArray[fi].Item.Value;
-                m_lock.Exit(); locked = false; array[index++] = k; m_lock.Enter(ref locked);
-                if (version != m_version) throw new ConcurrentDataModifiedException();
+                array[index++] = m_firstArray[fi].Item.Value;
                 while (ei > 0)
                 {
-                    k = m_extraArray[ei].Item.Value;
-                    m_lock.Exit(); locked = false; array[index++] = k; m_lock.Enter(ref locked);
-                    if (version != m_version) throw new ConcurrentDataModifiedException();
+                    array[index++] = m_extraArray[ei].Item.Value;
                     ei = m_extraArray[ei].Next;
                 }
             }
@@ -26368,28 +26258,23 @@ namespace Aardvark.Base
         /// <summary>
         /// Copies all KeyValuePairs in the dictionary into the supplied
         /// array starting at the supplied index.
-        /// This may throw a ConcurrentDataModifiedException if data is
-        /// modified by another task during the operation.
+        /// This locks the dictionary and copies a snapshot of the current state.
         /// </summary>
         public void CopyTo(KeyValuePair<long, TValue>[] array, long index)
         {
             var locked = false; try
             {
-            m_lock.Enter(ref locked); var version = m_version;
+            m_lock.Enter(ref locked);
             for (ulong fi = 0; fi < m_capacity; fi++)
             {
                 var ei = m_firstArray[fi].Next;
                 if (ei == 0) continue;
-                var k = new KeyValuePair<long, TValue>(
-                            m_firstArray[fi].Item.Key, m_firstArray[fi].Item.Value);
-                m_lock.Exit(); locked = false; array[index++] = k; m_lock.Enter(ref locked);
-                if (version != m_version) throw new ConcurrentDataModifiedException();
+                array[index++] = new KeyValuePair<long, TValue>(
+                                m_firstArray[fi].Item.Key, m_firstArray[fi].Item.Value);
                 while (ei > 0)
                 {
-                    k = new KeyValuePair<long, TValue>(
-                            m_extraArray[ei].Item.Key, m_extraArray[ei].Item.Value);
-                    m_lock.Exit(); locked = false; array[index++] = k; m_lock.Enter(ref locked);
-                    if (version != m_version) throw new ConcurrentDataModifiedException();
+                    array[index++] = new KeyValuePair<long, TValue>(
+                                    m_extraArray[ei].Item.Key, m_extraArray[ei].Item.Value);
                     ei = m_extraArray[ei].Next;
                 }
             }
@@ -27049,26 +26934,21 @@ namespace Aardvark.Base
         /// <summary>
         /// Copies all keys in the dictionary to the supplied
         /// array starting at the supplied index.
-        /// This may throw a ConcurrentDataModifiedException if data is
-        /// modified by another task during the operation.
+        /// This locks the dictionary and copies a snapshot of the current state.
         /// </summary>
         public void CopyTo(long[] array, long index)
         {
             var locked = false; try
             {
-            m_lock.Enter(ref locked); var version = m_version;
+            m_lock.Enter(ref locked);
             for (ulong fi = 0; fi < m_capacity; fi++)
             {
                 var ei = m_firstArray[fi].Next;
                 if (ei == 0) continue;
-                var k = m_firstArray[fi].Item;
-                m_lock.Exit(); locked = false; array[index++] = k; m_lock.Enter(ref locked);
-                if (version != m_version) throw new ConcurrentDataModifiedException();
+                array[index++] = m_firstArray[fi].Item;
                 while (ei > 0)
                 {
-                    k = m_extraArray[ei].Item;
-                    m_lock.Exit(); locked = false; array[index++] = k; m_lock.Enter(ref locked);
-                    if (version != m_version) throw new ConcurrentDataModifiedException();
+                    array[index++] = m_extraArray[ei].Item;
                     ei = m_extraArray[ei].Next;
                 }
             }
@@ -33158,8 +33038,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Copies all keys in the dictionary to the supplied
         /// array starting at the supplied index.
-        /// This may throw a ConcurrentDataModifiedException if data is
-        /// modified by another task during the operation.
+        /// This locks the dictionary and copies a snapshot of the current state.
         /// </summary>
         public void CopyKeysTo(TKey[] array, int index)
         {
@@ -33175,8 +33054,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Copies all values in the dictionary to the supplied
         /// array starting at the supplied index.
-        /// This may throw a ConcurrentDataModifiedException if data is
-        /// modified by another task during the operation.
+        /// This locks the dictionary and copies a snapshot of the current state.
         /// </summary>
         public void CopyValuesTo(TValue[] array, int index)
         {
@@ -33192,8 +33070,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Copies all KeyValuePairs in the dictionary into the supplied
         /// array starting at the supplied index.
-        /// This may throw a ConcurrentDataModifiedException if data is
-        /// modified by another task during the operation.
+        /// This locks the dictionary and copies a snapshot of the current state.
         /// </summary>
         public void CopyTo(KeyValuePair<TKey, TValue>[] array, int index)
         {
@@ -33494,8 +33371,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Copies all keys in the dictionary to the supplied
         /// array starting at the supplied index.
-        /// This may throw a ConcurrentDataModifiedException if data is
-        /// modified by another task during the operation.
+        /// This locks the dictionary and copies a snapshot of the current state.
         /// </summary>
         public void CopyTo(TKey[] array, int index)
         {
@@ -34170,8 +34046,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Copies all keys in the dictionary to the supplied
         /// array starting at the supplied index.
-        /// This may throw a ConcurrentDataModifiedException if data is
-        /// modified by another task during the operation.
+        /// This locks the dictionary and copies a snapshot of the current state.
         /// </summary>
         public void CopyKeysTo(TKey[] array, long index)
         {
@@ -34187,8 +34062,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Copies all values in the dictionary to the supplied
         /// array starting at the supplied index.
-        /// This may throw a ConcurrentDataModifiedException if data is
-        /// modified by another task during the operation.
+        /// This locks the dictionary and copies a snapshot of the current state.
         /// </summary>
         public void CopyValuesTo(TValue[] array, long index)
         {
@@ -34204,8 +34078,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Copies all KeyValuePairs in the dictionary into the supplied
         /// array starting at the supplied index.
-        /// This may throw a ConcurrentDataModifiedException if data is
-        /// modified by another task during the operation.
+        /// This locks the dictionary and copies a snapshot of the current state.
         /// </summary>
         public void CopyTo(KeyValuePair<TKey, TValue>[] array, long index)
         {
@@ -34495,8 +34368,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Copies all keys in the dictionary to the supplied
         /// array starting at the supplied index.
-        /// This may throw a ConcurrentDataModifiedException if data is
-        /// modified by another task during the operation.
+        /// This locks the dictionary and copies a snapshot of the current state.
         /// </summary>
         public void CopyTo(TKey[] array, long index)
         {
@@ -36122,26 +35994,21 @@ namespace Aardvark.Base
         /// <summary>
         /// Copies all keys in the dictionary to the supplied
         /// array starting at the supplied index.
-        /// This may throw a ConcurrentDataModifiedException if data is
-        /// modified by another task during the operation.
+        /// This locks the dictionary and copies a snapshot of the current state.
         /// </summary>
         public void CopyKeysTo(TKey[] array, int index)
         {
             var locked = false; try
             {
-            m_lock.Enter(ref locked); var version = m_version;
+            m_lock.Enter(ref locked);
             for (uint fi = 0; fi < m_capacity; fi++)
             {
                 var ei = m_firstArray[fi].Next;
                 if (ei == 0) continue;
-                var k = m_firstArray[fi].Item.Key;
-                m_lock.Exit(); locked = false; array[index++] = k; m_lock.Enter(ref locked);
-                if (version != m_version) throw new ConcurrentDataModifiedException();
+                array[index++] = m_firstArray[fi].Item.Key;
                 while (ei > 0)
                 {
-                    k = m_extraArray[ei].Item.Key;
-                    m_lock.Exit(); locked = false; array[index++] = k; m_lock.Enter(ref locked);
-                    if (version != m_version) throw new ConcurrentDataModifiedException();
+                    array[index++] = m_extraArray[ei].Item.Key;
                     ei = m_extraArray[ei].Next;
                 }
             }
@@ -36152,26 +36019,21 @@ namespace Aardvark.Base
         /// <summary>
         /// Copies all values in the dictionary to the supplied
         /// array starting at the supplied index.
-        /// This may throw a ConcurrentDataModifiedException if data is
-        /// modified by another task during the operation.
+        /// This locks the dictionary and copies a snapshot of the current state.
         /// </summary>
         public void CopyValuesTo(TValue[] array, int index)
         {
             var locked = false; try
             {
-            m_lock.Enter(ref locked); var version = m_version;
+            m_lock.Enter(ref locked);
             for (uint fi = 0; fi < m_capacity; fi++)
             {
                 var ei = m_firstArray[fi].Next;
                 if (ei == 0) continue;
-                var k = m_firstArray[fi].Item.Value;
-                m_lock.Exit(); locked = false; array[index++] = k; m_lock.Enter(ref locked);
-                if (version != m_version) throw new ConcurrentDataModifiedException();
+                array[index++] = m_firstArray[fi].Item.Value;
                 while (ei > 0)
                 {
-                    k = m_extraArray[ei].Item.Value;
-                    m_lock.Exit(); locked = false; array[index++] = k; m_lock.Enter(ref locked);
-                    if (version != m_version) throw new ConcurrentDataModifiedException();
+                    array[index++] = m_extraArray[ei].Item.Value;
                     ei = m_extraArray[ei].Next;
                 }
             }
@@ -36182,28 +36044,23 @@ namespace Aardvark.Base
         /// <summary>
         /// Copies all KeyValuePairs in the dictionary into the supplied
         /// array starting at the supplied index.
-        /// This may throw a ConcurrentDataModifiedException if data is
-        /// modified by another task during the operation.
+        /// This locks the dictionary and copies a snapshot of the current state.
         /// </summary>
         public void CopyTo(KeyValuePair<TKey, TValue>[] array, int index)
         {
             var locked = false; try
             {
-            m_lock.Enter(ref locked); var version = m_version;
+            m_lock.Enter(ref locked);
             for (uint fi = 0; fi < m_capacity; fi++)
             {
                 var ei = m_firstArray[fi].Next;
                 if (ei == 0) continue;
-                var k = new KeyValuePair<TKey, TValue>(
-                            m_firstArray[fi].Item.Key, m_firstArray[fi].Item.Value);
-                m_lock.Exit(); locked = false; array[index++] = k; m_lock.Enter(ref locked);
-                if (version != m_version) throw new ConcurrentDataModifiedException();
+                array[index++] = new KeyValuePair<TKey, TValue>(
+                                m_firstArray[fi].Item.Key, m_firstArray[fi].Item.Value);
                 while (ei > 0)
                 {
-                    k = new KeyValuePair<TKey, TValue>(
-                            m_extraArray[ei].Item.Key, m_extraArray[ei].Item.Value);
-                    m_lock.Exit(); locked = false; array[index++] = k; m_lock.Enter(ref locked);
-                    if (version != m_version) throw new ConcurrentDataModifiedException();
+                    array[index++] = new KeyValuePair<TKey, TValue>(
+                                    m_extraArray[ei].Item.Key, m_extraArray[ei].Item.Value);
                     ei = m_extraArray[ei].Next;
                 }
             }
@@ -37101,26 +36958,21 @@ namespace Aardvark.Base
         /// <summary>
         /// Copies all keys in the dictionary to the supplied
         /// array starting at the supplied index.
-        /// This may throw a ConcurrentDataModifiedException if data is
-        /// modified by another task during the operation.
+        /// This locks the dictionary and copies a snapshot of the current state.
         /// </summary>
         public void CopyTo(TKey[] array, int index)
         {
             var locked = false; try
             {
-            m_lock.Enter(ref locked); var version = m_version;
+            m_lock.Enter(ref locked);
             for (uint fi = 0; fi < m_capacity; fi++)
             {
                 var ei = m_firstArray[fi].Next;
                 if (ei == 0) continue;
-                var k = m_firstArray[fi].Item.Key;
-                m_lock.Exit(); locked = false; array[index++] = k; m_lock.Enter(ref locked);
-                if (version != m_version) throw new ConcurrentDataModifiedException();
+                array[index++] = m_firstArray[fi].Item.Key;
                 while (ei > 0)
                 {
-                    k = m_extraArray[ei].Item.Key;
-                    m_lock.Exit(); locked = false; array[index++] = k; m_lock.Enter(ref locked);
-                    if (version != m_version) throw new ConcurrentDataModifiedException();
+                    array[index++] = m_extraArray[ei].Item.Key;
                     ei = m_extraArray[ei].Next;
                 }
             }
@@ -38927,26 +38779,21 @@ namespace Aardvark.Base
         /// <summary>
         /// Copies all keys in the dictionary to the supplied
         /// array starting at the supplied index.
-        /// This may throw a ConcurrentDataModifiedException if data is
-        /// modified by another task during the operation.
+        /// This locks the dictionary and copies a snapshot of the current state.
         /// </summary>
         public void CopyKeysTo(TKey[] array, long index)
         {
             var locked = false; try
             {
-            m_lock.Enter(ref locked); var version = m_version;
+            m_lock.Enter(ref locked);
             for (ulong fi = 0; fi < m_capacity; fi++)
             {
                 var ei = m_firstArray[fi].Next;
                 if (ei == 0) continue;
-                var k = m_firstArray[fi].Item.Key;
-                m_lock.Exit(); locked = false; array[index++] = k; m_lock.Enter(ref locked);
-                if (version != m_version) throw new ConcurrentDataModifiedException();
+                array[index++] = m_firstArray[fi].Item.Key;
                 while (ei > 0)
                 {
-                    k = m_extraArray[ei].Item.Key;
-                    m_lock.Exit(); locked = false; array[index++] = k; m_lock.Enter(ref locked);
-                    if (version != m_version) throw new ConcurrentDataModifiedException();
+                    array[index++] = m_extraArray[ei].Item.Key;
                     ei = m_extraArray[ei].Next;
                 }
             }
@@ -38957,26 +38804,21 @@ namespace Aardvark.Base
         /// <summary>
         /// Copies all values in the dictionary to the supplied
         /// array starting at the supplied index.
-        /// This may throw a ConcurrentDataModifiedException if data is
-        /// modified by another task during the operation.
+        /// This locks the dictionary and copies a snapshot of the current state.
         /// </summary>
         public void CopyValuesTo(TValue[] array, long index)
         {
             var locked = false; try
             {
-            m_lock.Enter(ref locked); var version = m_version;
+            m_lock.Enter(ref locked);
             for (ulong fi = 0; fi < m_capacity; fi++)
             {
                 var ei = m_firstArray[fi].Next;
                 if (ei == 0) continue;
-                var k = m_firstArray[fi].Item.Value;
-                m_lock.Exit(); locked = false; array[index++] = k; m_lock.Enter(ref locked);
-                if (version != m_version) throw new ConcurrentDataModifiedException();
+                array[index++] = m_firstArray[fi].Item.Value;
                 while (ei > 0)
                 {
-                    k = m_extraArray[ei].Item.Value;
-                    m_lock.Exit(); locked = false; array[index++] = k; m_lock.Enter(ref locked);
-                    if (version != m_version) throw new ConcurrentDataModifiedException();
+                    array[index++] = m_extraArray[ei].Item.Value;
                     ei = m_extraArray[ei].Next;
                 }
             }
@@ -38987,28 +38829,23 @@ namespace Aardvark.Base
         /// <summary>
         /// Copies all KeyValuePairs in the dictionary into the supplied
         /// array starting at the supplied index.
-        /// This may throw a ConcurrentDataModifiedException if data is
-        /// modified by another task during the operation.
+        /// This locks the dictionary and copies a snapshot of the current state.
         /// </summary>
         public void CopyTo(KeyValuePair<TKey, TValue>[] array, long index)
         {
             var locked = false; try
             {
-            m_lock.Enter(ref locked); var version = m_version;
+            m_lock.Enter(ref locked);
             for (ulong fi = 0; fi < m_capacity; fi++)
             {
                 var ei = m_firstArray[fi].Next;
                 if (ei == 0) continue;
-                var k = new KeyValuePair<TKey, TValue>(
-                            m_firstArray[fi].Item.Key, m_firstArray[fi].Item.Value);
-                m_lock.Exit(); locked = false; array[index++] = k; m_lock.Enter(ref locked);
-                if (version != m_version) throw new ConcurrentDataModifiedException();
+                array[index++] = new KeyValuePair<TKey, TValue>(
+                                m_firstArray[fi].Item.Key, m_firstArray[fi].Item.Value);
                 while (ei > 0)
                 {
-                    k = new KeyValuePair<TKey, TValue>(
-                            m_extraArray[ei].Item.Key, m_extraArray[ei].Item.Value);
-                    m_lock.Exit(); locked = false; array[index++] = k; m_lock.Enter(ref locked);
-                    if (version != m_version) throw new ConcurrentDataModifiedException();
+                    array[index++] = new KeyValuePair<TKey, TValue>(
+                                    m_extraArray[ei].Item.Key, m_extraArray[ei].Item.Value);
                     ei = m_extraArray[ei].Next;
                 }
             }
@@ -39896,26 +39733,21 @@ namespace Aardvark.Base
         /// <summary>
         /// Copies all keys in the dictionary to the supplied
         /// array starting at the supplied index.
-        /// This may throw a ConcurrentDataModifiedException if data is
-        /// modified by another task during the operation.
+        /// This locks the dictionary and copies a snapshot of the current state.
         /// </summary>
         public void CopyTo(TKey[] array, long index)
         {
             var locked = false; try
             {
-            m_lock.Enter(ref locked); var version = m_version;
+            m_lock.Enter(ref locked);
             for (ulong fi = 0; fi < m_capacity; fi++)
             {
                 var ei = m_firstArray[fi].Next;
                 if (ei == 0) continue;
-                var k = m_firstArray[fi].Item.Key;
-                m_lock.Exit(); locked = false; array[index++] = k; m_lock.Enter(ref locked);
-                if (version != m_version) throw new ConcurrentDataModifiedException();
+                array[index++] = m_firstArray[fi].Item.Key;
                 while (ei > 0)
                 {
-                    k = m_extraArray[ei].Item.Key;
-                    m_lock.Exit(); locked = false; array[index++] = k; m_lock.Enter(ref locked);
-                    if (version != m_version) throw new ConcurrentDataModifiedException();
+                    array[index++] = m_extraArray[ei].Item.Key;
                     ei = m_extraArray[ei].Next;
                 }
             }

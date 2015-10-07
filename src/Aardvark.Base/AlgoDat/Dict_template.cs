@@ -1639,8 +1639,7 @@ namespace Aardvark.Base
         /// Copies all __keysvalues__ in the dictionary to the supplied
         /// array starting at the supplied index.
         //# if (concurrent) {
-        /// This may throw a ConcurrentDataModifiedException if data is
-        /// modified by another task during the operation.
+        /// This locks the dictionary and copies a snapshot of the current state.
         //# }
         /// </summary>
         public void Copy__KeysValues__To(__tkeyvalue__[] array, __itype__ index)
@@ -1657,28 +1656,16 @@ namespace Aardvark.Base
             //# if (concurrent) {
             var locked = false; try
             {
-            m_lock.Enter(ref locked); var version = m_version;
+            m_lock.Enter(ref locked);
             //# }
             for (__uitype__ fi = 0; fi < m_capacity; fi++)
             {
                 var ei = m_firstArray[fi].Next;
                 if (ei == 0) continue;
-                //# if (!concurrent) {
                 array[index++] = m_firstArray[fi].Item__KeyValue__;
-                //# } else {
-                var k = m_firstArray[fi].Item__KeyValue__;
-                m_lock.Exit(); locked = false; array[index++] = k; m_lock.Enter(ref locked);
-                if (version != m_version) throw new ConcurrentDataModifiedException();
-                //# }
                 while (ei > 0)
                 {
-                    //# if (!concurrent) {
                     array[index++] = m_extraArray[ei].Item__KeyValue__;
-                    //# } else {
-                    k = m_extraArray[ei].Item__KeyValue__;
-                    m_lock.Exit(); locked = false; array[index++] = k; m_lock.Enter(ref locked);
-                    if (version != m_version) throw new ConcurrentDataModifiedException();
-                    //# }
                     ei = m_extraArray[ei].Next;
                 }
             }
@@ -1695,8 +1682,7 @@ namespace Aardvark.Base
         /// Copies all KeyValuePairs in the dictionary into the supplied
         /// array starting at the supplied index.
         //# if (concurrent) {
-        /// This may throw a ConcurrentDataModifiedException if data is
-        /// modified by another task during the operation.
+        /// This locks the dictionary and copies a snapshot of the current state.
         //# }
         /// </summary>
         public void CopyTo(KeyValuePair<__tkey__, TValue>[] array, __itype__ index)
@@ -1713,32 +1699,18 @@ namespace Aardvark.Base
             //# if (concurrent) {
             var locked = false; try
             {
-            m_lock.Enter(ref locked); var version = m_version;
+            m_lock.Enter(ref locked);
             //# }
             for (__uitype__ fi = 0; fi < m_capacity; fi++)
             {
                 var ei = m_firstArray[fi].Next;
                 if (ei == 0) continue;
-                //# if (!concurrent) {
                 array[index++] = new KeyValuePair<__tkey__, TValue>(
                                 m_firstArray[fi].Item__Key__, m_firstArray[fi].Item.Value);
-                //# } else {
-                var k = new KeyValuePair<__tkey__, TValue>(
-                            m_firstArray[fi].Item__Key__, m_firstArray[fi].Item.Value);
-                m_lock.Exit(); locked = false; array[index++] = k; m_lock.Enter(ref locked);
-                if (version != m_version) throw new ConcurrentDataModifiedException();
-                //# }
                 while (ei > 0)
                 {
-                    //# if (!concurrent) {
                     array[index++] = new KeyValuePair<__tkey__, TValue>(
                                     m_extraArray[ei].Item__Key__, m_extraArray[ei].Item.Value);
-                    //# } else {
-                    k = new KeyValuePair<__tkey__, TValue>(
-                            m_extraArray[ei].Item__Key__, m_extraArray[ei].Item.Value);
-                    m_lock.Exit(); locked = false; array[index++] = k; m_lock.Enter(ref locked);
-                    if (version != m_version) throw new ConcurrentDataModifiedException();
-                    //# }
                     ei = m_extraArray[ei].Next;
                 }
             }
