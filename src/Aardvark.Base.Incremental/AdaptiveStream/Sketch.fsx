@@ -10,54 +10,118 @@ open System
 open Aardvark.Base
 open Aardvark.Base.Incremental
 
-type Event<'a> = { time : DateTime; value : 'a }
+[<CustomComparison; CustomEquality>]
+type Event<'a> = { time : int64; value : 'a } with
 
-type History<'a> = 
-    | Update of list<Event<'a>>
-    | Finished of list<Event<'a>>
+    override x.GetHashCode() =
+        HashCode.Combine(x.time.GetHashCode(), (x.value :> obj).GetHashCode())
+
+    override x.Equals o =
+        match o with
+            | :? Event<'a> as o -> x.time = o.time && Object.Equals(x.value, o.value)
+            | _ -> false
+
+    interface IComparable with
+        member x.CompareTo(o) =
+            match o with
+                | :? Event<'a> as o -> compare x.time o.time
+                | _ -> failwithf "cannot compare event to %A" o
+
+module Event =
+    let inline time (e : Event<'a>) = e.time
+
+    let inline value (e : Event<'a>) = e.value
+
+
+    let map (f : 'a -> 'b) (e : Event<'a>) =
+        { time = e.time; value = f e.value }
+
+    let collect (f : 'a -> #seq<'b>) (e : Event<'a>) =
+        e.value |> f |> Seq.map (fun v -> { time = e.time; value = v })
+
+
+    let choose (f : 'a -> Option<'b>) (e : Event<'a>) =
+        match f e.value with
+            | Some v -> Some { time = e.time; value = v }
+            | None -> None
+
+        
+
+type History<'a> = { events : list<Event<'a>>; finished : bool }
 
 module History =
-    let empty = Update []
 
-    let isEmpty (h : History<'a>) =
-        match h with
-            | Update l -> List.isEmpty l
-            | Finished l -> false
+    let mutable currentTime = 0L
+    let now() =
+        System.Threading.Interlocked.Increment &currentTime
+
+    type private EmptyHistoryImpl<'a>() =
+        static let instance : History<'a> = { events = []; finished = false }
+        static member Instance = instance
+
+    let empty<'a> : History<'a> = EmptyHistoryImpl<'a>.Instance
+
+    let inline isFinished (h : History<'a>) = h.finished
+
+    let inline isEmpty (h : History<'a>) = h.events |> List.isEmpty
+
+    let inline toList (h : History<'a>) = h.events
+
+    let toSeq (h : History<'a>) = h.events |> List.toSeq
+
+    let toArray (h : History<'a>) = h.events |> List.toArray
+
+    let map (f : 'a -> 'b) (h : History<'a>) =
+        { events = List.map (Event.map f) h.events; finished = h.finished }
+
+    let collect (f : 'a -> #seq<'b>) (h : History<'a>) =
+        { events = List.collect (fun v -> v |> Event.collect f |> Seq.toList) h.events; finished = h.finished }
 
 
-    let map (f : 'a -> 'b) (h : History<'a>) : History<'b> =
-        match h with
-            | Update h      -> h |> List.map (fun e -> { time = e.time; value = f e.value }) |> Update
-            | Finished h    -> h |> List.map (fun e -> { time = e.time; value = f e.value }) |> Finished
-      
-    let choose (f : 'a -> Option<'b>) (h : History<'a>) : History<'b> =
-        match h with
-            | Update h      -> h |> List.choose (fun e -> match f e.value with | Some v -> Some { time = e.time; value = v } | _ -> None) |> Update
-            | Finished h    -> h |> List.choose (fun e -> match f e.value with | Some v -> Some { time = e.time; value = v } | _ -> None) |> Finished
-      
-    let tryLast (h : History<'a>) : Option<'a> =
-        match h with
-            | Update h      -> h |> List.tryLast |> Option.map (fun e -> e.value)
-            | Finished h    -> h |> List.tryLast |> Option.map (fun e -> e.value)
-      
-    let toList (h : History<'a>) =
-        match h with
-            | Update h      -> h |> List.map (fun e -> e.value)
-            | Finished h    -> h |> List.map (fun e -> e.value)
+    let choose (f : 'a -> Option<'b>) (h : History<'a>) =
+        { events = List.choose (Event.choose f) h.events; finished = h.finished }
 
     let union (l : History<'a>) (r : History<'a>) =
         let rec intersperse (l : list<Event<'a>>) (r : list<Event<'a>>) =
-            match l,r with
-                | l'::ls, r'::rs ->
-                    if l'.time < r'.time then l'::intersperse ls r
-                    else r'::intersperse l rs
+            match l, r with
                 | [], r -> r
                 | l, [] -> l
+                | l'::ls, r'::rs ->
+                    if l'.time < r'.time then l' :: intersperse ls r
+                    else r' :: intersperse l rs
 
-        match l, r with
-            | Update l, Update r -> Update(intersperse l r)
-            | Update l, Finished r -> Finished(intersperse l r)     
-            | Finished l, _ -> Finished l
+
+        { events = intersperse l.events r.events; finished = l.finished || r.finished }
+
+    let intersperse (l : History<'a>) (r : History<'b>) =
+        let rec intersperse (l : list<Event<'a>>) (r : list<Event<'b>>) : list<Event<Either<'a, 'b>>> =
+            match l, r with
+                | l'::ls, r'::rs ->
+                    if l'.time < r'.time then { value = Left l'.value; time = l'.time } :: intersperse ls r
+                    else { value = Right r'.value; time = r'.time } :: intersperse l rs
+                | [], r -> r |> List.map (fun e -> { value = Right e.value; time = e.time })
+                | l, [] -> l |> List.map (fun e -> { value = Left e.value; time = e.time })
+
+
+        { events = intersperse l.events r.events; finished = l.finished && r.finished }
+
+
+    let intersperse3 (h0 : History<'a>) (h1 : History<'b>) (h2 : History<'c>) =
+        let h01 = intersperse h0 h1
+        let h = intersperse h01 h2
+
+        h |> map (fun e ->
+            match e with
+                | Left (Left a) -> Choice1Of3 a
+                | Left (Right a) -> Choice2Of3 a
+                | Right a -> Choice3Of3 a
+        )
+
+
+
+    let tryLast (h : History<'a>) =
+        h.events |> List.tryLast
+
 
 type IStreamReader<'a> =
     inherit IDisposable
@@ -65,10 +129,12 @@ type IStreamReader<'a> =
     abstract member GetHistory : unit -> History<'a>
     abstract member SubscribeOnEvaluate : (History<'a> -> unit) -> IDisposable
 
+[<AllowNullLiteral>]
 type astream<'a> =
     abstract member GetReader : unit -> IStreamReader<'a>
 
-module AStream =
+
+module AStreamReaders =
     open System.Collections.Generic
 
     [<AbstractClass>]
@@ -90,9 +156,8 @@ module AStream =
                 if not (History.isEmpty h) then
                     for cb in callbacks do cb h
 
-                match h with
-                    | Finished _ -> x.Dispose()
-                    | _ -> ()
+                if History.isFinished h then
+                    x.Dispose()
 
                 h
             )
@@ -128,7 +193,7 @@ module AStream =
     let private wrap scope f =
         fun v -> Ag.useScope scope (fun () -> f v)
          
-    type MapReader<'a, 'b>(scope, source : IStreamReader<'a>, f : 'a -> 'b) as this =
+    type MapReader<'a, 'b>(scope, source : IStreamReader<'a>, f : 'a -> list<'b>) as this =
         inherit AbstractStreamReader<'b>()
         do source.AddOutput this  
         let f = wrap scope f
@@ -138,7 +203,7 @@ module AStream =
             source.Dispose()
 
         override x.ComputeHistory() =
-            source.GetHistory() |> History.map f
+            source.GetHistory() |> History.collect f
 
     type ChooseReader<'a, 'b>(scope, source : IStreamReader<'a>, f : 'a -> Option<'b>) as this =
         inherit AbstractStreamReader<'b>()
@@ -194,9 +259,8 @@ module AStream =
                     if not (History.isEmpty h) then
                         for cb in x.Callbacks do cb h
 
-                    match h with
-                        | Finished _ -> x.Dispose()
-                        | _ -> ()
+                    if History.isFinished h then
+                        x.Dispose()
 
                     h
                 )
@@ -253,16 +317,170 @@ module AStream =
         do source.AddOutput this
 
         override x.ComputeDelta() =
-            source.GetHistory() |> History.toList |> List.map Add
+            source.GetHistory() |> History.toList |> List.map (Event.value >> Add)
 
         override x.Release() =
             source.RemoveOutput this
             source.Dispose()
+          
+    type PartitionReader<'a>(active : IStreamReader<bool>, org : IStreamReader<'a>) as this =
+        inherit AbstractStreamReader<History<'a>>()
+
+        do active.AddOutput this
+           org.AddOutput this
+
+
+        let buffer = List<Event<History<'a>>>()
+        let mutable isActive = false
+        let mutable latest = History.empty
+
+
+        let compute() =
+            this.EvaluateIfNeeded latest (fun () ->
+                let activeHistory = active.GetHistory()
+                let valueHistory = org.GetHistory()
+
+                let h = History.intersperse activeHistory valueHistory
+
             
+                let current = List()
+                let values =
+                    [
+                        for e in History.toList h do
+                            match e.value with
+                                | Left a -> 
+                                    if not a && isActive && current.Count > 0 then
+                                        yield { value = { events = Seq.toList current; finished = true }; time = e.time }
+                                        current.Clear()
+
+                                    isActive <- a
+
+                                | Right v ->
+                                    if isActive then
+                                        current.Add { value = v; time = e.time }
+                    ]
+
+
+                let last = { events = Seq.toList current; finished = false }
+
+                buffer.AddRange values
+                latest <- last
+                last
+            )
+
+        let activeMod = [this :> IAdaptiveObject] |> Mod.mapCustom (fun () -> compute())
+
+        member x.Active = activeMod
+
+
+        override x.ComputeHistory() =
+            compute() |> ignore
+
+            let h = buffer |> Seq.toList
+            buffer.Clear()
+
+            { events = h; finished = false }
+
+        override x.Release() =
+            ()
+
+
+    type IntersperseReader<'a, 'b>(l : IStreamReader<'a>, r : IStreamReader<'b>) as this =
+        inherit AbstractStreamReader<Either<'a, 'b>>()
+        do l.AddOutput this; r.AddOutput this  
+
+
+        override x.Release() =
+            l.RemoveOutput this
+            r.RemoveOutput this
+            l.Dispose()
+            r.Dispose()
+
+        override x.ComputeHistory() =
+            let lh = l.GetHistory()
+            let rh = r.GetHistory()
+
+            History.intersperse lh rh
+
+    type IntersperseReader<'a, 'b, 'c>(r0 : IStreamReader<'a>, r1 : IStreamReader<'b>, r2 : IStreamReader<'c>) as this =
+        inherit AbstractStreamReader<Choice<'a, 'b, 'c>>()
+        do r0.AddOutput this; r1.AddOutput this; r2.AddOutput this
+
+
+        override x.Release() =
+            r0.RemoveOutput this
+            r1.RemoveOutput this
+            r2.RemoveOutput this
+            r0.Dispose()
+            r1.Dispose()
+            r2.Dispose()
+
+        override x.ComputeHistory() =
+            let h0 = r0.GetHistory()
+            let h1 = r1.GetHistory()
+            let h2 = r2.GetHistory()
+
+            History.intersperse3 h0 h1 h2
+
+
+    type EmitReader<'a>(lockObj : obj, dispose : EmitReader<'a> -> unit) =
+        inherit AbstractStreamReader<'a>()
+
+        let buffer = List<Event<'a>>()
+        let mutable finished = false
+
+        member x.Emit (d : list<Event<'a>>) =
+            lock x (fun () ->
+                buffer.AddRange d
+
+                if not x.OutOfDate then
+                    match getCurrentTransaction() with
+                        | Some t ->
+                            t.Enqueue x
+                        | _ ->
+                            failwith "[EmitReader] cannot emit without transaction"
+            )
+
+        member x.Close() =
+            lock x (fun () ->
+                finished <- true
+                if not x.OutOfDate then
+                    match getCurrentTransaction() with
+                        | Some t ->
+                            t.Enqueue x
+                        | _ ->
+                            failwith "[EmitReader] cannot emit without transaction"
+            )
+
+        override x.Release() =
+            dispose x
+            buffer.Clear()
+
+        override x.ComputeHistory() =
+            let res = buffer |> Seq.toList
+            buffer.Clear()
+            { events = res; finished = finished }
+
+
+
+
+module AStream =
+    open AStreamReaders
 
     let map (f : 'a -> 'b) (stream : astream<'a>) : astream<'b> =
         let scope = Ag.getContext()
-        AdaptiveStream(fun () -> new MapReader<_,_>(scope, stream.GetReader(), f) :> _) :> _
+        AdaptiveStream(fun () -> new MapReader<_,_>(scope, stream.GetReader(), fun v -> [f v]) :> _) :> _
+
+    let collect (f : 'a -> #seq<'b>) (stream : astream<'a>) : astream<'b> =
+        let scope = Ag.getContext()
+        AdaptiveStream(fun () -> new MapReader<_,_>(scope, stream.GetReader(), fun v -> Seq.toList (f v)) :> _) :> _
+
+    let intersperse (l : astream<'a>) (r : astream<'b>) =
+        AdaptiveStream(fun () -> new IntersperseReader<_,_>(l.GetReader(),r.GetReader()) :> _) :> astream<_>
+
+    let intersperse3 (s0 : astream<'a>) (s1 : astream<'b>) (s2 : astream<'c>) =
+        AdaptiveStream(fun () -> new IntersperseReader<_,_,_>(s0.GetReader(),s1.GetReader(),s2.GetReader()) :> _) :> astream<_>
+
 
     let choose (f : 'a -> Option<'b>) (stream : astream<'a>) : astream<'b>=
         let scope = Ag.getContext()
@@ -273,7 +491,7 @@ module AStream =
         let mutable current = None
         [r :> IAdaptiveObject] |> Mod.mapCustom (fun () ->
             match r.GetHistory() |> History.tryLast with
-                | Some l -> 
+                | Some { value = l } -> 
                     current <- Some l
                     Some l
                 | None ->
@@ -283,76 +501,395 @@ module AStream =
     let all (stream : astream<'a>) : aset<'a> =
         ASet.AdaptiveSet(fun () -> new AllReader<_>(stream.GetReader()) :> _) :> _
 
-    let collect (f : 'a -> astream<'b>) (stream : astream<'a>) : astream<'b> =
-        failwith ""
+    let partition (m : astream<bool>) (stream : astream<'a>) : astream<History<'a>> * IMod<History<'a>> =
+        let r = lazy ( new PartitionReader<_>(m.GetReader(), stream.GetReader()) )
 
-    let union (stream : aset<astream<'a>>) : astream<'a> =
-        failwith ""
+        let final = new AdaptiveStream<_>(fun () -> r.Value :> IStreamReader<_>) :> astream<_>
+        let current = Mod.dynamic (fun () -> r.Value.Active)
 
-    let partition (m : IMod<bool>) (stream : astream<'a>) : astream<astream<'a>> =
-        failwith ""
+        final, current
 
     let fold (f : 's -> 'a -> 's) (seed : 's) (stream : astream<'a>) : IMod<'s> =
-        failwith ""
+        let r = stream.GetReader()
+        let mutable result = seed
+        [r :> IAdaptiveObject] 
+            |> Mod.mapCustom (fun () ->
+                let h = r.GetHistory() |> History.toList |> List.map Event.value
 
-    let final (f : 'a -> 'r) (stream : astream<'a>) : IMod<Option<'r>> =
-        failwith ""
-
-    let fold2 (final : 's -> 'r) (f : 's -> 'a -> 's) (seed : 's) (stream : astream<'a>) : Either<IMod<'s>, 'r> =
-        failwith ""
-
-
-module Sketch =
-    
-    let clicks : astream<V2i> = failwith ""
-    let sketching = Mod.init true
-
-    type Workflow<'i, 'f> = IMod<Option<'i>> * astream<'f>
-
-    // Workflow<list<_>, PersistentHashSet<_>>
-    // Workflow<IMod<list<_>> * IMod<float>, PersistentHashSet<_> * int>
-    // Workflow<IMod<list<_>>, PersistentHashSet<_>>
-
-
-
-//    let test = //: IMod<Option<list<V2i>>> * astream<PersistentHashSet<V2i>> =
-//        seq {
-//            while sketching do
-//                let mutable poly = []
-//                for c in clicks do
-//                    poly <- c :: poly
-//                    yield poly
-//                        
-//
-//                return PersistentHashSet.ofList !poly
-//
-//        }
-
-
-    let test =
-        clicks 
-            |> AStream.partition sketching
-            |> AStream.map (fun s ->
-                s |> AStream.fold2 PersistentHashSet.ofList (fun poly p -> p::poly) []
-               )
-
-    let final =
-        test
-            |> AStream.choose (fun e ->
-                    match e with
-                        | Right final -> Some final
-                        | _ -> None
-               )
-            |> AStream.all
-
-    let current =
-        test
-            |> AStream.latest
-            |> Mod.map (fun e ->
-                match e with
-                    | Some (Left i) -> Some i
-                    | _ -> None
+                result <- List.fold f result h
+                result
             )
 
 
+type cstream<'a>() =
+    let readers = WeakSet<AStreamReaders.EmitReader<'a>>()
+    
 
+    member x.GetReader() =
+        lock readers (fun () ->
+            let r = new AStreamReaders.EmitReader<'a>(x, readers.Remove >> ignore)
+            readers.Add r |> ignore
+
+            r :> IStreamReader<_>
+        )
+
+    member x.Push(v : 'a) =
+        let now = History.now()
+        for r in readers do
+            r.Emit [{ value = v; time = now }]
+
+    interface astream<'a> with
+        member x.GetReader() = x.GetReader()
+
+module CStream =
+    let empty<'a> = cstream<'a>()
+
+    let inline push (v : 'a) (s : cstream<'a>) = s.Push v
+
+
+//    let final (f : 'a -> 'r) (stream : astream<'a>) : IMod<Option<'r>> =
+//        failwith ""
+//
+//    let fold2 (final : 's -> 'r) (f : 's -> 'a -> 's) (seed : 's) (stream : astream<'a>) : Either<IMod<'s>, 'r> =
+//        failwith ""
+//
+//    let whenFinished (f : list<Event<'a>> -> list<'b>) (stream : astream<astream<'a>>) : astream<'b> =
+//        failwith ""
+
+module Sketch =
+    
+
+    type Workflow<'i, 'f> = { intermediate : IMod<Option<'i>>; final : astream<'f> }
+
+    type WorkflowCreator<'i, 'f> = { create : list<IMod<bool>> -> Workflow<'i, 'f> }
+
+    type WorkflowB<'i, 'f> = 
+        | Intermediate of (list<IMod<bool>> -> IMod<Option<'i>>)
+        | Final of (unit -> 'f)
+
+
+    type Reader<'s, 'a> = { runReader : 's -> 'a }
+
+    type WorkflowBuilder() =
+        
+
+        member x.For(s : astream<'a>, f : 'a -> seq<'b>) =
+            { runReader = fun filter ->
+                let s, active = s |> AStream.partition filter
+                let intermediate = 
+                    active
+                      |> Mod.map (fun o ->
+                            match History.tryLast o with
+                                | Some last -> last.value |> f |> Seq.last |> Some
+                                | None -> None
+                      )    
+                intermediate, s
+            }
+
+        member x.Return (v : 'a) =
+            [v]
+
+        member x.Delay (f : unit -> 'a) = f
+
+        member x.Yield(v) = Seq.singleton v
+
+        member x.Combine(l : Reader<'s, IMod<Option<'a>> * astream<History<_>>>, r : unit -> list<'b>) =
+            { runReader = fun filter ->
+                let l = l.runReader filter
+                { intermediate = fst l; final = l |> snd |> AStream.map (fun _ -> r()) }
+            }
+
+        member x.Combine(l : list<'a>, r : unit -> list<'a>) = l @ r()
+
+        member x.While(guard : unit -> astream<bool>, body : unit -> Reader<astream<bool>,Workflow<'i, 'f>>) =
+            body().runReader (guard())
+
+        member x.Run(f : unit -> 'a) = f()
+
+//        member x.For(s : astream<astream<'a>>, f : 'a -> seq<'b>) =
+//            s |> AStream.map (AStream.latest >> Mod.map (Option.map (f >> Seq.last)))
+//              |> AStream.latest
+//              |> Mod.bind (fun o ->
+//                match o with
+//                    | Some o -> o
+//                    | None -> Mod.constant None
+//              )
+//
+//        member x.Return (v : 'a) =
+//            
+//        member x.Yield (v : 'a) = Seq.singleton v
+
+    let wf = WorkflowBuilder()
+
+    let test (m : astream<bool>) (s : astream<V2i>) =
+        wf {
+            while m do
+                let mutable poly = []
+                for e in s do
+                    poly <- e::poly
+                    yield poly
+
+                return Polygon2d(poly |> List.map V2d)
+        }
+
+module Sketch2 =
+    
+    type Workflow<'i, 'f> = { intermediate : IMod<Option<'i>>; final : astream<'f> }
+
+    type Result<'a, 'b> = 
+        | Intermediate of 'a
+        | Final of 'b
+
+    type RefContext() =
+        let refs = System.Collections.Generic.List<obj * obj>()
+      
+        let newRef (value : 'a) =
+            let r = ref value
+            refs.Add(r :> obj, value :> obj)
+            r
+
+        let reset () =
+            for (r,v) in refs do
+                let p = r.GetType().GetProperty("Value")
+                p.SetValue(r, v)
+
+        member x.New(value : 'a) =
+            newRef value
+
+        member x.Reset() =
+            reset()
+
+    type State = astream<bool> * RefContext
+
+    type StreamBuilder() =
+        member x.For(s : astream<'a>, f : 'a -> seq<'b>) : astream<'b> =
+            s |> AStream.collect f
+
+        member x.For((a,b), f : Either<'a, 'b> -> seq<'c>) : astream<'c> =
+            AStream.intersperse a b |> AStream.collect f
+
+        member x.For((a,b,c), f : Choice<'a, 'b, 'c> -> seq<'c>) : astream<'c> =
+            AStream.intersperse3 a b c |> AStream.collect f
+
+
+        member x.Yield v = Seq.singleton (Intermediate v)
+
+        member x.Combine(l : seq<'a>, r : unit -> seq<'a>) =
+            seq {
+                for e in l do yield e
+                for e in r() do yield e
+            }
+
+        member x.Delay(f : unit -> 'a) = f
+
+        member x.Run(f : unit -> 'a) = f()
+
+        member x.Zero() = Seq.empty
+
+        member x.Return v = Seq.singleton (Final v)
+
+
+        member x.While(guard : unit -> astream<bool>, body : unit -> State -> astream<Result<'a, 'b>>) : astream<Result<'a, 'b>> =
+            failwith ""
+
+    type NewRef<'a> = { initial : 'a }
+
+    type MagicStreamBuilder() =
+        member x.For(s : astream<'a>, f : 'a -> seq<'b>) : State -> (unit -> seq<'b>) -> astream<'b> =
+            fun (filter,ctx) final -> 
+                let mutable isActive = false
+                AStream.intersperse filter s 
+                    |> AStream.collect (fun v ->
+                        match v with
+                            | Left f ->
+                                let res = 
+                                    if isActive && not f then
+                                        final()
+                                    elif not isActive && f then
+                                        ctx.Reset()
+                                        Seq.empty
+                                    else
+                                        Seq.empty
+
+                                
+
+                                isActive <- f
+                                res
+                            | Right v ->
+                                if isActive then
+                                    
+                                    f v
+                                else
+                                    Seq.empty
+                    )
+
+
+
+        member x.Yield v = Seq.singleton (Intermediate v)
+
+        member x.Combine(l : seq<'a>, r : unit -> seq<'a>) =
+            seq {
+                for e in l do yield e
+                for e in r() do yield e
+            }
+
+        member x.Combine(l : State -> (unit -> seq<'a>) -> astream<'a>, r : unit -> seq<'a>) : State -> astream<'a>=
+            fun state ->
+                l state r
+
+
+        member x.Delay(f : unit -> 'a) = f
+
+        member x.Run(f : unit -> 'a) = f()
+
+        member x.Zero() = Seq.empty
+
+        member x.Return v = Seq.singleton (Final v)
+
+        member x.Bind(nr : NewRef<'a>, f : ref<'a> -> State -> 'b) =
+            fun (filter, refCtx : RefContext) ->
+                 let r = refCtx.New nr.initial
+                 f r (filter, refCtx)
+
+
+        member x.While(guard : unit -> astream<bool>, body : unit -> State -> astream<Result<'a, 'b>>) : astream<Result<'a, 'b>> =
+            body () (guard(), RefContext())
+
+    let astream = StreamBuilder()
+    let mstream = MagicStreamBuilder()
+
+    let test (input : astream<V2d>) (active : astream<bool>) =
+        astream {
+            let mutable isActive = false
+            let mutable current = []
+
+            for i in active, input do
+                match i with
+                    | Left v ->
+                        if isActive && not v then
+                            return current
+                            yield []
+                            current <- []
+                        isActive <- v
+
+                    | Right value ->
+                        if isActive then
+                            current <- value::current
+                            yield current
+        }
+
+
+    let sref v =  { initial = v }
+
+    let testDesired (input : astream<V2d>) (active : astream<bool>) =
+        mstream {
+            while active do
+                let! current = sref []
+                for i in input do
+                    current := i::!current
+                    yield !current
+
+                return !current
+        }
+
+
+    let foldWhile (active : astream<bool>) (f : 's -> 'a -> 's) (seed : 's) (input : astream<'a>)  =
+        astream {
+            let mutable isActive = false
+            let mutable current = seed
+
+            for i in AStream.intersperse active input do
+                match i with
+                    | Left v ->
+                        if isActive && not v then
+                            return current
+                            current <- seed
+                        isActive <- v
+
+                    | Right value ->
+                        if isActive then
+                            current <- f current value
+                            yield current
+        }
+
+
+    let toWorkflow (stream : astream<Result<'a, 'b>>) =
+        let intermediate = 
+            stream 
+                |> AStream.choose (fun e ->
+                    match e with
+                        | Intermediate v -> Some v
+                        | _ -> None
+                )
+                |> AStream.latest
+        
+        let final =
+            stream
+                |> AStream.choose (fun e ->
+                    match e with 
+                        | Final v -> Some v
+                        | _ -> None
+                )
+
+        { intermediate = intermediate; final = final }
+
+    let run() =
+        let active = CStream.empty
+        let positions = CStream.empty
+
+        let result = testDesired positions active |> toWorkflow
+
+        let final = result.final |> AStream.all
+        let r = final.GetReader()
+        let current = result.intermediate |> Mod.map (function Some m -> m | None -> [])
+
+
+        current |> Mod.force  |> printfn "current: %A"
+        r.Update(); r.Content |> Seq.toList |> printfn "final: %A"
+
+
+        transact (fun () ->
+            CStream.push true active
+        )
+
+        current |> Mod.force  |> printfn "current: %A"
+        r.Update(); r.Content |> Seq.toList |> printfn "final: %A"
+
+        transact (fun () ->
+            CStream.push V2d.II positions
+            CStream.push V2d.OI positions
+        )
+        current |> Mod.force  |> printfn "current: %A"
+        r.Update(); r.Content |> Seq.toList |> printfn "final: %A"
+
+
+        transact (fun () ->
+            CStream.push false active
+        )
+        current |> Mod.force  |> printfn "current: %A"
+        r.Update(); r.Content |> Seq.toList |> printfn "final: %A"
+
+
+
+        transact (fun () ->
+            CStream.push true active
+            CStream.push V2d.IO positions
+            CStream.push false active
+            CStream.push V2d.II positions
+            CStream.push V2d.II positions
+            CStream.push true active
+            CStream.push V2d.OI positions
+            CStream.push false active
+            CStream.push V2d.II positions
+            CStream.push V2d.II positions
+            CStream.push true active
+            CStream.push V2d.IO positions
+        )
+
+        current |> Mod.force  |> printfn "current: %A"
+        r.Update(); r.Content |> Seq.toList |> printfn "final: %A"
+
+
+
+
+        ()
