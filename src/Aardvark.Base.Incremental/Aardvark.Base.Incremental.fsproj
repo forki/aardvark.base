@@ -72,6 +72,7 @@
     <Compile Include="AdaptiveStream\AdaptiveStreamCore.fs" />
     <Compile Include="AdaptiveStream\AdaptiveStream.fs" />
     <None Include="AdaptiveStream\Sketch.fsx" />
+    <None Include="AdaptiveStream\Rx.fsx" />
     <Compile Include="Builders.fs" />
     <Compile Include="CSharp.fs" />
     <Compile Include="Adapters\EventAdapter.fs" />
