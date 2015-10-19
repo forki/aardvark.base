@@ -61,6 +61,7 @@
   <ItemGroup>
     <Compile Include="TimeTests.fs" />
     <Compile Include="PureAgTests.fs" />
+    <Compile Include="CollectionTests.fs" />
     <Content Include="app.config" />
   </ItemGroup>
   <ItemGroup>
