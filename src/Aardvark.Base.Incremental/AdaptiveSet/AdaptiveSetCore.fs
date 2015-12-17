@@ -640,21 +640,36 @@ module ASetReaders =
                     reader <- None
             )
 
+    [<AllowNullLiteral>]
+    type CopyReaderStore<'a> =
+        class
+            val mutable public containgSetDead : bool
+            val mutable public initial         : bool                       
+            val mutable public deltas          : List<Delta<'a>>             
+            val mutable public reset           : Option<ISet<'a>>            
+            val mutable public subscription    : IDisposable                 
+            val mutable public content         : ReferenceCountingSet<'a>    
+            val mutable public callbacks       : HashSet<Change<'a> -> unit> 
 
+
+            new() =
+                {
+                    containgSetDead = false
+                    initial = true
+                    deltas = null
+                    reset = None
+                    subscription = null
+                    content = Unchecked.defaultof<_>
+                    callbacks = null
+                }
+
+        end
 
     type CopyReader<'a>(input : ReferenceCountedReader<'a>) as this =
         inherit AdaptiveObject()
           
-        let inputReader = input.GetReference()
-
-        let mutable containgSetDead = false
         let mutable initial = true
-        let mutable passThru        : bool                          = true
-        let mutable deltas          : List<Delta<'a>>               = null
-        let mutable reset           : Option<ISet<'a>>              = None 
-        let mutable subscription    : IDisposable                   = null
-        let mutable content         : ReferenceCountingSet<'a>      = Unchecked.defaultof<_>
-        let mutable callbacks       : HashSet<Change<'a> -> unit>   = null
+        let mutable store : CopyReaderStore<'a> = null
 
         let emit (d : list<Delta<'a>>) =
             lock this (fun () ->
@@ -669,8 +684,8 @@ module ASetReaders =
 //                        deltas.AddRange d
 
 
-                if reset.IsNone then
-                    deltas.AddRange d
+                if store.reset.IsNone then
+                    store.deltas.AddRange d
             
                 if not this.OutOfDate then 
                     // TODO: why is that happening sometimes?
@@ -694,29 +709,28 @@ module ASetReaders =
  
         let mutable isDisposed = 0
         let mutable deadSubscription = input.ContainingSetDiedEvent.Values.Subscribe this.ContainingSetDied
-        let mutable onlySubscription = input.OnlyReader.Values.Subscribe(fun pass -> this.SetPassThru(pass, passThru))
+        let mutable onlySubscription = input.OnlyReader.Values.Subscribe(fun pass -> this.SetPassThru(pass, isNull store))
+        let inputReader = input.GetReference()
 
 
         member x.SetPassThru(active : bool, copyContent : bool) =
             lock inputReader (fun () ->
                 lock this (fun () ->
+                    let passThru = isNull store
                     if active <> passThru then
-                        passThru <- active
                         if passThru then
-                            deltas <- null
-                            reset <- None
-                            subscription.Dispose()
-                            subscription <- null
-                            content <- Unchecked.defaultof<_>
+                            store.subscription.Dispose()
+                            store <- null
                         else
-                            deltas <- List()
-                            content <- ReferenceCountingSet()
+                            store <- CopyReaderStore()
+                            store.deltas <- List()
+                            store.content <- ReferenceCountingSet()
                             if copyContent then
-                                reset <- None
-                                content.SetTo(inputReader.Content)
+                                store.reset <- None
+                                store.content.SetTo(inputReader.Content)
                             else
-                                reset <- Some (inputReader.Content :> ISet<_>)
-                            subscription <- inputReader.SubscribeOnEvaluate(emit)
+                                store.reset <- Some (inputReader.Content :> ISet<_>)
+                            store.subscription <- inputReader.SubscribeOnEvaluate(emit)
                             ()
                 )
             )
@@ -726,11 +740,12 @@ module ASetReaders =
             if not input.OnlyReader.Latest then
                 deadSubscription <- input.OnlyReader.Values.Subscribe(fun pass -> if pass then x.ContainingSetDied())
             else
-                containgSetDead <- true
+                if not (isNull store) then
+                    store.containgSetDead <- true
                 x.Optimize()
 
         member x.PassThru =
-            passThru
+            isNull store
 
         member private x.Optimize() =
             () //Log.line "optimize: input: %A -> %A" inputReader.Inputs inputReader
@@ -739,14 +754,14 @@ module ASetReaders =
 
         member x.Content = 
             lock x (fun () ->
-                if passThru then
+                if isNull store then
                     inputReader.Content
                 else
-                    content
+                    store.content
             )
 
         member x.ComputeDelta() =
-            if passThru then
+            if isNull store then
                 if initial then
                     inputReader.Update x
                     inputReader.Content |> Seq.map Add |> Seq.toList
@@ -757,18 +772,18 @@ module ASetReaders =
                 inputReader.Update x
                 inputReader.Outputs.Add x |> ignore
 
-                match reset with
+                match store.reset with
                     | Some c ->
-                        reset <- None
-                        deltas.Clear()
-                        let add = c |> Seq.filter (not << content.Contains) |> Seq.map Add
-                        let rem = content |> Seq.filter (not << c.Contains) |> Seq.map Rem
+                        store.reset <- None
+                        store.deltas.Clear()
+                        let add = c |> Seq.filter (not << store.content.Contains) |> Seq.map Add
+                        let rem = store.content |> Seq.filter (not << c.Contains) |> Seq.map Rem
 
-                        Telemetry.timed ApplyDeltaProbe (fun () -> Seq.append add rem |> Seq.toList |> apply content)
+                        Telemetry.timed ApplyDeltaProbe (fun () -> Seq.append add rem |> Seq.toList |> apply store.content)
                     | None ->
-                        let res = deltas |> Seq.toList
-                        deltas.Clear()
-                        Telemetry.timed ApplyDeltaProbe (fun () -> res |> apply content)
+                        let res = store.deltas |> Seq.toList
+                        store.deltas.Clear()
+                        Telemetry.timed ApplyDeltaProbe (fun () -> res |> apply store.content)
 
         member x.GetDelta(caller) =
             lock inputReader (fun () ->
@@ -776,11 +791,12 @@ module ASetReaders =
                     Telemetry.timed ReaderEvaluateProbe (fun () ->
                         let deltas = Telemetry.timed ReaderComputeProbe x.ComputeDelta
           
-                        if not (isNull callbacks) then
-                            Telemetry.timed ReaderCallbackProbe (fun () ->
-                                if not (List.isEmpty deltas) then
-                                    for cb in callbacks do cb deltas
-                            )
+                        if not (isNull store) then
+                            if not (isNull store.callbacks) then
+                                Telemetry.timed ReaderCallbackProbe (fun () ->
+                                    if not (List.isEmpty deltas) then
+                                        for cb in store.callbacks do cb deltas
+                                )
 
                         initial <- false
                         deltas
@@ -799,9 +815,9 @@ module ASetReaders =
                 onlySubscription.Dispose()
                 deadSubscription.Dispose()
                 inputReader.RemoveOutput x
-                if not passThru then
-                    subscription.Dispose()
-                    content.Clear()
+                if not (isNull store) then
+                    store.subscription.Dispose()
+                    store <- null
 
 
                 input.RemoveReference()
@@ -809,20 +825,23 @@ module ASetReaders =
 
         member x.SubscribeOnEvaluate (cb : Change<'a> -> unit) =
             lock x (fun () ->
-                if isNull callbacks then
-                    callbacks <- HashSet()
-
-                if callbacks.Add cb then
-                    { new IDisposable with 
-                        member __.Dispose() = 
-                            lock x (fun () ->
-                                callbacks.Remove cb |> ignore 
-                                if callbacks.Count = 0 then
-                                    callbacks <- null
-                            )
-                    }
+                if isNull store then
+                    failwith "not supported to copy copyreader"
                 else
-                    { new IDisposable with member __.Dispose() = () }
+                    if isNull store.callbacks then
+                        store.callbacks <- HashSet()
+
+                    if store.callbacks.Add cb then
+                        { new IDisposable with 
+                            member __.Dispose() = 
+                                lock x (fun () ->
+                                    store.callbacks.Remove cb |> ignore 
+                                    if store.callbacks.Count = 0 then
+                                        store.callbacks <- null
+                                )
+                        }
+                    else
+                        { new IDisposable with member __.Dispose() = () }
             )
 
         interface IDisposable with
