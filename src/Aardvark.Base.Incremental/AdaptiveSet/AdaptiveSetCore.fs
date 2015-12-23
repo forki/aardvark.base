@@ -661,7 +661,20 @@ module ASetReaders =
         let mutable content         : ReferenceCountingSet<'a>      = Unchecked.defaultof<_>
         let mutable callbacks       : HashSet<Change<'a> -> unit>   = null
 
-        let emit (d : list<Delta<'a>>) =
+ 
+        
+        let mutable isDisposed = 0
+//        let mutable deadSubscription = input.ContainingSetDiedEvent.Values.Subscribe this.ContainingSetDied
+        let mutable onlySubscription = 
+            let weakThis = Weak this
+            input.OnlyReader.Values.Subscribe(fun pass -> 
+                match weakThis.TryGetTarget() with
+                    | (true, this) -> this.SetPassThru(pass, passThru)
+                    | _ -> ()
+            )
+
+
+        member x.emit (d : list<Delta<'a>>) =
             lock this (fun () ->
 //                if reset.IsNone then
 //                    let N = inputReader.Content.Count
@@ -696,11 +709,6 @@ module ASetReaders =
                     // a bad one. Nevertheless this is not really a proof of its inexistence (hence the print)
                     Aardvark.Base.Log.warn "[ASetReaders.CopyReader] potentially bad emit with: %A" d
             )
- 
-        let mutable isDisposed = 0
-        let mutable deadSubscription = input.ContainingSetDiedEvent.Values.Subscribe this.ContainingSetDied
-        let mutable onlySubscription = input.OnlyReader.Values.Subscribe(fun pass -> this.SetPassThru(pass, passThru))
-
 
         member x.SetPassThru(active : bool, copyContent : bool) =
             lock inputReader (fun () ->
@@ -721,18 +729,24 @@ module ASetReaders =
                                 content.SetTo(inputReader.Content)
                             else
                                 reset <- Some (inputReader.Content :> ISet<_>)
-                            subscription <- inputReader.SubscribeOnEvaluate(emit)
+                            subscription <- 
+                                let weakThis = Weak this
+                                inputReader.SubscribeOnEvaluate(fun deltas ->
+                                    match weakThis.TryGetTarget() with
+                                        | (true, this) -> this.emit deltas
+                                        | _ -> ()
+                                )
                             ()
                 )
             )
-
-        member private x.ContainingSetDied() =
-            deadSubscription.Dispose()
-            if not input.OnlyReader.Latest then
-                deadSubscription <- input.OnlyReader.Values.Subscribe(fun pass -> if pass then x.ContainingSetDied())
-            else
-                containgSetDead <- true
-                x.Optimize()
+//
+//        member private x.ContainingSetDied() =
+//            deadSubscription.Dispose()
+//            if not input.OnlyReader.Latest then
+//                deadSubscription <- input.OnlyReader.Values.Subscribe(fun pass -> if pass then x.ContainingSetDied())
+//            else
+//                containgSetDead <- true
+//                x.Optimize()
 
         member x.PassThru =
             passThru
@@ -802,7 +816,7 @@ module ASetReaders =
         member x.Dispose disposing =
             if Interlocked.Exchange(&isDisposed, 1) = 0 then
                 onlySubscription.Dispose()
-                deadSubscription.Dispose()
+                //deadSubscription.Dispose()
                 inputReader.RemoveOutput x
                 if not passThru then
                     subscription.Dispose()

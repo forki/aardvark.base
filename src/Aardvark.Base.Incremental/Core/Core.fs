@@ -7,10 +7,10 @@ open System.Collections.Concurrent
 open System.Threading
 open System.Linq
 
-type VolatileCollection<'a>() =
-    let mutable set : HashSet<'a> = null
-    let mutable pset : List<'a> = List()
-
+type VolatileCollection<'a when 'a : not struct>() =
+    let mutable set : HashSet<Weak<'a>> = null
+    let mutable pset : List<Weak<'a>> = List()
+    let mutable a = Unchecked.defaultof<_>
 
     member x.IsEmpty = 
         if isNull set then pset.Count = 0
@@ -18,17 +18,26 @@ type VolatileCollection<'a>() =
 
     member x.Consume(length : byref<int>) : array<'a> =
         if isNull set then
-            let res = pset.ToArray()
+            let res = Array.zeroCreate pset.Count
+            length <- 0
+            for e in pset do
+                if e.TryGetTarget(&a) then
+                    res.[length] <- a
+                    length <- length + 1
             pset.Clear()
-            length <- res.Length
             res
         else
-            let res = set.ToArray()
+            let res = Array.zeroCreate set.Count
+            length <- 0
+            for e in set do
+                if e.TryGetTarget(&a) then
+                    res.[length] <- a
+                    length <- length + 1
             set.Clear()
-            length <- res.Length
             res
 
     member x.Add(value : 'a) : bool =
+        let value = Weak value
         if isNull set then 
             let id = pset.IndexOf(value)
             if id < 0 then 
@@ -44,6 +53,7 @@ type VolatileCollection<'a>() =
         
 
     member x.Remove(value : 'a) : bool =
+        let value = Weak value
         if isNull set then 
             pset.Remove(value)
         else
