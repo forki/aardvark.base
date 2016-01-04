@@ -83,3 +83,4 @@ NUGET
       System.Threading.Tasks (>= 4.0.0)
     System.Threading.Tasks (4.0.10)
       System.Runtime (>= 4.0.0)
+    WebSharper (3.6.6.225)
