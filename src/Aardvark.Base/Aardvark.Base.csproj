@@ -50,6 +50,18 @@
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
+    <Content Include="App_Readme\Bridge.NET\LICENSE.txt">
+      <Paket>True</Paket>
+    </Content>
+    <Content Include="App_Readme\Bridge.NET\README.txt">
+      <Paket>True</Paket>
+    </Content>
+    <Content Include="Bridge\bridge.json">
+      <Paket>True</Paket>
+    </Content>
+    <Content Include="Bridge\output\readme.txt">
+      <Paket>True</Paket>
+    </Content>
     <Reference Include="DevILSharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\DevILSharp\lib\net45\DevILSharp.dll</HintPath>
@@ -303,4 +315,21 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <Choose>
+    <When Condition="($(TargetFrameworkIdentifier) == '.NETFramework' And ($(TargetFrameworkVersion) == 'v4.0' Or $(TargetFrameworkVersion) == 'v4.5' Or $(TargetFrameworkVersion) == 'v4.5.1' Or $(TargetFrameworkVersion) == 'v4.5.2' Or $(TargetFrameworkVersion) == 'v4.5.3' Or $(TargetFrameworkVersion) == 'v4.6')) Or ($(TargetFrameworkIdentifier) == 'MonoAndroid') Or ($(TargetFrameworkIdentifier) == 'MonoTouch')">
+      <ItemGroup>
+        <Reference Include="Bridge.Html5">
+          <HintPath>..\..\packages\Bridge\lib\net40\Bridge.Html5.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+        <Reference Include="Bridge">
+          <HintPath>..\..\packages\Bridge\lib\net40\Bridge.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Import Project="..\..\packages\Bridge\build\Bridge.targets" Condition="Exists('..\..\packages\Bridge\build\Bridge.targets')" Label="Paket" />
 </Project>

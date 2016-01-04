@@ -1,0 +1,298 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{15A1696E-F9D4-40CC-8896-471CD6939CA4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Aardvark.Base.Web</RootNamespace>
+    <AssemblyName>Aardvark.Base.Web</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="App.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Readme\Bridge.NET\LICENSE.txt" />
+    <Content Include="App_Readme\Bridge.NET\README.txt" />
+    <Content Include="Bridge\bridge.json">
+      <Paket>True</Paket>
+    </Content>
+    <Content Include="Bridge\output\readme.txt" />
+    <Content Include="Bridge\www\demo.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Bridge\bridge.json" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AlgoDat\ExtendedCore\BitHelpers.cs" />
+    <Compile Include="AlgoDat\ExtendedCore\SortedSetExt.cs" />
+    <Compile Include="AlgoDat\LruCache.cs" />
+    <None Include="Extensions\FuncActionExtensions_template.cs" />
+    <Compile Include="Extensions\FuncActionExtensions_auto.cs" />
+    <Compile Include="Extensions\VariousExtensions.cs" />
+    <Compile Include="Images\EdgeFilter.cs" />
+    <Compile Include="Images\ImageLoadException.cs" />
+    <Compile Include="Images\IPix.cs" />
+    <Compile Include="Images\IPixImage.cs" />
+    <Compile Include="Images\PixImage.cs" />
+    <Compile Include="Images\PixImageBitmap.cs" />
+    <Compile Include="Images\PixImageCreators.cs" />
+    <Compile Include="Images\PixImageCube.cs" />
+    <Compile Include="Images\PixImageDevil.cs" />
+    <Compile Include="Images\PixImageExtensions.cs" />
+    <Compile Include="Images\PixImageFreeImage.cs" />
+    <Compile Include="Images\PixImageMipMap.cs" />
+    <Compile Include="Images\PixImageSystemImage.cs" />
+    <Compile Include="AlgoDat\AdaBoost.cs" />
+    <Compile Include="AlgoDat\ConcurrentHashSet.cs" />
+    <Compile Include="AlgoDat\Delegates.cs" />
+    <Compile Include="AlgoDat\Delegates_auto.cs" />
+    <None Include="AlgoDat\Delegates_template.cs" />
+    <Compile Include="AlgoDat\Dicts.cs" />
+    <Compile Include="AlgoDat\Dict_auto.cs" />
+    <Compile Include="AlgoDat\HigherOrderFunctions.cs" />
+    <Compile Include="AlgoDat\IGenerational.cs" />
+    <Compile Include="AlgoDat\Meta.cs" />
+    <Compile Include="AlgoDat\MinimumSpanningTree.cs" />
+    <Compile Include="AlgoDat\ShortestPath.cs" />
+    <Compile Include="AlgoDat\SubRange.cs" />
+    <Compile Include="AlgoDat\SymMapBase.cs" />
+    <Compile Include="AlgoDat\SymMapBaseTraversal.cs" />
+    <Compile Include="AlgoDat\Text.cs" />
+    <Compile Include="AlgoDat\TextParser.cs" />
+    <None Include="AlgoDat\Tuples_template.cs" />
+    <Compile Include="AlgoDat\Tuples_auto.cs" />
+    <Compile Include="AlgoDat\XmlParser.cs" />
+    <Compile Include="Extensions\ICollectionExtensions.cs" />
+    <Compile Include="Extensions\IListExtensions.cs" />
+    <Compile Include="Extensions\SequenceExtensions_auto.cs" />
+    <None Include="Extensions\SequenceExtensions_template.cs" />
+    <Compile Include="Extensions\SystemDrawingExtensions.cs" />
+    <Compile Include="Geometry\Conic2d.cs" />
+    <Compile Include="Geometry\Ellipse2d.cs" />
+    <Compile Include="Geo\GeoConsts.cs" />
+    <Compile Include="Geo\GeoConversion.cs" />
+    <Compile Include="Images\PixVolume.cs" />
+    <Compile Include="Images\TensorExtensions.cs" />
+    <None Include="Images\TensorExtensions_template.cs" />
+    <Compile Include="Images\TensorExtensions_auto.cs" />
+    <Compile Include="IO\Report.cs" />
+    <Compile Include="IO\StreamCodeReader.cs" />
+    <Compile Include="IO\StreamCodeReader_auto.cs" />
+    <None Include="IO\StreamCodeReader_template.cs" />
+    <Compile Include="IO\StreamCodeWriter.cs" />
+    <Compile Include="IO\StreamCodeWriter_auto.cs" />
+    <None Include="IO\StreamCodeWriter_template.cs" />
+    <None Include="Math\Complex_template.cs" />
+    <Compile Include="IO\WorkDir.cs" />
+    <Compile Include="Math\Complex_auto.cs" />
+    <Compile Include="Math\Interpolation.cs" />
+    <Compile Include="Math\PhysicsConsts.cs" />
+    <Compile Include="Math\Quadric.cs" />
+    <Compile Include="Math\Spectrum.cs" />
+    <Compile Include="Math\Statistics.cs" />
+    <Compile Include="Numerics\LuFactorization.cs" />
+    <Compile Include="Numerics\MatrixOperations.cs" />
+    <Compile Include="Numerics\Polynomial.cs" />
+    <Compile Include="Numerics\QrFactorization.cs" />
+    <Compile Include="Pfui.cs" />
+    <Compile Include="Random\HaltonRandomSeries.cs" />
+    <Compile Include="Random\IRandomDistribution.cs" />
+    <Compile Include="Random\IRandomSeries.cs" />
+    <Compile Include="Random\IRandomUniform.cs" />
+    <Compile Include="Random\PerlinNoise.cs" />
+    <Compile Include="Random\Prime.cs" />
+    <Compile Include="Random\Quasi.cs" />
+    <Compile Include="Random\RandomDistributions.cs" />
+    <Compile Include="Random\RandomIEnumerableExtensions.cs" />
+    <Compile Include="Random\RandomSample.cs" />
+    <Compile Include="Random\RandomSystem.cs" />
+    <Compile Include="RangesBoxes\Box.cs" />
+    <Compile Include="RangesBoxes\Box_auto.cs" />
+    <None Include="paket.references" />
+    <None Include="RangesBoxes\Box_template.cs" />
+    <Compile Include="RangesBoxes\OrientedBox.cs" />
+    <Compile Include="RangesBoxes\Range.cs" />
+    <Compile Include="RangesBoxes\RangeExtensions.cs" />
+    <Compile Include="Rendering\BlendMode.cs" />
+    <Compile Include="Rendering\Modes.cs" />
+    <Compile Include="Rendering\RasterizerState.cs" />
+    <Compile Include="Rendering\SamplerState.cs" />
+    <Compile Include="Rendering\StencilMode.cs" />
+    <Compile Include="Runtime\Introspection.cs" />
+    <Compile Include="Telemetry\Debug.cs" />
+    <Compile Include="Telemetry\Environment.cs" />
+    <Compile Include="Telemetry\HardwareThread.cs" />
+    <Compile Include="Telemetry\IProbe.cs" />
+    <Compile Include="Telemetry\Probes.cs" />
+    <Compile Include="Telemetry\Registry.cs" />
+    <Compile Include="Telemetry\TelemetryExtensions.cs" />
+    <Compile Include="Telemetry\TimingStats.cs" />
+    <Compile Include="Telemetry\Views.cs" />
+    <Compile Include="Tensors\Accessors.cs" />
+    <Compile Include="Tensors\Accessors_auto.cs" />
+    <None Include="Tensors\Accessors_template.cs" />
+    <Compile Include="Tensors\ArrayExtensions.cs" />
+    <Compile Include="Tensors\FilterKernel.cs" />
+    <Compile Include="Tensors\ImageBorder.cs" />
+    <Compile Include="Tensors\ImageTensors.cs" />
+    <Compile Include="Tensors\Interfaces.cs" />
+    <Compile Include="Tensors\Parallel.cs" />
+    <Compile Include="Tensors\Tensor.cs" />
+    <Compile Include="Tensors\Tensor_auto.cs" />
+    <None Include="Tensors\Tensor_template.cs" />
+    <Compile Include="Tensors\Tools.cs" />
+    <Compile Include="Trafos\CoordinateSystem.cs" />
+    <Compile Include="Trafos\CoordTransforms.cs" />
+    <Compile Include="Trafos\Euclidean2_auto.cs" />
+    <None Include="Trafos\Euclidean2_template.cs" />
+    <Compile Include="Trafos\Euclidean3_auto.cs" />
+    <None Include="Trafos\Euclidean3_template.cs" />
+    <None Include="Trafos\M33_template.cs" />
+    <None Include="Trafos\M22_template.cs" />
+    <Compile Include="Trafos\M22_auto.cs" />
+    <Compile Include="Trafos\M33_auto.cs" />
+    <None Include="Trafos\M34_template.cs" />
+    <Compile Include="Trafos\M34_auto.cs" />
+    <None Include="Trafos\M44_template.cs" />
+    <Compile Include="Trafos\M44_auto.cs" />
+    <Compile Include="Trafos\Matrix.cs" />
+    <Compile Include="Trafos\MatrixArrayExtensions.cs" />
+    <Compile Include="Trafos\Matrix_auto.cs" />
+    <None Include="Trafos\Matrix_template.cs" />
+    <None Include="Trafos\Rot2_template.cs" />
+    <None Include="Trafos\Rot3_template.cs" />
+    <Compile Include="Trafos\Rot2_auto.cs" />
+    <Compile Include="Trafos\Rot3_auto.cs" />
+    <None Include="Trafos\Scale3_template.cs" />
+    <None Include="Trafos\Similarity3_template.cs" />
+    <None Include="Trafos\Shift3_template.cs" />
+    <Compile Include="Trafos\Scale3_auto.cs" />
+    <Compile Include="Trafos\Shift3_auto.cs" />
+    <Compile Include="Trafos\Similarity3_auto.cs" />
+    <Compile Include="Trafos\Trafo2d.cs" />
+    <Compile Include="Trafos\Trafo3d.cs" />
+    <Compile Include="Vectors\V3fCoder.cs" />
+    <Compile Include="Vectors\Vec.cs" />
+    <Compile Include="Vectors\Vector.cs" />
+    <Compile Include="Vectors\VectorArrayExtensions.cs" />
+    <Compile Include="Vectors\VectorExtensions.cs" />
+    <Compile Include="Vectors\VectorIEnumerableExtensions_auto.cs" />
+    <None Include="Vectors\VectorIEnumerableExtensions_template.cs" />
+    <Compile Include="Vectors\VectorTypeConverter_auto.cs" />
+    <None Include="Vectors\VectorTypeConverter_template.cs" />
+    <Compile Include="Vectors\Vector_auto.cs" />
+    <None Include="Vectors\Vector_template.cs" />
+    <None Include="AlgoDat\Dict_template.cs" />
+    <Compile Include="AlgoDat\HashCode.cs" />
+    <Compile Include="AlgoDat\IDict.cs" />
+    <Compile Include="AlgoDat\Requires.cs" />
+    <Compile Include="AlgoDat\Sorting_auto.cs" />
+    <None Include="AlgoDat\Sorting_template.cs" />
+    <Compile Include="AlgoDat\Structs.cs" />
+    <Compile Include="AlgoDat\Symbol.cs" />
+    <Compile Include="AlgoDat\Tuples.cs" />
+    <Compile Include="Extensions\ArrayExtensions.cs" />
+    <Compile Include="Extensions\CastExtensions.cs" />
+    <Compile Include="Extensions\DictionaryExtensions.cs" />
+    <Compile Include="Extensions\FuncActionExtensions.cs" />
+    <Compile Include="Extensions\IEnumerableExtensions.cs" />
+    <Compile Include="Extensions\ListExtensions.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Geometry\Algorithms.cs" />
+    <Compile Include="Geometry\Capsule3d.cs" />
+    <Compile Include="Geometry\Circle2d.cs" />
+    <Compile Include="Geometry\Circle3d.cs" />
+    <Compile Include="Geometry\ClippingFunctions.cs" />
+    <Compile Include="Geometry\Cone3d.cs" />
+    <Compile Include="Geometry\Cylinder3d.cs" />
+    <Compile Include="Geometry\Ellipse3d.cs" />
+    <Compile Include="Geometry\Geometry1i.cs" />
+    <Compile Include="Geometry\Geometry1i_auto.cs" />
+    <None Include="Geometry\Geometry1i_template.cs" />
+    <Compile Include="Geometry\Geometry_auto.cs" />
+    <None Include="Geometry\Geometry_template.cs" />
+    <Compile Include="Geometry\Hull2d.cs" />
+    <Compile Include="Geometry\Hull3d.cs" />
+    <Compile Include="Geometry\IntersectionTests.cs" />
+    <Compile Include="Geometry\Line2d.cs" />
+    <Compile Include="Geometry\Line3d.cs" />
+    <Compile Include="Geometry\Plane2d.cs" />
+    <Compile Include="Geometry\Plane3d.cs" />
+    <Compile Include="Geometry\Polygon2d.cs" />
+    <Compile Include="Geometry\Polygon3d.cs" />
+    <Compile Include="Geometry\PolygonExtensions.cs" />
+    <Compile Include="Geometry\Quad2d.cs" />
+    <Compile Include="Geometry\Quad3d.cs" />
+    <Compile Include="Geometry\Ray2d.cs" />
+    <Compile Include="Geometry\Ray3d.cs" />
+    <Compile Include="Geometry\Relations.cs" />
+    <Compile Include="Geometry\SpecialPoints.cs" />
+    <Compile Include="Geometry\Sphere3d.cs" />
+    <Compile Include="Geometry\Torus3d.cs" />
+    <Compile Include="Geometry\Triangle2d.cs" />
+    <Compile Include="Geometry\Triangle3d.cs" />
+    <Compile Include="Math\Adler32.cs" />
+    <Compile Include="Math\Color.cs" />
+    <Compile Include="Math\Color_auto.cs" />
+    <None Include="Math\Color_template.cs" />
+    <Compile Include="Math\Constant.cs" />
+    <Compile Include="Math\Conversion.cs" />
+    <Compile Include="Math\Curves.cs" />
+    <Compile Include="Math\Fraction.cs" />
+    <Compile Include="Math\Fun.cs" />
+    <Compile Include="Math\Fun_auto.cs" />
+    <None Include="Math\Fun_template.cs" />
+    <Compile Include="Math\Interfaces.cs" />
+    <Compile Include="Math\Mapping.cs" />
+    <Compile Include="Math\SampleGrid2d.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Choose>
+    <When Condition="($(TargetFrameworkIdentifier) == '.NETFramework' And ($(TargetFrameworkVersion) == 'v4.0' Or $(TargetFrameworkVersion) == 'v4.5' Or $(TargetFrameworkVersion) == 'v4.5.1' Or $(TargetFrameworkVersion) == 'v4.5.2' Or $(TargetFrameworkVersion) == 'v4.5.3' Or $(TargetFrameworkVersion) == 'v4.6')) Or ($(TargetFrameworkIdentifier) == 'MonoAndroid') Or ($(TargetFrameworkIdentifier) == 'MonoTouch')">
+      <ItemGroup>
+        <Reference Include="Bridge.Html5">
+          <HintPath>..\..\packages\Bridge\lib\net40\Bridge.Html5.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+        <Reference Include="Bridge">
+          <HintPath>..\..\packages\Bridge\lib\net40\Bridge.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Import Project="..\..\packages\Bridge\build\Bridge.targets" Condition="Exists('..\..\packages\Bridge\build\Bridge.targets')" Label="Paket" />
+  <Choose>
+    <When Condition="($(TargetFrameworkIdentifier) == '.NETFramework' And ($(TargetFrameworkVersion) == 'v4.5' Or $(TargetFrameworkVersion) == 'v4.5.1' Or $(TargetFrameworkVersion) == 'v4.5.2' Or $(TargetFrameworkVersion) == 'v4.5.3' Or $(TargetFrameworkVersion) == 'v4.6')) Or ($(TargetFrameworkIdentifier) == 'MonoAndroid') Or ($(TargetFrameworkIdentifier) == 'MonoTouch')" />
+  </Choose>
+</Project>

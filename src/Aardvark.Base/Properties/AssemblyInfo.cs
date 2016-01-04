@@ -5,15 +5,13 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Aardvark.Base")]
-[assembly: AssemblyDescription("Math, Geometry, Algorithms, and more ...")]
-#if !DEPLOY //(Automatic Code by BuildPatcher.) Removes these AssemblyAttributes for DEPLOY build since these are added with buildDeploy.bat.
+[assembly: AssemblyTitle("Aardvark.Base.Web")]
+[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("VRVis Zentrum fuer Virtual Reality und Visualisierung Forschungs-GmbH")]
-[assembly: AssemblyProduct("Aardvark.Base")]
-[assembly: AssemblyCopyright("Copyright © VRVis 2006-2015")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("Aardvark.Base.Web")]
+[assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
-#endif //!DEPLOY (Automatic Code by BuildPatcher.)
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
@@ -22,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("e6c3bc40-2af8-43da-928b-eab89a8454c0")]
+[assembly: Guid("15a1696e-f9d4-40cc-8896-471cd6939ca4")]
 
 // Version information for an assembly consists of the following four values:
 //
