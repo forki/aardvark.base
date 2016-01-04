@@ -576,7 +576,7 @@ namespace Aardvark.Base
                     case 0: return V.X;
                     case 1: return V.Y;
                     case 2: return V.Z;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
             set
@@ -586,7 +586,7 @@ namespace Aardvark.Base
                     case 0: V.X = value; return;
                     case 1: V.Y = value; return;
                     case 2: V.Z = value; return;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
         }
@@ -1199,7 +1199,7 @@ namespace Aardvark.Base
                     case 0: return V.X;
                     case 1: return V.Y;
                     case 2: return V.Z;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
             set
@@ -1209,7 +1209,7 @@ namespace Aardvark.Base
                     case 0: V.X = value; return;
                     case 1: V.Y = value; return;
                     case 2: V.Z = value; return;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
         }

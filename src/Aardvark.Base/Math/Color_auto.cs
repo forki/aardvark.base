@@ -10,7 +10,7 @@ namespace Aardvark.Base
 
     #region C3b
 
-    [Serializable]
+    
     public partial struct C3b : IFormattable, IEquatable<C3b>, IRGB
     {
         #region Constructors
@@ -394,7 +394,7 @@ namespace Aardvark.Base
                         B = value;
                         break;
                     default:
-                        throw new IndexOutOfRangeException();
+                        throw new InvalidOperationException();
                 }
             }
             get
@@ -408,7 +408,7 @@ namespace Aardvark.Base
                     case 2:
                         return B;
                     default:
-                        throw new IndexOutOfRangeException();
+                        throw new InvalidOperationException();
                 }
             }
         }
@@ -1283,7 +1283,7 @@ namespace Aardvark.Base
                     case 0: color.R = value; return;
                     case 1: color.G = value; return;
                     case 2: color.B = value; return;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             };
 
@@ -1506,7 +1506,7 @@ namespace Aardvark.Base
 
     #region C3us
 
-    [Serializable]
+    
     public partial struct C3us : IFormattable, IEquatable<C3us>, IRGB
     {
         #region Constructors
@@ -1890,7 +1890,7 @@ namespace Aardvark.Base
                         B = value;
                         break;
                     default:
-                        throw new IndexOutOfRangeException();
+                        throw new InvalidOperationException();
                 }
             }
             get
@@ -1904,7 +1904,7 @@ namespace Aardvark.Base
                     case 2:
                         return B;
                     default:
-                        throw new IndexOutOfRangeException();
+                        throw new InvalidOperationException();
                 }
             }
         }
@@ -2779,7 +2779,7 @@ namespace Aardvark.Base
                     case 0: color.R = value; return;
                     case 1: color.G = value; return;
                     case 2: color.B = value; return;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             };
 
@@ -3002,7 +3002,7 @@ namespace Aardvark.Base
 
     #region C3ui
 
-    [Serializable]
+    
     public partial struct C3ui : IFormattable, IEquatable<C3ui>, IRGB
     {
         #region Constructors
@@ -3349,7 +3349,7 @@ namespace Aardvark.Base
                         B = value;
                         break;
                     default:
-                        throw new IndexOutOfRangeException();
+                        throw new InvalidOperationException();
                 }
             }
             get
@@ -3363,7 +3363,7 @@ namespace Aardvark.Base
                     case 2:
                         return B;
                     default:
-                        throw new IndexOutOfRangeException();
+                        throw new InvalidOperationException();
                 }
             }
         }
@@ -4199,7 +4199,7 @@ namespace Aardvark.Base
                     case 0: color.R = value; return;
                     case 1: color.G = value; return;
                     case 2: color.B = value; return;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             };
 
@@ -4422,7 +4422,7 @@ namespace Aardvark.Base
 
     #region C3f
 
-    [Serializable]
+    
     public partial struct C3f : IFormattable, IEquatable<C3f>, IRGB
     {
         #region Constructors
@@ -4806,7 +4806,7 @@ namespace Aardvark.Base
                         B = value;
                         break;
                     default:
-                        throw new IndexOutOfRangeException();
+                        throw new InvalidOperationException();
                 }
             }
             get
@@ -4820,7 +4820,7 @@ namespace Aardvark.Base
                     case 2:
                         return B;
                     default:
-                        throw new IndexOutOfRangeException();
+                        throw new InvalidOperationException();
                 }
             }
         }
@@ -5744,7 +5744,7 @@ namespace Aardvark.Base
                     case 0: color.R = value; return;
                     case 1: color.G = value; return;
                     case 2: color.B = value; return;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             };
 
@@ -5967,7 +5967,7 @@ namespace Aardvark.Base
 
     #region C3d
 
-    [Serializable]
+    
     public partial struct C3d : IFormattable, IEquatable<C3d>, IRGB
     {
         #region Constructors
@@ -6301,7 +6301,7 @@ namespace Aardvark.Base
                         B = value;
                         break;
                     default:
-                        throw new IndexOutOfRangeException();
+                        throw new InvalidOperationException();
                 }
             }
             get
@@ -6315,7 +6315,7 @@ namespace Aardvark.Base
                     case 2:
                         return B;
                     default:
-                        throw new IndexOutOfRangeException();
+                        throw new InvalidOperationException();
                 }
             }
         }
@@ -7175,7 +7175,7 @@ namespace Aardvark.Base
                     case 0: color.R = value; return;
                     case 1: color.G = value; return;
                     case 2: color.B = value; return;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             };
 
@@ -7398,7 +7398,7 @@ namespace Aardvark.Base
 
     #region C4b
 
-    [Serializable]
+    
     public partial struct C4b : IFormattable, IEquatable<C4b>, IRGB, IOpacity
     {
         #region Constructors
@@ -7827,7 +7827,7 @@ namespace Aardvark.Base
                         A = value;
                         break;
                     default:
-                        throw new IndexOutOfRangeException();
+                        throw new InvalidOperationException();
                 }
             }
             get
@@ -7843,7 +7843,7 @@ namespace Aardvark.Base
                     case 3:
                         return A;
                     default:
-                        throw new IndexOutOfRangeException();
+                        throw new InvalidOperationException();
                 }
             }
         }
@@ -8732,7 +8732,7 @@ namespace Aardvark.Base
                     case 1: color.G = value; return;
                     case 2: color.B = value; return;
                     case 3: color.A = value; return;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             };
 
@@ -8969,7 +8969,7 @@ namespace Aardvark.Base
 
     #region C4us
 
-    [Serializable]
+    
     public partial struct C4us : IFormattable, IEquatable<C4us>, IRGB, IOpacity
     {
         #region Constructors
@@ -9398,7 +9398,7 @@ namespace Aardvark.Base
                         A = value;
                         break;
                     default:
-                        throw new IndexOutOfRangeException();
+                        throw new InvalidOperationException();
                 }
             }
             get
@@ -9414,7 +9414,7 @@ namespace Aardvark.Base
                     case 3:
                         return A;
                     default:
-                        throw new IndexOutOfRangeException();
+                        throw new InvalidOperationException();
                 }
             }
         }
@@ -10303,7 +10303,7 @@ namespace Aardvark.Base
                     case 1: color.G = value; return;
                     case 2: color.B = value; return;
                     case 3: color.A = value; return;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             };
 
@@ -10540,7 +10540,7 @@ namespace Aardvark.Base
 
     #region C4ui
 
-    [Serializable]
+    
     public partial struct C4ui : IFormattable, IEquatable<C4ui>, IRGB, IOpacity
     {
         #region Constructors
@@ -10930,7 +10930,7 @@ namespace Aardvark.Base
                         A = value;
                         break;
                     default:
-                        throw new IndexOutOfRangeException();
+                        throw new InvalidOperationException();
                 }
             }
             get
@@ -10946,7 +10946,7 @@ namespace Aardvark.Base
                     case 3:
                         return A;
                     default:
-                        throw new IndexOutOfRangeException();
+                        throw new InvalidOperationException();
                 }
             }
         }
@@ -11796,7 +11796,7 @@ namespace Aardvark.Base
                     case 1: color.G = value; return;
                     case 2: color.B = value; return;
                     case 3: color.A = value; return;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             };
 
@@ -12033,7 +12033,7 @@ namespace Aardvark.Base
 
     #region C4f
 
-    [Serializable]
+    
     public partial struct C4f : IFormattable, IEquatable<C4f>, IRGB, IOpacity
     {
         #region Constructors
@@ -12462,7 +12462,7 @@ namespace Aardvark.Base
                         A = value;
                         break;
                     default:
-                        throw new IndexOutOfRangeException();
+                        throw new InvalidOperationException();
                 }
             }
             get
@@ -12478,7 +12478,7 @@ namespace Aardvark.Base
                     case 3:
                         return A;
                     default:
-                        throw new IndexOutOfRangeException();
+                        throw new InvalidOperationException();
                 }
             }
         }
@@ -13421,7 +13421,7 @@ namespace Aardvark.Base
                     case 1: color.G = value; return;
                     case 2: color.B = value; return;
                     case 3: color.A = value; return;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             };
 
@@ -13658,7 +13658,7 @@ namespace Aardvark.Base
 
     #region C4d
 
-    [Serializable]
+    
     public partial struct C4d : IFormattable, IEquatable<C4d>, IRGB, IOpacity
     {
         #region Constructors
@@ -14028,7 +14028,7 @@ namespace Aardvark.Base
                         A = value;
                         break;
                     default:
-                        throw new IndexOutOfRangeException();
+                        throw new InvalidOperationException();
                 }
             }
             get
@@ -14044,7 +14044,7 @@ namespace Aardvark.Base
                     case 3:
                         return A;
                     default:
-                        throw new IndexOutOfRangeException();
+                        throw new InvalidOperationException();
                 }
             }
         }
@@ -14923,7 +14923,7 @@ namespace Aardvark.Base
                     case 1: color.G = value; return;
                     case 2: color.B = value; return;
                     case 3: color.A = value; return;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             };
 

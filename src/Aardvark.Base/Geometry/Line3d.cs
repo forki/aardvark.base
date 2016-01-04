@@ -5,7 +5,7 @@ namespace Aardvark.Base
     /// <summary>
     /// A three-dimensional line with specified start and end points.
     /// </summary>
-    [Serializable]
+
     public partial struct Line3d : IBoundingSphere3d
     {
         #region Geometric Properties

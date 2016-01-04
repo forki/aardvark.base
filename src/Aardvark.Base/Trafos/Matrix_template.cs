@@ -38,7 +38,7 @@ namespace Aardvark.Base
     //#     var ctype = ctypeA[t];
     #region __nmtype__
 
-    [Serializable]
+    
     [StructLayout(LayoutKind.Sequential)]
     public partial struct __nmtype__ : IValidity, IMatrix<double>
     {
@@ -262,7 +262,7 @@ namespace Aardvark.Base
                     //# n.ForEach(r => { m.ForEach(q => {
                     case __cs__: return M__r____q__;
                     //# cs++; }); }); }
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
             set
@@ -273,7 +273,7 @@ namespace Aardvark.Base
                     //# n.ForEach(r => { m.ForEach(q => {
                     case __cs__: M__r____q__ = value; return;
                     //# cs++; }); }); }
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
         }
@@ -290,10 +290,10 @@ namespace Aardvark.Base
                                 //# m.ForEach(c => {
                                 case __c__: return M__r____c__;
                                 //# });
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     //# });
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
             set
@@ -306,10 +306,10 @@ namespace Aardvark.Base
                                 //# m.ForEach(c => {
                                 case __c__: M__r____c__ = value; return;
                                 //# });                       
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     //# });
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
         }
@@ -824,7 +824,7 @@ namespace Aardvark.Base
                 //# n.ForEach(r => {
                 case __r__: return R__r__;
                 //# });
-                default: throw new IndexOutOfRangeException();
+                default: throw new InvalidOperationException();
             }
         }
 
@@ -838,7 +838,7 @@ namespace Aardvark.Base
                 //# m.ForEach(r => {
                 case __r__: return C__r__;
                 //# });
-                default: throw new IndexOutOfRangeException();
+                default: throw new InvalidOperationException();
             }
         }
 

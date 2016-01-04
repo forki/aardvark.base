@@ -139,7 +139,7 @@ namespace Aardvark.Base
         {
             if (sequence == null) throw new ArgumentNullException("sequence");
             if (element_valueSelector == null) throw new ArgumentNullException("element_valueSelector");
-            for (long i = 0; i < sequence.LongLength; i++)
+            for (long i = 0; i < sequence.Length; i++)
             {
                 var value = element_valueSelector(sequence[i]);
                 if (value/*#F(o=>{*/ < /*#},f);*/__min__Value) __min__Value = value;
@@ -156,7 +156,7 @@ namespace Aardvark.Base
         {
             if (sequence == null) throw new ArgumentNullException("sequence");
             if (element_valueSelector == null) throw new ArgumentNullException("element_valueSelector");
-            for (long i = 0; i < sequence.LongLength; i++)
+            for (long i = 0; i < sequence.Length; i++)
             {
                 var element = sequence[i];
                 var value = element_valueSelector(element);
@@ -179,7 +179,7 @@ namespace Aardvark.Base
             if (sequence == null) throw new ArgumentNullException("sequence");
             if (element_valueSelector == null) throw new ArgumentNullException("element_valueSelector");
             var __min__Element = default(TSeq);
-            for (long i = 0; i < sequence.LongLength; i++)
+            for (long i = 0; i < sequence.Length; i++)
             {
                 var element = sequence[i];
                 var value = element_valueSelector(element);
@@ -208,8 +208,8 @@ namespace Aardvark.Base
         /// </summary>
         public static __type__[] Merge__Ascending__(this __type__[] a0, __type__[] a1)
         {
-            long count0 = a0.LongLength;
-            long count1 = a1.LongLength;
+            long count0 = a0.Length;
+            long count1 = a1.Length;
             var a = new __type__[count0 + count1];
             long i = 0, i0 = 0, i1 = 0;
             while (i0 < count0 && i1 < count1)
@@ -231,8 +231,8 @@ namespace Aardvark.Base
         /// </summary>
         public static TSeq[] Merge__Ascending__<TSeq>(this TSeq[] a0, TSeq[] a1, Func<TSeq, __type__> element_valueSelector)
         {
-            long count0 = a0.LongLength;
-            long count1 = a1.LongLength;
+            long count0 = a0.Length;
+            long count1 = a1.Length;
             var a = new TSeq[count0 + count1];
             long i = 0, i0 = 0, i1 = 0;
             while (i0 < count0 && i1 < count1)

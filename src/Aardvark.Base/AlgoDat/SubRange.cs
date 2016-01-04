@@ -54,13 +54,13 @@ namespace Aardvark.Base
             get
             {
                 if (index < 0 || index > m_count)
-                    throw new IndexOutOfRangeException();
+                    throw new InvalidOperationException();
                 return m_base[m_start + index];
             }
             set
             {
                 if (index < 0 || index > m_count)
-                    throw new IndexOutOfRangeException();
+                    throw new InvalidOperationException();
                 m_base[m_start + index] = value;
             }
         }

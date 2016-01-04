@@ -324,7 +324,7 @@ namespace Aardvark.Base
         public static V2d ComputeCentroid(this V2d[] points)
         {
             var sum = points[0];
-            long count = points.LongLength;
+            long count = points.Length;
             for (long i = 1; i < count; i++) sum += points[i];
             double d = 1.0 / count;
             return sum * d;
@@ -336,7 +336,7 @@ namespace Aardvark.Base
         /// </summary>
         public static V2d[] Scaled(this V2d[] pointArray, V2d center, double s)
         {
-            long count = pointArray.LongLength;
+            long count = pointArray.Length;
             var pa = new V2d[count];
             for (long i = 0; i < count; i++) pa[i] = center + (pointArray[i] - center) * s;
             return pa;
@@ -356,7 +356,7 @@ namespace Aardvark.Base
         /// </summary>
         public static V2d[] Transformed(this V2d[] pointArray, M22d m)
         {
-            return new V2d[pointArray.LongLength].SetByIndexLong(i => m.Transform(pointArray[i]));
+            return new V2d[pointArray.Length].SetByIndexLong(i => m.Transform(pointArray[i]));
         }
 
         /// <summary>
@@ -364,7 +364,7 @@ namespace Aardvark.Base
         /// </summary>
         public static V2d[] TransformedPos(this V2d[] pointArray, M33d m)
         {
-            return new V2d[pointArray.LongLength].SetByIndexLong(i => m.TransformPos(pointArray[i]));
+            return new V2d[pointArray.Length].SetByIndexLong(i => m.TransformPos(pointArray[i]));
         }
 
         /// <summary>
@@ -372,7 +372,7 @@ namespace Aardvark.Base
         /// </summary>
         public static V2d[] TransformedDir(this V2d[] pointArray, M33d m)
         {
-            return new V2d[pointArray.LongLength].SetByIndexLong(i => m.TransformDir(pointArray[i]));
+            return new V2d[pointArray.Length].SetByIndexLong(i => m.TransformDir(pointArray[i]));
         }
 
         #endregion

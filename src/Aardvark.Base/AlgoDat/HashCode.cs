@@ -151,7 +151,7 @@ namespace Aardvark.Base
         public static int GetCombinedHashCode<T>(this T[] array)
             where T : struct
         {
-            return array.GetCombinedHashCode(array.LongLength);
+            return array.GetCombinedHashCode(array.Length);
         }
 
         /// <summary>

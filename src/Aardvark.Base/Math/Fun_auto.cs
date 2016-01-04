@@ -12,391 +12,391 @@ namespace Aardvark.Base
     {
         #region Min and Max
 
-        [Pure]
+        
         public static byte Min(byte a, byte b) { return a < b ? a : b; }
         
-        [Pure]
+        
         public static byte Max(byte a, byte b) { return a > b ? a : b; }
 
-        [Pure]
+        
         public static byte Min(byte a, byte b, byte c)
         {
             return a < b ? (a < c ? a : c) : (b < c ? b : c);
         }
 
-        [Pure]
+        
         public static byte Max(byte a, byte b, byte c)
         {
             return a > b ? (a > c ? a : c) : (b > c ? b : c);
         }
 
-        [Pure]
+        
         public static byte Min(byte a, byte b, byte c, byte d)
         {
             return Min(Min(a, b), Min(c, d));
         }
 
-        [Pure]
+        
         public static byte Max(byte a, byte b, byte c, byte d)
         {
             return Max(Max(a, b), Max(c, d));
         }
 
-        [Pure]
+        
         public static sbyte Min(sbyte a, sbyte b) { return a < b ? a : b; }
         
-        [Pure]
+        
         public static sbyte Max(sbyte a, sbyte b) { return a > b ? a : b; }
 
-        [Pure]
+        
         public static sbyte Min(sbyte a, sbyte b, sbyte c)
         {
             return a < b ? (a < c ? a : c) : (b < c ? b : c);
         }
 
-        [Pure]
+        
         public static sbyte Max(sbyte a, sbyte b, sbyte c)
         {
             return a > b ? (a > c ? a : c) : (b > c ? b : c);
         }
 
-        [Pure]
+        
         public static sbyte Min(sbyte a, sbyte b, sbyte c, sbyte d)
         {
             return Min(Min(a, b), Min(c, d));
         }
 
-        [Pure]
+        
         public static sbyte Max(sbyte a, sbyte b, sbyte c, sbyte d)
         {
             return Max(Max(a, b), Max(c, d));
         }
 
-        [Pure]
+        
         public static short Min(short a, short b) { return a < b ? a : b; }
         
-        [Pure]
+        
         public static short Max(short a, short b) { return a > b ? a : b; }
 
-        [Pure]
+        
         public static short Min(short a, short b, short c)
         {
             return a < b ? (a < c ? a : c) : (b < c ? b : c);
         }
 
-        [Pure]
+        
         public static short Max(short a, short b, short c)
         {
             return a > b ? (a > c ? a : c) : (b > c ? b : c);
         }
 
-        [Pure]
+        
         public static short Min(short a, short b, short c, short d)
         {
             return Min(Min(a, b), Min(c, d));
         }
 
-        [Pure]
+        
         public static short Max(short a, short b, short c, short d)
         {
             return Max(Max(a, b), Max(c, d));
         }
 
-        [Pure]
+        
         public static ushort Min(ushort a, ushort b) { return a < b ? a : b; }
         
-        [Pure]
+        
         public static ushort Max(ushort a, ushort b) { return a > b ? a : b; }
 
-        [Pure]
+        
         public static ushort Min(ushort a, ushort b, ushort c)
         {
             return a < b ? (a < c ? a : c) : (b < c ? b : c);
         }
 
-        [Pure]
+        
         public static ushort Max(ushort a, ushort b, ushort c)
         {
             return a > b ? (a > c ? a : c) : (b > c ? b : c);
         }
 
-        [Pure]
+        
         public static ushort Min(ushort a, ushort b, ushort c, ushort d)
         {
             return Min(Min(a, b), Min(c, d));
         }
 
-        [Pure]
+        
         public static ushort Max(ushort a, ushort b, ushort c, ushort d)
         {
             return Max(Max(a, b), Max(c, d));
         }
 
-        [Pure]
+        
         public static int Min(int a, int b) { return a < b ? a : b; }
         
-        [Pure]
+        
         public static int Max(int a, int b) { return a > b ? a : b; }
 
-        [Pure]
+        
         public static int Min(int a, int b, int c)
         {
             return a < b ? (a < c ? a : c) : (b < c ? b : c);
         }
 
-        [Pure]
+        
         public static int Max(int a, int b, int c)
         {
             return a > b ? (a > c ? a : c) : (b > c ? b : c);
         }
 
-        [Pure]
+        
         public static int Min(int a, int b, int c, int d)
         {
             return Min(Min(a, b), Min(c, d));
         }
 
-        [Pure]
+        
         public static int Max(int a, int b, int c, int d)
         {
             return Max(Max(a, b), Max(c, d));
         }
 
-        [Pure]
+        
         public static uint Min(uint a, uint b) { return a < b ? a : b; }
         
-        [Pure]
+        
         public static uint Max(uint a, uint b) { return a > b ? a : b; }
 
-        [Pure]
+        
         public static uint Min(uint a, uint b, uint c)
         {
             return a < b ? (a < c ? a : c) : (b < c ? b : c);
         }
 
-        [Pure]
+        
         public static uint Max(uint a, uint b, uint c)
         {
             return a > b ? (a > c ? a : c) : (b > c ? b : c);
         }
 
-        [Pure]
+        
         public static uint Min(uint a, uint b, uint c, uint d)
         {
             return Min(Min(a, b), Min(c, d));
         }
 
-        [Pure]
+        
         public static uint Max(uint a, uint b, uint c, uint d)
         {
             return Max(Max(a, b), Max(c, d));
         }
 
-        [Pure]
+        
         public static long Min(long a, long b) { return a < b ? a : b; }
         
-        [Pure]
+        
         public static long Max(long a, long b) { return a > b ? a : b; }
 
-        [Pure]
+        
         public static long Min(long a, long b, long c)
         {
             return a < b ? (a < c ? a : c) : (b < c ? b : c);
         }
 
-        [Pure]
+        
         public static long Max(long a, long b, long c)
         {
             return a > b ? (a > c ? a : c) : (b > c ? b : c);
         }
 
-        [Pure]
+        
         public static long Min(long a, long b, long c, long d)
         {
             return Min(Min(a, b), Min(c, d));
         }
 
-        [Pure]
+        
         public static long Max(long a, long b, long c, long d)
         {
             return Max(Max(a, b), Max(c, d));
         }
 
-        [Pure]
+        
         public static ulong Min(ulong a, ulong b) { return a < b ? a : b; }
         
-        [Pure]
+        
         public static ulong Max(ulong a, ulong b) { return a > b ? a : b; }
 
-        [Pure]
+        
         public static ulong Min(ulong a, ulong b, ulong c)
         {
             return a < b ? (a < c ? a : c) : (b < c ? b : c);
         }
 
-        [Pure]
+        
         public static ulong Max(ulong a, ulong b, ulong c)
         {
             return a > b ? (a > c ? a : c) : (b > c ? b : c);
         }
 
-        [Pure]
+        
         public static ulong Min(ulong a, ulong b, ulong c, ulong d)
         {
             return Min(Min(a, b), Min(c, d));
         }
 
-        [Pure]
+        
         public static ulong Max(ulong a, ulong b, ulong c, ulong d)
         {
             return Max(Max(a, b), Max(c, d));
         }
 
-        [Pure]
+        
         public static float Min(float a, float b) { return a < b ? a : b; }
         
-        [Pure]
+        
         public static float Max(float a, float b) { return a > b ? a : b; }
 
-        [Pure]
+        
         public static float Min(float a, float b, float c)
         {
             return a < b ? (a < c ? a : c) : (b < c ? b : c);
         }
 
-        [Pure]
+        
         public static float Max(float a, float b, float c)
         {
             return a > b ? (a > c ? a : c) : (b > c ? b : c);
         }
 
-        [Pure]
+        
         public static float Min(float a, float b, float c, float d)
         {
             return Min(Min(a, b), Min(c, d));
         }
 
-        [Pure]
+        
         public static float Max(float a, float b, float c, float d)
         {
             return Max(Max(a, b), Max(c, d));
         }
 
-        [Pure]
+        
         public static double Min(double a, double b) { return a < b ? a : b; }
         
-        [Pure]
+        
         public static double Max(double a, double b) { return a > b ? a : b; }
 
-        [Pure]
+        
         public static double Min(double a, double b, double c)
         {
             return a < b ? (a < c ? a : c) : (b < c ? b : c);
         }
 
-        [Pure]
+        
         public static double Max(double a, double b, double c)
         {
             return a > b ? (a > c ? a : c) : (b > c ? b : c);
         }
 
-        [Pure]
+        
         public static double Min(double a, double b, double c, double d)
         {
             return Min(Min(a, b), Min(c, d));
         }
 
-        [Pure]
+        
         public static double Max(double a, double b, double c, double d)
         {
             return Max(Max(a, b), Max(c, d));
         }
 
-        [Pure]
+        
         public static Fraction Min(Fraction a, Fraction b) { return a < b ? a : b; }
         
-        [Pure]
+        
         public static Fraction Max(Fraction a, Fraction b) { return a > b ? a : b; }
 
-        [Pure]
+        
         public static Fraction Min(Fraction a, Fraction b, Fraction c)
         {
             return a < b ? (a < c ? a : c) : (b < c ? b : c);
         }
 
-        [Pure]
+        
         public static Fraction Max(Fraction a, Fraction b, Fraction c)
         {
             return a > b ? (a > c ? a : c) : (b > c ? b : c);
         }
 
-        [Pure]
+        
         public static Fraction Min(Fraction a, Fraction b, Fraction c, Fraction d)
         {
             return Min(Min(a, b), Min(c, d));
         }
 
-        [Pure]
+        
         public static Fraction Max(Fraction a, Fraction b, Fraction c, Fraction d)
         {
             return Max(Max(a, b), Max(c, d));
         }
 
-        [Pure]
+        
         public static DateTime Min(DateTime a, DateTime b) { return a < b ? a : b; }
         
-        [Pure]
+        
         public static DateTime Max(DateTime a, DateTime b) { return a > b ? a : b; }
 
-        [Pure]
+        
         public static DateTime Min(DateTime a, DateTime b, DateTime c)
         {
             return a < b ? (a < c ? a : c) : (b < c ? b : c);
         }
 
-        [Pure]
+        
         public static DateTime Max(DateTime a, DateTime b, DateTime c)
         {
             return a > b ? (a > c ? a : c) : (b > c ? b : c);
         }
 
-        [Pure]
+        
         public static DateTime Min(DateTime a, DateTime b, DateTime c, DateTime d)
         {
             return Min(Min(a, b), Min(c, d));
         }
 
-        [Pure]
+        
         public static DateTime Max(DateTime a, DateTime b, DateTime c, DateTime d)
         {
             return Max(Max(a, b), Max(c, d));
         }
 
-        [Pure]
+        
         public static TimeSpan Min(TimeSpan a, TimeSpan b) { return a < b ? a : b; }
         
-        [Pure]
+        
         public static TimeSpan Max(TimeSpan a, TimeSpan b) { return a > b ? a : b; }
 
-        [Pure]
+        
         public static TimeSpan Min(TimeSpan a, TimeSpan b, TimeSpan c)
         {
             return a < b ? (a < c ? a : c) : (b < c ? b : c);
         }
 
-        [Pure]
+        
         public static TimeSpan Max(TimeSpan a, TimeSpan b, TimeSpan c)
         {
             return a > b ? (a > c ? a : c) : (b > c ? b : c);
         }
 
-        [Pure]
+        
         public static TimeSpan Min(TimeSpan a, TimeSpan b, TimeSpan c, TimeSpan d)
         {
             return Min(Min(a, b), Min(c, d));
         }
 
-        [Pure]
+        
         public static TimeSpan Max(TimeSpan a, TimeSpan b, TimeSpan c, TimeSpan d)
         {
             return Max(Max(a, b), Max(c, d));
@@ -409,7 +409,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the absolute value of the specified number.
         /// </summary>
-        [Pure]
+        
         public static sbyte Abs(this sbyte x)
         {
             return System.Math.Abs(x);
@@ -418,7 +418,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the absolute value of the specified number.
         /// </summary>
-        [Pure]
+        
         public static short Abs(this short x)
         {
             return System.Math.Abs(x);
@@ -427,7 +427,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the absolute value of the specified number.
         /// </summary>
-        [Pure]
+        
         public static int Abs(this int x)
         {
             return System.Math.Abs(x);
@@ -436,7 +436,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the absolute value of the specified number.
         /// </summary>
-        [Pure]
+        
         public static long Abs(this long x)
         {
             return System.Math.Abs(x);
@@ -445,7 +445,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the absolute value of the specified number.
         /// </summary>
-        [Pure]
+        
         public static float Abs(this float x)
         {
             return System.Math.Abs(x);
@@ -454,7 +454,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the absolute value of the specified number.
         /// </summary>
-        [Pure]
+        
         public static double Abs(this double x)
         {
             return System.Math.Abs(x);
@@ -463,7 +463,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the absolute value of the specified number.
         /// </summary>
-        [Pure]
+        
         public static decimal Abs(this decimal x)
         {
             return System.Math.Abs(x);
@@ -476,7 +476,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns whether the distance between x and y is not more than epsilon.
         /// </summary>
-        [Pure]
+        
         public static bool ApproximateEquals(this sbyte x, sbyte y, sbyte epsilon)
         {
             return Abs(x - y) <= epsilon;
@@ -485,7 +485,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns whether the distance between x and y is not more than epsilon.
         /// </summary>
-        [Pure]
+        
         public static bool ApproximateEquals(this short x, short y, short epsilon)
         {
             return Abs(x - y) <= epsilon;
@@ -494,7 +494,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns whether the distance between x and y is not more than epsilon.
         /// </summary>
-        [Pure]
+        
         public static bool ApproximateEquals(this int x, int y, int epsilon)
         {
             return Abs(x - y) <= epsilon;
@@ -503,7 +503,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns whether the distance between x and y is not more than epsilon.
         /// </summary>
-        [Pure]
+        
         public static bool ApproximateEquals(this long x, long y, long epsilon)
         {
             return Abs(x - y) <= epsilon;
@@ -512,7 +512,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns whether the distance between x and y is not more than epsilon.
         /// </summary>
-        [Pure]
+        
         public static bool ApproximateEquals(this float x, float y, float epsilon)
         {
             return Abs(x - y) <= epsilon;
@@ -521,7 +521,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns whether the distance between x and y is not more than epsilon.
         /// </summary>
-        [Pure]
+        
         public static bool ApproximateEquals(this double x, double y, double epsilon)
         {
             return Abs(x - y) <= epsilon;
@@ -530,7 +530,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns whether the distance between x and y is not more than epsilon.
         /// </summary>
-        [Pure]
+        
         public static bool ApproximateEquals(this decimal x, decimal y, decimal epsilon)
         {
             return Abs(x - y) <= epsilon;
@@ -543,7 +543,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the largest integer less than or equal to the specified number.
         /// </summary>
-        [Pure]
+        
         public static float Floor(this float x)
         {
             return (float)System.Math.Floor(x);
@@ -552,7 +552,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the largest integer less than or equal to the specified number.
         /// </summary>
-        [Pure]
+        
         public static double Floor(this double x)
         {
             return System.Math.Floor(x);
@@ -565,7 +565,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the smallest integer greater than or equal to the specified number.
         /// </summary>
-        [Pure]
+        
         public static float Ceiling(this float x)
         {
             return (float)System.Math.Ceiling(x);
@@ -574,7 +574,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the smallest integer greater than or equal to the specified number.
         /// </summary>
-        [Pure]
+        
         public static double Ceiling(this double x)
         {
             return System.Math.Ceiling(x);
@@ -587,7 +587,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Rounds a float-point value to the nearest integral value.
         /// </summary>
-        [Pure]
+        
         public static float Round(this float x)
         {
             return (float)System.Math.Round(x);
@@ -596,7 +596,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Rounds a float-point value to the nearest integral value.
         /// </summary>
-        [Pure]
+        
         public static double Round(this double x)
         {
             return System.Math.Round(x);
@@ -609,7 +609,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Clamps value to interval [a,b].
         /// </summary>
-        [Pure]
+        
         public static byte Clamp(this byte x, byte a, byte b)
         {
             if (x < a) return a;
@@ -620,7 +620,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Clamps value to interval [a,b].
         /// </summary>
-        [Pure]
+        
         public static sbyte Clamp(this sbyte x, sbyte a, sbyte b)
         {
             if (x < a) return a;
@@ -631,7 +631,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Clamps value to interval [a,b].
         /// </summary>
-        [Pure]
+        
         public static short Clamp(this short x, short a, short b)
         {
             if (x < a) return a;
@@ -642,7 +642,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Clamps value to interval [a,b].
         /// </summary>
-        [Pure]
+        
         public static ushort Clamp(this ushort x, ushort a, ushort b)
         {
             if (x < a) return a;
@@ -653,7 +653,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Clamps value to interval [a,b].
         /// </summary>
-        [Pure]
+        
         public static int Clamp(this int x, int a, int b)
         {
             if (x < a) return a;
@@ -664,7 +664,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Clamps value to interval [a,b].
         /// </summary>
-        [Pure]
+        
         public static uint Clamp(this uint x, uint a, uint b)
         {
             if (x < a) return a;
@@ -675,7 +675,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Clamps value to interval [a,b].
         /// </summary>
-        [Pure]
+        
         public static long Clamp(this long x, long a, long b)
         {
             if (x < a) return a;
@@ -686,7 +686,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Clamps value to interval [a,b].
         /// </summary>
-        [Pure]
+        
         public static ulong Clamp(this ulong x, ulong a, ulong b)
         {
             if (x < a) return a;
@@ -697,7 +697,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Clamps value to interval [a,b].
         /// </summary>
-        [Pure]
+        
         public static float Clamp(this float x, float a, float b)
         {
             if (x < a) return a;
@@ -708,7 +708,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Clamps value to interval [a,b].
         /// </summary>
-        [Pure]
+        
         public static double Clamp(this double x, double a, double b)
         {
             if (x < a) return a;
@@ -719,7 +719,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Clamps value to interval [a,b].
         /// </summary>
-        [Pure]
+        
         public static decimal Clamp(this decimal x, decimal a, decimal b)
         {
             if (x < a) return a;
@@ -730,7 +730,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Clamps value to interval [a,b].
         /// </summary>
-        [Pure]
+        
         public static int Clamp(this int x, Range1i range)
         {
             if (x < range.Min) return range.Min;
@@ -741,7 +741,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Clamps value to interval [a,b].
         /// </summary>
-        [Pure]
+        
         public static long Clamp(this long x, Range1l range)
         {
             if (x < range.Min) return range.Min;
@@ -752,7 +752,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Clamps value to interval [a,b].
         /// </summary>
-        [Pure]
+        
         public static float Clamp(this float x, Range1f range)
         {
             if (x < range.Min) return range.Min;
@@ -763,7 +763,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Clamps value to interval [a,b].
         /// </summary>
-        [Pure]
+        
         public static double Clamp(this double x, Range1d range)
         {
             if (x < range.Min) return range.Min;
@@ -778,7 +778,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Clamps value to interval [a,b[.
         /// </summary>
-        [Pure]
+        
         public static byte ClampExcl(this byte x, byte a, byte b)
         {
             if (x < a) return a;
@@ -789,7 +789,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Clamps value to interval [a,b[.
         /// </summary>
-        [Pure]
+        
         public static sbyte ClampExcl(this sbyte x, sbyte a, sbyte b)
         {
             if (x < a) return a;
@@ -800,7 +800,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Clamps value to interval [a,b[.
         /// </summary>
-        [Pure]
+        
         public static short ClampExcl(this short x, short a, short b)
         {
             if (x < a) return a;
@@ -811,7 +811,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Clamps value to interval [a,b[.
         /// </summary>
-        [Pure]
+        
         public static ushort ClampExcl(this ushort x, ushort a, ushort b)
         {
             if (x < a) return a;
@@ -822,7 +822,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Clamps value to interval [a,b[.
         /// </summary>
-        [Pure]
+        
         public static int ClampExcl(this int x, int a, int b)
         {
             if (x < a) return a;
@@ -833,7 +833,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Clamps value to interval [a,b[.
         /// </summary>
-        [Pure]
+        
         public static uint ClampExcl(this uint x, uint a, uint b)
         {
             if (x < a) return a;
@@ -844,7 +844,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Clamps value to interval [a,b[.
         /// </summary>
-        [Pure]
+        
         public static long ClampExcl(this long x, long a, long b)
         {
             if (x < a) return a;
@@ -855,7 +855,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Clamps value to interval [a,b[.
         /// </summary>
-        [Pure]
+        
         public static ulong ClampExcl(this ulong x, ulong a, ulong b)
         {
             if (x < a) return a;
@@ -866,7 +866,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Clamps value to interval [a,b[.
         /// </summary>
-        [Pure]
+        
         public static decimal ClampExcl(this decimal x, decimal a, decimal b)
         {
             if (x < a) return a;
@@ -877,7 +877,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Clamps value to interval [a,b[.
         /// </summary>
-        [Pure]
+        
         public static int ClampExcl(this int x, Range1i range)
         {
             if (x < range.Min) return range.Min;
@@ -888,7 +888,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Clamps value to interval [a,b[.
         /// </summary>
-        [Pure]
+        
         public static long ClampExcl(this long x, Range1l range)
         {
             if (x < range.Min) return range.Min;
@@ -903,7 +903,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Clamps value to interval [a,b[ and cyclically wraps around values outside this interval.
         /// </summary>
-        [Pure]
+        
         public static byte ClampWrap(this byte x, byte a, byte b)
         {
             return (byte)(ModP(x - a, b - a) + a);
@@ -912,7 +912,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Clamps value to interval [a,b[ and cyclically wraps around values outside this interval.
         /// </summary>
-        [Pure]
+        
         public static sbyte ClampWrap(this sbyte x, sbyte a, sbyte b)
         {
             return (sbyte)(ModP(x - a, b - a) + a);
@@ -921,7 +921,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Clamps value to interval [a,b[ and cyclically wraps around values outside this interval.
         /// </summary>
-        [Pure]
+        
         public static short ClampWrap(this short x, short a, short b)
         {
             return (short)(ModP(x - a, b - a) + a);
@@ -930,7 +930,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Clamps value to interval [a,b[ and cyclically wraps around values outside this interval.
         /// </summary>
-        [Pure]
+        
         public static ushort ClampWrap(this ushort x, ushort a, ushort b)
         {
             return (ushort)(ModP(x - a, b - a) + a);
@@ -939,7 +939,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Clamps value to interval [a,b[ and cyclically wraps around values outside this interval.
         /// </summary>
-        [Pure]
+        
         public static int ClampWrap(this int x, int a, int b)
         {
             return (int)(ModP(x - a, b - a) + a);
@@ -948,7 +948,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Clamps value to interval [a,b[ and cyclically wraps around values outside this interval.
         /// </summary>
-        [Pure]
+        
         public static uint ClampWrap(this uint x, uint a, uint b)
         {
             return (uint)(ModP(x - a, b - a) + a);
@@ -957,7 +957,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Clamps value to interval [a,b[ and cyclically wraps around values outside this interval.
         /// </summary>
-        [Pure]
+        
         public static long ClampWrap(this long x, long a, long b)
         {
             return (long)(ModP(x - a, b - a) + a);
@@ -966,7 +966,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Clamps value to interval [a,b[ and cyclically wraps around values outside this interval.
         /// </summary>
-        [Pure]
+        
         public static float ClampWrap(this float x, float a, float b)
         {
             return (float)(ModP(x - a, b - a) + a);
@@ -975,7 +975,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Clamps value to interval [a,b[ and cyclically wraps around values outside this interval.
         /// </summary>
-        [Pure]
+        
         public static double ClampWrap(this double x, double a, double b)
         {
             return (double)(ModP(x - a, b - a) + a);
@@ -984,7 +984,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Clamps value to interval [a,b[ and cyclically wraps around values outside this interval.
         /// </summary>
-        [Pure]
+        
         public static decimal ClampWrap(this decimal x, decimal a, decimal b)
         {
             return (decimal)(ModP(x - a, b - a) + a);
@@ -993,7 +993,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Clamps value to interval [a,b[ and cyclically wraps around values outside this interval.
         /// </summary>
-        [Pure]
+        
         public static int ClampWrap(this int x, Range1i range)
         {
             return (int)(ModP(x - range.Min, range.Max - range.Min) + range.Min);
@@ -1002,7 +1002,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Clamps value to interval [a,b[ and cyclically wraps around values outside this interval.
         /// </summary>
-        [Pure]
+        
         public static long ClampWrap(this long x, Range1l range)
         {
             return (long)(ModP(x - range.Min, range.Max - range.Min) + range.Min);
@@ -1011,7 +1011,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Clamps value to interval [a,b[ and cyclically wraps around values outside this interval.
         /// </summary>
-        [Pure]
+        
         public static float ClampWrap(this float x, Range1f range)
         {
             return (float)(ModP(x - range.Min, range.Max - range.Min) + range.Min);
@@ -1020,7 +1020,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Clamps value to interval [a,b[ and cyclically wraps around values outside this interval.
         /// </summary>
-        [Pure]
+        
         public static double ClampWrap(this double x, Range1d range)
         {
             return (double)(ModP(x - range.Min, range.Max - range.Min) + range.Min);
@@ -1040,7 +1040,7 @@ namespace Aardvark.Base
         /// that [0, tMax) [tMax, 2*tMax) [2*tMax, 3*tMax] ... is mapped to
         /// [0,1)[1,0)[0,1)...
         /// </summary>
-        [Pure]
+        
         public static double MapToUnitInterval(
             this double t, double tMax,
             bool repeat, bool mirror
@@ -1068,7 +1068,7 @@ namespace Aardvark.Base
         /// If 'repeat' is true, then every interval [i * tMax, (i+1) * tMax]
         /// (for i from integers) is mapped to [0, 1].
         /// </summary>
-        [Pure]
+        
         public static double MapToUnitInterval(this double t, double tMax, bool repeat)
         {
             t = t / tMax;
@@ -1083,7 +1083,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Maps value from interval [0, tMax] to interval [0, 1].
         /// </summary>
-        [Pure]
+        
         public static double MapToUnitInterval(this double t, double tMax)
         {
             t = t / tMax;
@@ -1095,7 +1095,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Maps value from interval [tMin, tMax] to interval [0, 1].
         /// </summary>
-        [Pure]
+        
         public static double MapToUnitInterval(this double t, double tMin, double tMax)
         {
             t = (t - tMin) / (tMax - tMin);
@@ -1111,7 +1111,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns either -1, 0, or +1, indicating the sign of the specified value .
         /// </summary>
-        [Pure]
+        
         public static int Sign(this sbyte x)
         {
             return System.Math.Sign(x);
@@ -1120,7 +1120,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns either -1, 0, or +1, indicating the sign of the specified value .
         /// </summary>
-        [Pure]
+        
         public static int Sign(this short x)
         {
             return System.Math.Sign(x);
@@ -1129,7 +1129,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns either -1, 0, or +1, indicating the sign of the specified value .
         /// </summary>
-        [Pure]
+        
         public static int Sign(this int x)
         {
             return System.Math.Sign(x);
@@ -1138,7 +1138,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns either -1, 0, or +1, indicating the sign of the specified value .
         /// </summary>
-        [Pure]
+        
         public static int Sign(this long x)
         {
             return System.Math.Sign(x);
@@ -1147,7 +1147,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns either -1, 0, or +1, indicating the sign of the specified value .
         /// </summary>
-        [Pure]
+        
         public static int Sign(this float x)
         {
             return System.Math.Sign(x);
@@ -1156,7 +1156,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns either -1, 0, or +1, indicating the sign of the specified value .
         /// </summary>
-        [Pure]
+        
         public static int Sign(this double x)
         {
             return System.Math.Sign(x);
@@ -1165,7 +1165,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns either -1, 0, or +1, indicating the sign of the specified value .
         /// </summary>
-        [Pure]
+        
         public static int Sign(this decimal x)
         {
             return System.Math.Sign(x);
@@ -1179,7 +1179,7 @@ namespace Aardvark.Base
         /// Returns true if the absolulte value of the supplied float is
         /// smaller than 4 times the machine epsilon.
         /// </summary>
-        [Pure]
+        
         public static bool IsTiny(this float x)
         {
             return x.Abs() < Constant<float>.PositiveTinyValue;
@@ -1189,7 +1189,7 @@ namespace Aardvark.Base
         /// Returns true if the absolulte value of the supplied float <paramref name="x"/> is
         /// smaller than the supplied <paramref name="epsilon"/> .
         /// </summary>
-        [Pure]
+        
         public static bool IsTiny(this float x, float epsilon)
         {
             return x.Abs() < epsilon;
@@ -1199,7 +1199,7 @@ namespace Aardvark.Base
         /// Returns true if the absolulte value of the supplied float is
         /// smaller than 4 times the machine epsilon.
         /// </summary>
-        [Pure]
+        
         public static bool IsTiny(this double x)
         {
             return x.Abs() < Constant<double>.PositiveTinyValue;
@@ -1209,7 +1209,7 @@ namespace Aardvark.Base
         /// Returns true if the absolulte value of the supplied float <paramref name="x"/> is
         /// smaller than the supplied <paramref name="epsilon"/> .
         /// </summary>
-        [Pure]
+        
         public static bool IsTiny(this double x, double epsilon)
         {
             return x.Abs() < epsilon;
@@ -1222,7 +1222,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the sum of the absolute values of the given numbers.
         /// </summary>
-        [Pure]
+        
         public static int AbsSum(this IEnumerable<sbyte> array)
         {
             int sum = 0;
@@ -1233,7 +1233,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the sum of the absolute values of the given numbers.
         /// </summary>
-        [Pure]
+        
         public static long AbsSum(this IEnumerable<short> array)
         {
             long sum = 0;
@@ -1244,7 +1244,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the sum of the absolute values of the given numbers.
         /// </summary>
-        [Pure]
+        
         public static long AbsSum(this IEnumerable<int> array)
         {
             long sum = 0;
@@ -1255,7 +1255,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the sum of the absolute values of the given numbers.
         /// </summary>
-        [Pure]
+        
         public static long AbsSum(this IEnumerable<long> array)
         {
             long sum = 0;
@@ -1266,7 +1266,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the sum of the absolute values of the given numbers.
         /// </summary>
-        [Pure]
+        
         public static double AbsSum(this IEnumerable<float> array)
         {
             double sum = 0;
@@ -1277,7 +1277,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the sum of the absolute values of the given numbers.
         /// </summary>
-        [Pure]
+        
         public static double AbsSum(this IEnumerable<double> array)
         {
             double sum = 0;
@@ -1288,7 +1288,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the sum of the absolute values of the given numbers.
         /// </summary>
-        [Pure]
+        
         public static decimal AbsSum(this IEnumerable<decimal> array)
         {
             decimal sum = 0;
@@ -1300,14 +1300,14 @@ namespace Aardvark.Base
 
         #region Cbrt
 
-        [Pure]
+        
         public static double Cbrt(this float x)
         {
             return x < 0 ? -(float)System.Math.Pow(-x, Constant.OneThird)
                          : (float)System.Math.Pow(x, Constant.OneThird);
         }
 
-        [Pure]
+        
         public static double Cbrt(this double x)
         {
             return x < 0 ? -System.Math.Pow(-x, Constant.OneThird)
@@ -1321,7 +1321,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the square of the specified number.
         /// </summary>
-        [Pure]
+        
         public static int Square(this byte x)
         {
             return x * x;
@@ -1330,7 +1330,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the square of the specified number.
         /// </summary>
-        [Pure]
+        
         public static int Square(this sbyte x)
         {
             return x * x;
@@ -1339,7 +1339,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the square of the specified number.
         /// </summary>
-        [Pure]
+        
         public static long Square(this short x)
         {
             return x * x;
@@ -1348,7 +1348,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the square of the specified number.
         /// </summary>
-        [Pure]
+        
         public static long Square(this ushort x)
         {
             return x * x;
@@ -1357,7 +1357,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the square of the specified number.
         /// </summary>
-        [Pure]
+        
         public static long Square(this int x)
         {
             return x * x;
@@ -1366,7 +1366,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the square of the specified number.
         /// </summary>
-        [Pure]
+        
         public static long Square(this uint x)
         {
             return x * x;
@@ -1375,7 +1375,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the square of the specified number.
         /// </summary>
-        [Pure]
+        
         public static long Square(this long x)
         {
             return x * x;
@@ -1384,7 +1384,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the square of the specified number.
         /// </summary>
-        [Pure]
+        
         public static ulong Square(this ulong x)
         {
             return x * x;
@@ -1393,7 +1393,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the square of the specified number.
         /// </summary>
-        [Pure]
+        
         public static double Square(this float x)
         {
             return x * x;
@@ -1402,7 +1402,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the square of the specified number.
         /// </summary>
-        [Pure]
+        
         public static double Square(this double x)
         {
             return x * x;
@@ -1411,7 +1411,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the square of the specified number.
         /// </summary>
-        [Pure]
+        
         public static decimal Square(this decimal x)
         {
             return x * x;
@@ -1424,7 +1424,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the square root of the specified number.
         /// </summary>
-        [Pure]
+        
         public static double Sqrt(this byte x)
         {
             return System.Math.Sqrt(x);
@@ -1433,7 +1433,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the square root of the specified number.
         /// </summary>
-        [Pure]
+        
         public static double Sqrt(this sbyte x)
         {
             return System.Math.Sqrt(x);
@@ -1442,7 +1442,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the square root of the specified number.
         /// </summary>
-        [Pure]
+        
         public static double Sqrt(this short x)
         {
             return System.Math.Sqrt(x);
@@ -1451,7 +1451,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the square root of the specified number.
         /// </summary>
-        [Pure]
+        
         public static double Sqrt(this ushort x)
         {
             return System.Math.Sqrt(x);
@@ -1460,7 +1460,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the square root of the specified number.
         /// </summary>
-        [Pure]
+        
         public static double Sqrt(this int x)
         {
             return System.Math.Sqrt(x);
@@ -1469,7 +1469,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the square root of the specified number.
         /// </summary>
-        [Pure]
+        
         public static double Sqrt(this uint x)
         {
             return System.Math.Sqrt(x);
@@ -1478,7 +1478,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the square root of the specified number.
         /// </summary>
-        [Pure]
+        
         public static double Sqrt(this long x)
         {
             return System.Math.Sqrt(x);
@@ -1487,7 +1487,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the square root of the specified number.
         /// </summary>
-        [Pure]
+        
         public static double Sqrt(this ulong x)
         {
             return System.Math.Sqrt(x);
@@ -1496,7 +1496,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the square root of the specified number.
         /// </summary>
-        [Pure]
+        
         public static double Sqrt(this double x)
         {
             return System.Math.Sqrt(x);
@@ -1505,7 +1505,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the square root of the specified number.
         /// </summary>
-        [Pure]
+        
         public static float Sqrt(this float x)
         {
             return (float)System.Math.Sqrt(x);
@@ -1518,7 +1518,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the number raised to the specified power.
         /// </summary>
-        [Pure]
+        
         public static double Pow(this int x, double y)
         {
             return System.Math.Pow(x, y);
@@ -1527,7 +1527,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the number raised to the specified power.
         /// </summary>
-        [Pure]
+        
         public static double Pow(this long x, double y)
         {
             return System.Math.Pow(x, y);
@@ -1536,7 +1536,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the number raised to the specified power.
         /// </summary>
-        [Pure]
+        
         public static float Pow(this float x, float y)
         {
             return (float)System.Math.Pow(x, y);
@@ -1545,7 +1545,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the number raised to the specified power.
         /// </summary>
-        [Pure]
+        
         public static double Pow(this double x, double y)
         {
             return System.Math.Pow(x, y);
@@ -1558,7 +1558,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns e raised to the specified number.
         /// </summary>
-        [Pure]
+        
         public static float Exp(this float x)
         {
             return (float)System.Math.Exp(x);
@@ -1567,7 +1567,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns e raised to the specified number.
         /// </summary>
-        [Pure]
+        
         public static double Exp(this double x)
         {
             return System.Math.Exp(x);
@@ -1581,7 +1581,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the natural (base e) logarithm of the specified number.
         /// </summary>
-        [Pure]
+        
         public static double Log(this byte x)
         {
             return System.Math.Log(x);
@@ -1590,7 +1590,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the base 10 logarithm of the specified number.
         /// </summary>
-        [Pure]
+        
         public static double Log10(this byte x)
         {
             return System.Math.Log10(x);
@@ -1599,7 +1599,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the base 2 logarithm of the specified number.
         /// </summary>
-        [Pure]
+        
         public static double Log2(this byte x)
         {
             return x.Log() * Constant.Ln2Inv;
@@ -1608,7 +1608,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the values logarithm of the specified basis.
         /// </summary>
-        [Pure]
+        
         public static double Log(this byte x, double basis)
         {
             return x.Log() / basis.Log();
@@ -1617,7 +1617,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the natural (base e) logarithm of the specified number.
         /// </summary>
-        [Pure]
+        
         public static double Log(this sbyte x)
         {
             return System.Math.Log(x);
@@ -1626,7 +1626,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the base 10 logarithm of the specified number.
         /// </summary>
-        [Pure]
+        
         public static double Log10(this sbyte x)
         {
             return System.Math.Log10(x);
@@ -1635,7 +1635,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the base 2 logarithm of the specified number.
         /// </summary>
-        [Pure]
+        
         public static double Log2(this sbyte x)
         {
             return x.Log() * Constant.Ln2Inv;
@@ -1644,7 +1644,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the values logarithm of the specified basis.
         /// </summary>
-        [Pure]
+        
         public static double Log(this sbyte x, double basis)
         {
             return x.Log() / basis.Log();
@@ -1653,7 +1653,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the natural (base e) logarithm of the specified number.
         /// </summary>
-        [Pure]
+        
         public static double Log(this short x)
         {
             return System.Math.Log(x);
@@ -1662,7 +1662,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the base 10 logarithm of the specified number.
         /// </summary>
-        [Pure]
+        
         public static double Log10(this short x)
         {
             return System.Math.Log10(x);
@@ -1671,7 +1671,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the base 2 logarithm of the specified number.
         /// </summary>
-        [Pure]
+        
         public static double Log2(this short x)
         {
             return x.Log() * Constant.Ln2Inv;
@@ -1680,7 +1680,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the values logarithm of the specified basis.
         /// </summary>
-        [Pure]
+        
         public static double Log(this short x, double basis)
         {
             return x.Log() / basis.Log();
@@ -1689,7 +1689,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the natural (base e) logarithm of the specified number.
         /// </summary>
-        [Pure]
+        
         public static double Log(this ushort x)
         {
             return System.Math.Log(x);
@@ -1698,7 +1698,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the base 10 logarithm of the specified number.
         /// </summary>
-        [Pure]
+        
         public static double Log10(this ushort x)
         {
             return System.Math.Log10(x);
@@ -1707,7 +1707,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the base 2 logarithm of the specified number.
         /// </summary>
-        [Pure]
+        
         public static double Log2(this ushort x)
         {
             return x.Log() * Constant.Ln2Inv;
@@ -1716,7 +1716,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the values logarithm of the specified basis.
         /// </summary>
-        [Pure]
+        
         public static double Log(this ushort x, double basis)
         {
             return x.Log() / basis.Log();
@@ -1725,7 +1725,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the natural (base e) logarithm of the specified number.
         /// </summary>
-        [Pure]
+        
         public static double Log(this int x)
         {
             return System.Math.Log(x);
@@ -1734,7 +1734,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the base 10 logarithm of the specified number.
         /// </summary>
-        [Pure]
+        
         public static double Log10(this int x)
         {
             return System.Math.Log10(x);
@@ -1743,7 +1743,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the base 2 logarithm of the specified number.
         /// </summary>
-        [Pure]
+        
         public static double Log2(this int x)
         {
             return x.Log() * Constant.Ln2Inv;
@@ -1752,7 +1752,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the values logarithm of the specified basis.
         /// </summary>
-        [Pure]
+        
         public static double Log(this int x, double basis)
         {
             return x.Log() / basis.Log();
@@ -1761,7 +1761,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the natural (base e) logarithm of the specified number.
         /// </summary>
-        [Pure]
+        
         public static double Log(this uint x)
         {
             return System.Math.Log(x);
@@ -1770,7 +1770,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the base 10 logarithm of the specified number.
         /// </summary>
-        [Pure]
+        
         public static double Log10(this uint x)
         {
             return System.Math.Log10(x);
@@ -1779,7 +1779,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the base 2 logarithm of the specified number.
         /// </summary>
-        [Pure]
+        
         public static double Log2(this uint x)
         {
             return x.Log() * Constant.Ln2Inv;
@@ -1788,7 +1788,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the values logarithm of the specified basis.
         /// </summary>
-        [Pure]
+        
         public static double Log(this uint x, double basis)
         {
             return x.Log() / basis.Log();
@@ -1797,7 +1797,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the natural (base e) logarithm of the specified number.
         /// </summary>
-        [Pure]
+        
         public static double Log(this long x)
         {
             return System.Math.Log(x);
@@ -1806,7 +1806,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the base 10 logarithm of the specified number.
         /// </summary>
-        [Pure]
+        
         public static double Log10(this long x)
         {
             return System.Math.Log10(x);
@@ -1815,7 +1815,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the base 2 logarithm of the specified number.
         /// </summary>
-        [Pure]
+        
         public static double Log2(this long x)
         {
             return x.Log() * Constant.Ln2Inv;
@@ -1824,7 +1824,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the values logarithm of the specified basis.
         /// </summary>
-        [Pure]
+        
         public static double Log(this long x, double basis)
         {
             return x.Log() / basis.Log();
@@ -1833,7 +1833,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the natural (base e) logarithm of the specified number.
         /// </summary>
-        [Pure]
+        
         public static double Log(this ulong x)
         {
             return System.Math.Log(x);
@@ -1842,7 +1842,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the base 10 logarithm of the specified number.
         /// </summary>
-        [Pure]
+        
         public static double Log10(this ulong x)
         {
             return System.Math.Log10(x);
@@ -1851,7 +1851,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the base 2 logarithm of the specified number.
         /// </summary>
-        [Pure]
+        
         public static double Log2(this ulong x)
         {
             return x.Log() * Constant.Ln2Inv;
@@ -1860,7 +1860,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the values logarithm of the specified basis.
         /// </summary>
-        [Pure]
+        
         public static double Log(this ulong x, double basis)
         {
             return x.Log() / basis.Log();
@@ -1869,7 +1869,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the natural (base e) logarithm of the specified number.
         /// </summary>
-        [Pure]
+        
         public static double Log(this float x)
         {
             return System.Math.Log(x);
@@ -1878,7 +1878,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the base 10 logarithm of the specified number.
         /// </summary>
-        [Pure]
+        
         public static double Log10(this float x)
         {
             return System.Math.Log10(x);
@@ -1887,7 +1887,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the base 2 logarithm of the specified number.
         /// </summary>
-        [Pure]
+        
         public static double Log2(this float x)
         {
             return x.Log() * Constant.Ln2Inv;
@@ -1896,7 +1896,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the values logarithm of the specified basis.
         /// </summary>
-        [Pure]
+        
         public static double Log(this float x, double basis)
         {
             return x.Log() / basis.Log();
@@ -1905,7 +1905,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the natural (base e) logarithm of the specified number.
         /// </summary>
-        [Pure]
+        
         public static double Log(this double x)
         {
             return System.Math.Log(x);
@@ -1914,7 +1914,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the base 10 logarithm of the specified number.
         /// </summary>
-        [Pure]
+        
         public static double Log10(this double x)
         {
             return System.Math.Log10(x);
@@ -1923,7 +1923,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the base 2 logarithm of the specified number.
         /// </summary>
-        [Pure]
+        
         public static double Log2(this double x)
         {
             return x.Log() * Constant.Ln2Inv;
@@ -1932,7 +1932,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the values logarithm of the specified basis.
         /// </summary>
-        [Pure]
+        
         public static double Log(this double x, double basis)
         {
             return x.Log() / basis.Log();
@@ -2394,7 +2394,7 @@ namespace Aardvark.Base
         /// Returns the positive modulo operation a mod b giving values between [0,b[ 
         /// instead of a % b giving values between ]-b,b[.
         /// </summary>
-        [Pure]
+        
         public static sbyte ModP(this sbyte a, sbyte b)
         {
             var m = a % b;
@@ -2407,7 +2407,7 @@ namespace Aardvark.Base
         /// Returns the positive modulo operation a mod b giving values between [0,b[ 
         /// instead of a % b giving values between ]-b,b[.
         /// </summary>
-        [Pure]
+        
         public static short ModP(this short a, short b)
         {
             var m = a % b;
@@ -2420,7 +2420,7 @@ namespace Aardvark.Base
         /// Returns the positive modulo operation a mod b giving values between [0,b[ 
         /// instead of a % b giving values between ]-b,b[.
         /// </summary>
-        [Pure]
+        
         public static int ModP(this int a, int b)
         {
             var m = a % b;
@@ -2433,7 +2433,7 @@ namespace Aardvark.Base
         /// Returns the positive modulo operation a mod b giving values between [0,b[ 
         /// instead of a % b giving values between ]-b,b[.
         /// </summary>
-        [Pure]
+        
         public static long ModP(this long a, long b)
         {
             var m = a % b;
@@ -2446,7 +2446,7 @@ namespace Aardvark.Base
         /// Returns the positive modulo operation a mod b giving values between [0,b[ 
         /// instead of a % b giving values between ]-b,b[.
         /// </summary>
-        [Pure]
+        
         public static float ModP(this float a, float b)
         {
             var m = a % b;
@@ -2459,7 +2459,7 @@ namespace Aardvark.Base
         /// Returns the positive modulo operation a mod b giving values between [0,b[ 
         /// instead of a % b giving values between ]-b,b[.
         /// </summary>
-        [Pure]
+        
         public static double ModP(this double a, double b)
         {
             var m = a % b;
@@ -2472,7 +2472,7 @@ namespace Aardvark.Base
         /// Returns the positive modulo operation a mod b giving values between [0,b[ 
         /// instead of a % b giving values between ]-b,b[.
         /// </summary>
-        [Pure]
+        
         public static decimal ModP(this decimal a, decimal b)
         {
             var m = a % b;
@@ -2489,7 +2489,7 @@ namespace Aardvark.Base
         /// Returns true if the supplied number is 0
         /// or a power of two.
         /// </summary>
-        [Pure]
+        
         public static bool IsPowerOfTwo(this int x)
         {
             return (x & (x - 1)) == 0;
@@ -2499,7 +2499,7 @@ namespace Aardvark.Base
         /// Returns true if the supplied number is 0
         /// or a power of two.
         /// </summary>
-        [Pure]
+        
         public static bool IsPowerOfTwo(this long x)
         {
             return (x & (x - 1)) == 0;
@@ -2508,7 +2508,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns 2 raised to the power of the value.
         /// </summary>
-        [Pure]
+        
         public static long PowerOfTwo(this long x)
         {
             return 1L << (int)x;
@@ -2517,7 +2517,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns 2 raised to the power of the value.
         /// </summary>
-        [Pure]
+        
         public static float PowerOfTwo(this float x)
         {
             return (float)System.Math.Pow(2, x);
@@ -2526,7 +2526,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns 2 raised to the power of the value.
         /// </summary>
-        [Pure]
+        
         public static double PowerOfTwo(this double x)
         {
             return System.Math.Pow(2, x);
@@ -2537,7 +2537,7 @@ namespace Aardvark.Base
         /// E.g. x = 401 -> 512.
         /// E.g. x = 256 -> 256.
         /// </summary>
-        [Pure]
+        
         public static int NextPowerOfTwo(this int x)
         {
             --x;
@@ -2554,7 +2554,7 @@ namespace Aardvark.Base
         /// E.g. x = 401 -> 256.
         /// E.g. x = 512 -> 512.
         /// </summary>
-        [Pure]
+        
         public static int PrevPowerOfTwo(this int x)
         {
             if (x <= 0) return 0;
@@ -2572,7 +2572,7 @@ namespace Aardvark.Base
         /// E.g. x = 401 -> 512.
         /// E.g. x = 256 -> 256.
         /// </summary>
-        [Pure]
+        
         public static long NextPowerOfTwo(this long x)
         {
             --x;
@@ -2590,7 +2590,7 @@ namespace Aardvark.Base
         /// E.g. x = 401 -> 256.
         /// E.g. x = 512 -> 512.
         /// </summary>
-        [Pure]
+        
         public static long PrevPowerOfTwo(this long x)
         {
             if (x <= 0) return 0;
@@ -2611,7 +2611,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the cosine of the specified angle in radians.
         /// </summary>
-        [Pure]
+        
         public static float Sin(this float x)
         {
             return (float)System.Math.Sin(x);
@@ -2620,7 +2620,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the cosine of the specified angle in radians.
         /// </summary>
-        [Pure]
+        
         public static float Cos(this float x)
         {
             return (float)System.Math.Cos(x);
@@ -2629,7 +2629,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the tangent of the specified angle in radians.
         /// </summary>
-        [Pure]
+        
         public static float Tan(this float x)
         {
             return (float)System.Math.Tan(x);
@@ -2638,7 +2638,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the angle in radians whose sine is the specified number.
         /// </summary>
-        [Pure]
+        
         public static float Asin(this float x)
         {
             return (float)System.Math.Asin(x);
@@ -2647,7 +2647,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the angle in radians whose cosine is the specified number.
         /// </summary>
-        [Pure]
+        
         public static float Acos(this float x)
         {
             return (float)System.Math.Acos(x);
@@ -2656,7 +2656,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the angle in radians whose tangent is the specified number.
         /// </summary>
-        [Pure]
+        
         public static float Atan(this float x)
         {
             return (float)System.Math.Atan(x);
@@ -2666,7 +2666,7 @@ namespace Aardvark.Base
         /// Returns the angle in radians whose tangent is
         /// the quotient of the two specified number.
         /// </summary>
-        [Pure]
+        
         public static float Atan2(float y, float x)
         {
             return (float)System.Math.Atan2(y, x);
@@ -2678,7 +2678,7 @@ namespace Aardvark.Base
         /// a faster algorithm than Math.Atan2.
         /// NOTE: Accuracy untested
         /// </summary>
-        [Pure]
+        
         public static float FastAtan2(float y, float x)
         {
             float angle;
@@ -2701,7 +2701,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the hyperbolic sine of the specified number.
         /// </summary>
-        [Pure]
+        
         public static float Sinh(this float x)
         {
             return (float)System.Math.Sinh(x);
@@ -2710,7 +2710,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the hyperbolic cosine of the specified number.
         /// </summary>
-        [Pure]
+        
         public static float Cosh(this float x)
         {
             return (float)System.Math.Cosh(x);
@@ -2719,7 +2719,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the hyperbolic tangent of the specified number.
         /// </summary>
-        [Pure]
+        
         public static float Tanh(this float x)
         {
             return (float)System.Math.Tanh(x);
@@ -2728,7 +2728,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the inverse hyperbolic sine of the specified number.
         /// </summary>
-        [Pure]
+        
         public static float Asinh(this float x)
         {
             return (float)System.Math.Log(x + System.Math.Sqrt(x * x + 1.0));
@@ -2737,7 +2737,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the inverse hyperbolic cosine of the specified number.
         /// </summary>
-        [Pure]
+        
         public static float Acosh(this float x)
         {
             return (float)System.Math.Log(x + System.Math.Sqrt(x * x - 1.0));
@@ -2747,7 +2747,7 @@ namespace Aardvark.Base
         /// Returns the inverse hyperbolic tangent of the specified number.
         /// Note that the absolute value of the argument must be smaller than 1.
         /// </summary>
-        [Pure]
+        
         public static float Atanh(this float x)
         {
             return (float)(0.5 * System.Math.Log((1.0 + x)/(1.0 - x)));
@@ -2756,7 +2756,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the cosine of the specified angle in radians.
         /// </summary>
-        [Pure]
+        
         public static double Sin(this double x)
         {
             return System.Math.Sin(x);
@@ -2765,7 +2765,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the cosine of the specified angle in radians.
         /// </summary>
-        [Pure]
+        
         public static double Cos(this double x)
         {
             return System.Math.Cos(x);
@@ -2774,7 +2774,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the tangent of the specified angle in radians.
         /// </summary>
-        [Pure]
+        
         public static double Tan(this double x)
         {
             return System.Math.Tan(x);
@@ -2783,7 +2783,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the angle in radians whose sine is the specified number.
         /// </summary>
-        [Pure]
+        
         public static double Asin(this double x)
         {
             return System.Math.Asin(x);
@@ -2792,7 +2792,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the angle in radians whose cosine is the specified number.
         /// </summary>
-        [Pure]
+        
         public static double Acos(this double x)
         {
             return System.Math.Acos(x);
@@ -2801,7 +2801,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the angle in radians whose tangent is the specified number.
         /// </summary>
-        [Pure]
+        
         public static double Atan(this double x)
         {
             return System.Math.Atan(x);
@@ -2811,7 +2811,7 @@ namespace Aardvark.Base
         /// Returns the angle in radians whose tangent is
         /// the quotient of the two specified number.
         /// </summary>
-        [Pure]
+        
         public static double Atan2(double y, double x)
         {
             return System.Math.Atan2(y, x);
@@ -2823,7 +2823,7 @@ namespace Aardvark.Base
         /// a faster algorithm than Math.Atan2.
         /// NOTE: Accuracy untested
         /// </summary>
-        [Pure]
+        
         public static double FastAtan2(double y, double x)
         {
             double angle;
@@ -2846,7 +2846,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the hyperbolic sine of the specified number.
         /// </summary>
-        [Pure]
+        
         public static double Sinh(this double x)
         {
             return System.Math.Sinh(x);
@@ -2855,7 +2855,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the hyperbolic cosine of the specified number.
         /// </summary>
-        [Pure]
+        
         public static double Cosh(this double x)
         {
             return System.Math.Cosh(x);
@@ -2864,7 +2864,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the hyperbolic tangent of the specified number.
         /// </summary>
-        [Pure]
+        
         public static double Tanh(this double x)
         {
             return System.Math.Tanh(x);
@@ -2873,7 +2873,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the inverse hyperbolic sine of the specified number.
         /// </summary>
-        [Pure]
+        
         public static double Asinh(this double x)
         {
             return System.Math.Log(x + System.Math.Sqrt(x * x + 1.0));
@@ -2882,7 +2882,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the inverse hyperbolic cosine of the specified number.
         /// </summary>
-        [Pure]
+        
         public static double Acosh(this double x)
         {
             return System.Math.Log(x + System.Math.Sqrt(x * x - 1.0));
@@ -2892,7 +2892,7 @@ namespace Aardvark.Base
         /// Returns the inverse hyperbolic tangent of the specified number.
         /// Note that the absolute value of the argument must be smaller than 1.
         /// </summary>
-        [Pure]
+        
         public static double Atanh(this double x)
         {
             return (0.5 * System.Math.Log((1.0 + x)/(1.0 - x)));
@@ -2905,7 +2905,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the mean of the given values.
         /// </summary>
-        [Pure]
+        
         public static double Mean(this IEnumerable<byte> array)
         {
             int count = 0;
@@ -2917,7 +2917,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the mean of the given values.
         /// </summary>
-        [Pure]
+        
         public static double Mean(this IEnumerable<sbyte> array)
         {
             int count = 0;
@@ -2929,7 +2929,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the mean of the given values.
         /// </summary>
-        [Pure]
+        
         public static double Mean(this IEnumerable<short> array)
         {
             int count = 0;
@@ -2941,7 +2941,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the mean of the given values.
         /// </summary>
-        [Pure]
+        
         public static double Mean(this IEnumerable<ushort> array)
         {
             int count = 0;
@@ -2953,7 +2953,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the mean of the given values.
         /// </summary>
-        [Pure]
+        
         public static double Mean(this IEnumerable<int> array)
         {
             int count = 0;
@@ -2965,7 +2965,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the mean of the given values.
         /// </summary>
-        [Pure]
+        
         public static double Mean(this IEnumerable<uint> array)
         {
             int count = 0;
@@ -2977,7 +2977,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the mean of the given values.
         /// </summary>
-        [Pure]
+        
         public static double Mean(this IEnumerable<long> array)
         {
             int count = 0;
@@ -2989,7 +2989,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the mean of the given values.
         /// </summary>
-        [Pure]
+        
         public static double Mean(this IEnumerable<ulong> array)
         {
             int count = 0;
@@ -3001,7 +3001,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the mean of the given values.
         /// </summary>
-        [Pure]
+        
         public static double Mean(this IEnumerable<float> array)
         {
             int count = 0;
@@ -3013,7 +3013,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the mean of the given values.
         /// </summary>
-        [Pure]
+        
         public static double Mean(this IEnumerable<double> array)
         {
             int count = 0;
@@ -3022,7 +3022,7 @@ namespace Aardvark.Base
             return (double)sum / count;
         }
 
-        [Pure]
+        
         public static decimal Mean(this IEnumerable<decimal> array)
         {
             int count = 0; decimal sum = 0;
@@ -3033,7 +3033,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the mean of the given values.
         /// </summary>
-        [Pure]
+        
         public static double Mean<T>(
             this IEnumerable<T> array,
             Func<T, double> selector
@@ -3051,7 +3051,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Calculates the variance of given elements.
         /// </summary>
-        [Pure]
+        
         public static double Variance(this IEnumerable<int> data)
         {
             int count = 0;
@@ -3069,7 +3069,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Calculates the standard deviation of given elements.
         /// </summary>
-        [Pure]
+        
         public static double StandardDeviation(this IEnumerable<int> data)
         {
             return data.Variance().Sqrt();
@@ -3078,7 +3078,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Calculates the variance of given elements.
         /// </summary>
-        [Pure]
+        
         public static double Variance(this IEnumerable<long> data)
         {
             int count = 0;
@@ -3096,7 +3096,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Calculates the standard deviation of given elements.
         /// </summary>
-        [Pure]
+        
         public static double StandardDeviation(this IEnumerable<long> data)
         {
             return data.Variance().Sqrt();
@@ -3105,7 +3105,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Calculates the variance of given elements.
         /// </summary>
-        [Pure]
+        
         public static double Variance(this IEnumerable<float> data)
         {
             int count = 0;
@@ -3123,7 +3123,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Calculates the standard deviation of given elements.
         /// </summary>
-        [Pure]
+        
         public static double StandardDeviation(this IEnumerable<float> data)
         {
             return data.Variance().Sqrt();
@@ -3132,7 +3132,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Calculates the variance of given elements.
         /// </summary>
-        [Pure]
+        
         public static double Variance(this IEnumerable<double> data)
         {
             int count = 0;
@@ -3150,7 +3150,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Calculates the standard deviation of given elements.
         /// </summary>
-        [Pure]
+        
         public static double StandardDeviation(this IEnumerable<double> data)
         {
             return data.Variance().Sqrt();
@@ -3159,7 +3159,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Calculates the variance of given elements.
         /// </summary>
-        [Pure]
+        
         public static double Variance<T>(
             this IEnumerable<T> data,
             Func<T, double> selector
@@ -3180,7 +3180,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Calculates the standard deviation of given elements.
         /// </summary>
-        [Pure]
+        
         public static double StandardDeviation<T>(
             this IEnumerable<T> data,
             Func<T, double> selector)
@@ -3195,7 +3195,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Return the number of values greater than 0.
         /// </summary>
-        [Pure]
+        
         public static int CountPositives(this IEnumerable<sbyte> array)
         {
             int count = 0;
@@ -3206,7 +3206,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Return the number of values greater than 0.
         /// </summary>
-        [Pure]
+        
         public static int CountPositives(this IEnumerable<short> array)
         {
             int count = 0;
@@ -3217,7 +3217,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Return the number of values greater than 0.
         /// </summary>
-        [Pure]
+        
         public static int CountPositives(this IEnumerable<int> array)
         {
             int count = 0;
@@ -3228,7 +3228,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Return the number of values greater than 0.
         /// </summary>
-        [Pure]
+        
         public static int CountPositives(this IEnumerable<long> array)
         {
             int count = 0;
@@ -3239,7 +3239,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Return the number of values greater than 0.
         /// </summary>
-        [Pure]
+        
         public static int CountPositives(this IEnumerable<float> array)
         {
             int count = 0;
@@ -3250,7 +3250,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Return the number of values greater than 0.
         /// </summary>
-        [Pure]
+        
         public static int CountPositives(this IEnumerable<double> array)
         {
             int count = 0;
@@ -3261,7 +3261,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Return the number of values greater than 0.
         /// </summary>
-        [Pure]
+        
         public static int CountPositives(this IEnumerable<decimal> array)
         {
             int count = 0;
@@ -3277,7 +3277,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Return the number of values less than 0.
         /// </summary>
-        [Pure]
+        
         public static int CountNegatives(this IEnumerable<sbyte> array)
         {
             int count = 0;
@@ -3288,7 +3288,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Return the number of values less than 0.
         /// </summary>
-        [Pure]
+        
         public static int CountNegatives(this IEnumerable<short> array)
         {
             int count = 0;
@@ -3299,7 +3299,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Return the number of values less than 0.
         /// </summary>
-        [Pure]
+        
         public static int CountNegatives(this IEnumerable<int> array)
         {
             int count = 0;
@@ -3310,7 +3310,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Return the number of values less than 0.
         /// </summary>
-        [Pure]
+        
         public static int CountNegatives(this IEnumerable<long> array)
         {
             int count = 0;
@@ -3321,7 +3321,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Return the number of values less than 0.
         /// </summary>
-        [Pure]
+        
         public static int CountNegatives(this IEnumerable<float> array)
         {
             int count = 0;
@@ -3332,7 +3332,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Return the number of values less than 0.
         /// </summary>
-        [Pure]
+        
         public static int CountNegatives(this IEnumerable<double> array)
         {
             int count = 0;
@@ -3343,7 +3343,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Return the number of values less than 0.
         /// </summary>
-        [Pure]
+        
         public static int CountNegatives(this IEnumerable<decimal> array)
         {
             int count = 0;
@@ -3358,7 +3358,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns fractional part of t. Calculated as t - floor(t).
         /// </summary>
-        [Pure]
+        
         public static double Frac(this double t)
         {
             return t - System.Math.Floor(t);
@@ -3367,7 +3367,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns fractional part of t. Calculated as t - floor(t).
         /// </summary>
-        [Pure]
+        
         public static float Frac(this float t)
         {
             return (float)(t - System.Math.Floor(t));
@@ -3376,7 +3376,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns fractional part of t. Calculated as t - floor(t).
         /// </summary>
-        [Pure]
+        
         public static decimal Frac(this decimal t)
         {
             return t - System.Math.Floor(t);
@@ -3391,7 +3391,7 @@ namespace Aardvark.Base
         /// </summary>
         /// <param name="value">The number to check.</param>
         /// <returns><c>True</c> if the number is a prime; otherwise, <c>False</c>.</returns>
-        [Pure]
+        
         public static bool IsPrime(this int value)
         {
             int imax = (int)System.Math.Sqrt(value);
@@ -3407,7 +3407,7 @@ namespace Aardvark.Base
         /// </summary>
         /// <param name="value">The number to check.</param>
         /// <returns><c>True</c> if the number is a prime; otherwise, <c>False</c>.</returns>
-        [Pure]
+        
         public static bool IsPrime(this long value)
         {
             long imax = (long)System.Math.Sqrt(value);
@@ -3465,13 +3465,13 @@ namespace Aardvark.Base
 
         #region Common Divisor and Multiple
 
-        [Pure]
+        
         public static long GreatestCommonDivisor(long a, long b)
         {
             return b == 0 ? a : GreatestCommonDivisor(b, a % b);
         }
 
-        [Pure]
+        
         public static long LeastCommonMultiple(long a, long b)
         {
             return a * b / GreatestCommonDivisor(a, b);
@@ -3481,25 +3481,25 @@ namespace Aardvark.Base
 
         #region Conversion
 
-        [Pure]
+        
         public static int ToInt(this float x)
         {
             return (int)x;
         }
 
-        [Pure]
+        
         public static long ToLong(this float x)
         {
             return (long)x;
         }
 
-        [Pure]
+        
         public static int ToInt(this double x)
         {
             return (int)x;
         }
 
-        [Pure]
+        
         public static long ToLong(this double x)
         {
             return (long)x;
@@ -3509,11 +3509,11 @@ namespace Aardvark.Base
 
         #region Weighted Sum
 
-        [Pure]
+        
         public static double WeightedSum(this double[] items, double[] weights)
         {
             var r = 0.0;
-            var count = weights.LongLength;
+            var count = weights.Length;
             for (long i = 0; i < count; i++) r += weights[i] * items[i];
             return r;
         }

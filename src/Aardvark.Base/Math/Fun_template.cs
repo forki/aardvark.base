@@ -21,31 +21,31 @@ namespace Aardvark.Base
         #region Min and Max
 
         //# Meta.ComparableTypes.ForEach(t => { var type = t.Name;
-        [Pure]
+        
         public static __type__ Min(__type__ a, __type__ b) { return a < b ? a : b; }
         
-        [Pure]
+        
         public static __type__ Max(__type__ a, __type__ b) { return a > b ? a : b; }
 
-        [Pure]
+        
         public static __type__ Min(__type__ a, __type__ b, __type__ c)
         {
             return a < b ? (a < c ? a : c) : (b < c ? b : c);
         }
 
-        [Pure]
+        
         public static __type__ Max(__type__ a, __type__ b, __type__ c)
         {
             return a > b ? (a > c ? a : c) : (b > c ? b : c);
         }
 
-        [Pure]
+        
         public static __type__ Min(__type__ a, __type__ b, __type__ c, __type__ d)
         {
             return Min(Min(a, b), Min(c, d));
         }
 
-        [Pure]
+        
         public static __type__ Max(__type__ a, __type__ b, __type__ c, __type__ d)
         {
             return Max(Max(a, b), Max(c, d));
@@ -60,7 +60,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the absolute value of the specified number.
         /// </summary>
-        [Pure]
+        
         public static __t.Name__ Abs(this __t.Name__ x)
         {
             return System.Math.Abs(x);
@@ -75,7 +75,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns whether the distance between x and y is not more than epsilon.
         /// </summary>
-        [Pure]
+        
         public static bool ApproximateEquals(this __t.Name__ x, __t.Name__ y, __t.Name__ epsilon)
         {
             return Abs(x - y) <= epsilon;
@@ -90,7 +90,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the largest integer less than or equal to the specified number.
         /// </summary>
-        [Pure]
+        
         public static __t.Name__ Floor(this __t.Name__ x)
         {
             return /*# if (t != Meta.DoubleType) { */(__t.Name__)/*# } */System.Math.Floor(x);
@@ -105,7 +105,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the smallest integer greater than or equal to the specified number.
         /// </summary>
-        [Pure]
+        
         public static __t.Name__ Ceiling(this __t.Name__ x)
         {
             return /*# if (t != Meta.DoubleType) { */(__t.Name__)/*# } */System.Math.Ceiling(x);
@@ -120,7 +120,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Rounds a float-point value to the nearest integral value.
         /// </summary>
-        [Pure]
+        
         public static __t.Name__ Round(this __t.Name__ x)
         {
             return /*# if (t != Meta.DoubleType) { */(__t.Name__)/*# } */System.Math.Round(x);
@@ -135,7 +135,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Clamps value to interval [a,b].
         /// </summary>
-        [Pure]
+        
         public static __t.Name__ Clamp(this __t.Name__ x, __t.Name__ a, __t.Name__ b)
         {
             if (x < a) return a;
@@ -148,7 +148,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Clamps value to interval [a,b].
         /// </summary>
-        [Pure]
+        
         public static __t.Name__ Clamp(this __t.Name__ x, Range1__t.Char__ range)
         {
             if (x < range.Min) return range.Min;
@@ -165,7 +165,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Clamps value to interval [a,b[.
         /// </summary>
-        [Pure]
+        
         public static __t.Name__ ClampExcl(this __t.Name__ x, __t.Name__ a, __t.Name__ b)
         {
             if (x < a) return a;
@@ -178,7 +178,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Clamps value to interval [a,b[.
         /// </summary>
-        [Pure]
+        
         public static __t.Name__ ClampExcl(this __t.Name__ x, Range1__t.Char__ range)
         {
             if (x < range.Min) return range.Min;
@@ -195,7 +195,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Clamps value to interval [a,b[ and cyclically wraps around values outside this interval.
         /// </summary>
-        [Pure]
+        
         public static __t.Name__ ClampWrap(this __t.Name__ x, __t.Name__ a, __t.Name__ b)
         {
             return (__t.Name__)(ModP(x - a, b - a) + a);
@@ -206,7 +206,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Clamps value to interval [a,b[ and cyclically wraps around values outside this interval.
         /// </summary>
-        [Pure]
+        
         public static __t.Name__ ClampWrap(this __t.Name__ x, Range1__t.Char__ range)
         {
             return (__t.Name__)(ModP(x - range.Min, range.Max - range.Min) + range.Min);
@@ -227,7 +227,7 @@ namespace Aardvark.Base
         /// that [0, tMax) [tMax, 2*tMax) [2*tMax, 3*tMax] ... is mapped to
         /// [0,1)[1,0)[0,1)...
         /// </summary>
-        [Pure]
+        
         public static double MapToUnitInterval(
             this double t, double tMax,
             bool repeat, bool mirror
@@ -255,7 +255,7 @@ namespace Aardvark.Base
         /// If 'repeat' is true, then every interval [i * tMax, (i+1) * tMax]
         /// (for i from integers) is mapped to [0, 1].
         /// </summary>
-        [Pure]
+        
         public static double MapToUnitInterval(this double t, double tMax, bool repeat)
         {
             t = t / tMax;
@@ -270,7 +270,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Maps value from interval [0, tMax] to interval [0, 1].
         /// </summary>
-        [Pure]
+        
         public static double MapToUnitInterval(this double t, double tMax)
         {
             t = t / tMax;
@@ -282,7 +282,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Maps value from interval [tMin, tMax] to interval [0, 1].
         /// </summary>
-        [Pure]
+        
         public static double MapToUnitInterval(this double t, double tMin, double tMax)
         {
             t = (t - tMin) / (tMax - tMin);
@@ -299,7 +299,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns either -1, 0, or +1, indicating the sign of the specified value .
         /// </summary>
-        [Pure]
+        
         public static int Sign(this __t.Name__ x)
         {
             return System.Math.Sign(x);
@@ -315,7 +315,7 @@ namespace Aardvark.Base
         /// Returns true if the absolulte value of the supplied float is
         /// smaller than 4 times the machine epsilon.
         /// </summary>
-        [Pure]
+        
         public static bool IsTiny(this __t.Name__ x)
         {
             return x.Abs() < Constant<__t.Name__>.PositiveTinyValue;
@@ -325,7 +325,7 @@ namespace Aardvark.Base
         /// Returns true if the absolulte value of the supplied float <paramref name="x"/> is
         /// smaller than the supplied <paramref name="epsilon"/> .
         /// </summary>
-        [Pure]
+        
         public static bool IsTiny(this __t.Name__ x, __t.Name__ epsilon)
         {
             return x.Abs() < epsilon;
@@ -340,7 +340,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the sum of the absolute values of the given numbers.
         /// </summary>
-        [Pure]
+        
         public static __st.Name__ AbsSum(this IEnumerable<__t.Name__> array)
         {
             __st.Name__ sum = 0;
@@ -354,7 +354,7 @@ namespace Aardvark.Base
         #region Cbrt
 
         //# fdtypes.ForEach(t => {
-        [Pure]
+        
         public static double Cbrt(this __t.Name__ x)
         {
             return x < 0 ? -/*# if (t != Meta.DoubleType) { */(__t.Name__)/*# } */System.Math.Pow(-x, Constant.OneThird)
@@ -370,7 +370,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the square of the specified number.
         /// </summary>
-        [Pure]
+        
         public static __st.Name__ Square(this __t.Name__ x)
         {
             return x * x;
@@ -385,7 +385,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the square root of the specified number.
         /// </summary>
-        [Pure]
+        
         public static double Sqrt(this __t.Name__ x)
         {
             return System.Math.Sqrt(x);
@@ -395,7 +395,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the square root of the specified number.
         /// </summary>
-        [Pure]
+        
         public static float Sqrt(this float x)
         {
             return (float)System.Math.Sqrt(x);
@@ -409,7 +409,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the number raised to the specified power.
         /// </summary>
-        [Pure]
+        
         public static __ct.Name__ Pow(this __t.Name__ x, __ct.Name__ y)
         {
             return /*# if (ct != Meta.DoubleType) {*/(__t.Name__)/*# } */System.Math.Pow(x, y);
@@ -424,7 +424,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns e raised to the specified number.
         /// </summary>
-        [Pure]
+        
         public static __t.Name__ Exp(this __t.Name__ x)
         {
             return /*# if (t != Meta.DoubleType) { */(__t.Name__)/*# } */System.Math.Exp(x);
@@ -440,7 +440,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the natural (base e) logarithm of the specified number.
         /// </summary>
-        [Pure]
+        
         public static double Log(this __t.Name__ x)
         {
             return System.Math.Log(x);
@@ -449,7 +449,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the base 10 logarithm of the specified number.
         /// </summary>
-        [Pure]
+        
         public static double Log10(this __t.Name__ x)
         {
             return System.Math.Log10(x);
@@ -458,7 +458,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the base 2 logarithm of the specified number.
         /// </summary>
-        [Pure]
+        
         public static double Log2(this __t.Name__ x)
         {
             return x.Log() * Constant.Ln2Inv;
@@ -467,7 +467,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the values logarithm of the specified basis.
         /// </summary>
-        [Pure]
+        
         public static double Log(this __t.Name__ x, double basis)
         {
             return x.Log() / basis.Log();
@@ -514,7 +514,7 @@ namespace Aardvark.Base
         /// Returns the positive modulo operation a mod b giving values between [0,b[ 
         /// instead of a % b giving values between ]-b,b[.
         /// </summary>
-        [Pure]
+        
         public static __t.Name__ ModP(this __t.Name__ a, __t.Name__ b)
         {
             var m = a % b;
@@ -533,7 +533,7 @@ namespace Aardvark.Base
         /// Returns true if the supplied number is 0
         /// or a power of two.
         /// </summary>
-        [Pure]
+        
         public static bool IsPowerOfTwo(this __t.Name__ x)
         {
             return (x & (x - 1)) == 0;
@@ -543,7 +543,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns 2 raised to the power of the value.
         /// </summary>
-        [Pure]
+        
         public static long PowerOfTwo(this long x)
         {
             return 1L << (int)x;
@@ -553,7 +553,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns 2 raised to the power of the value.
         /// </summary>
-        [Pure]
+        
         public static __t.Name__ PowerOfTwo(this __t.Name__ x)
         {
             return /*# if (t != Meta.DoubleType) { */(__t.Name__)/*# } */System.Math.Pow(2, x);
@@ -566,7 +566,7 @@ namespace Aardvark.Base
         /// E.g. x = 401 -> 512.
         /// E.g. x = 256 -> 256.
         /// </summary>
-        [Pure]
+        
         public static __t.Name__ NextPowerOfTwo(this __t.Name__ x)
         {
             --x;
@@ -586,7 +586,7 @@ namespace Aardvark.Base
         /// E.g. x = 401 -> 256.
         /// E.g. x = 512 -> 512.
         /// </summary>
-        [Pure]
+        
         public static __t.Name__ PrevPowerOfTwo(this __t.Name__ x)
         {
             if (x <= 0) return 0;
@@ -611,7 +611,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the cosine of the specified angle in radians.
         /// </summary>
-        [Pure]
+        
         public static __t.Name__ Sin(this __t.Name__ x)
         {
             return __cast__System.Math.Sin(x);
@@ -620,7 +620,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the cosine of the specified angle in radians.
         /// </summary>
-        [Pure]
+        
         public static __t.Name__ Cos(this __t.Name__ x)
         {
             return __cast__System.Math.Cos(x);
@@ -629,7 +629,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the tangent of the specified angle in radians.
         /// </summary>
-        [Pure]
+        
         public static __t.Name__ Tan(this __t.Name__ x)
         {
             return __cast__System.Math.Tan(x);
@@ -638,7 +638,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the angle in radians whose sine is the specified number.
         /// </summary>
-        [Pure]
+        
         public static __t.Name__ Asin(this __t.Name__ x)
         {
             return __cast__System.Math.Asin(x);
@@ -647,7 +647,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the angle in radians whose cosine is the specified number.
         /// </summary>
-        [Pure]
+        
         public static __t.Name__ Acos(this __t.Name__ x)
         {
             return __cast__System.Math.Acos(x);
@@ -656,7 +656,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the angle in radians whose tangent is the specified number.
         /// </summary>
-        [Pure]
+        
         public static __t.Name__ Atan(this __t.Name__ x)
         {
             return __cast__System.Math.Atan(x);
@@ -666,7 +666,7 @@ namespace Aardvark.Base
         /// Returns the angle in radians whose tangent is
         /// the quotient of the two specified number.
         /// </summary>
-        [Pure]
+        
         public static __t.Name__ Atan2(__t.Name__ y, __t.Name__ x)
         {
             return __cast__System.Math.Atan2(y, x);
@@ -678,7 +678,7 @@ namespace Aardvark.Base
         /// a faster algorithm than Math.Atan2.
         /// NOTE: Accuracy untested
         /// </summary>
-        [Pure]
+        
         public static __t.Name__ FastAtan2(__t.Name__ y, __t.Name__ x)
         {
             __t.Name__ angle;
@@ -701,7 +701,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the hyperbolic sine of the specified number.
         /// </summary>
-        [Pure]
+        
         public static __t.Name__ Sinh(this __t.Name__ x)
         {
             return __cast__System.Math.Sinh(x);
@@ -710,7 +710,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the hyperbolic cosine of the specified number.
         /// </summary>
-        [Pure]
+        
         public static __t.Name__ Cosh(this __t.Name__ x)
         {
             return __cast__System.Math.Cosh(x);
@@ -719,7 +719,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the hyperbolic tangent of the specified number.
         /// </summary>
-        [Pure]
+        
         public static __t.Name__ Tanh(this __t.Name__ x)
         {
             return __cast__System.Math.Tanh(x);
@@ -728,7 +728,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the inverse hyperbolic sine of the specified number.
         /// </summary>
-        [Pure]
+        
         public static __t.Name__ Asinh(this __t.Name__ x)
         {
             return __cast__System.Math.Log(x + System.Math.Sqrt(x * x + 1.0));
@@ -737,7 +737,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the inverse hyperbolic cosine of the specified number.
         /// </summary>
-        [Pure]
+        
         public static __t.Name__ Acosh(this __t.Name__ x)
         {
             return __cast__System.Math.Log(x + System.Math.Sqrt(x * x - 1.0));
@@ -747,7 +747,7 @@ namespace Aardvark.Base
         /// Returns the inverse hyperbolic tangent of the specified number.
         /// Note that the absolute value of the argument must be smaller than 1.
         /// </summary>
-        [Pure]
+        
         public static __t.Name__ Atanh(this __t.Name__ x)
         {
             return __cast__(0.5 * System.Math.Log((1.0 + x)/(1.0 - x)));
@@ -762,7 +762,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the mean of the given values.
         /// </summary>
-        [Pure]
+        
         public static double Mean(this IEnumerable<__t.Name__> array)
         {
             int count = 0;
@@ -772,7 +772,7 @@ namespace Aardvark.Base
         }
 
         //# });
-        [Pure]
+        
         public static decimal Mean(this IEnumerable<decimal> array)
         {
             int count = 0; decimal sum = 0;
@@ -783,7 +783,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns the mean of the given values.
         /// </summary>
-        [Pure]
+        
         public static double Mean<T>(
             this IEnumerable<T> array,
             Func<T, double> selector
@@ -802,7 +802,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Calculates the variance of given elements.
         /// </summary>
-        [Pure]
+        
         public static double Variance(this IEnumerable<__type__> data)
         {
             int count = 0;
@@ -820,7 +820,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Calculates the standard deviation of given elements.
         /// </summary>
-        [Pure]
+        
         public static double StandardDeviation(this IEnumerable<__type__> data)
         {
             return data.Variance().Sqrt();
@@ -830,7 +830,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Calculates the variance of given elements.
         /// </summary>
-        [Pure]
+        
         public static double Variance<T>(
             this IEnumerable<T> data,
             Func<T, double> selector
@@ -851,7 +851,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Calculates the standard deviation of given elements.
         /// </summary>
-        [Pure]
+        
         public static double StandardDeviation<T>(
             this IEnumerable<T> data,
             Func<T, double> selector)
@@ -867,7 +867,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Return the number of values greater than 0.
         /// </summary>
-        [Pure]
+        
         public static int CountPositives(this IEnumerable<__t.Name__> array)
         {
             int count = 0;
@@ -885,7 +885,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Return the number of values less than 0.
         /// </summary>
-        [Pure]
+        
         public static int CountNegatives(this IEnumerable<__t.Name__> array)
         {
             int count = 0;
@@ -901,7 +901,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns fractional part of t. Calculated as t - floor(t).
         /// </summary>
-        [Pure]
+        
         public static double Frac(this double t)
         {
             return t - System.Math.Floor(t);
@@ -910,7 +910,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns fractional part of t. Calculated as t - floor(t).
         /// </summary>
-        [Pure]
+        
         public static float Frac(this float t)
         {
             return (float)(t - System.Math.Floor(t));
@@ -919,7 +919,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Returns fractional part of t. Calculated as t - floor(t).
         /// </summary>
-        [Pure]
+        
         public static decimal Frac(this decimal t)
         {
             return t - System.Math.Floor(t);
@@ -935,7 +935,7 @@ namespace Aardvark.Base
         /// </summary>
         /// <param name="value">The number to check.</param>
         /// <returns><c>True</c> if the number is a prime; otherwise, <c>False</c>.</returns>
-        [Pure]
+        
         public static bool IsPrime(this __t.Name__ value)
         {
             __t.Name__ imax = (__t.Name__)System.Math.Sqrt(value);
@@ -994,13 +994,13 @@ namespace Aardvark.Base
 
         #region Common Divisor and Multiple
 
-        [Pure]
+        
         public static long GreatestCommonDivisor(long a, long b)
         {
             return b == 0 ? a : GreatestCommonDivisor(b, a % b);
         }
 
-        [Pure]
+        
         public static long LeastCommonMultiple(long a, long b)
         {
             return a * b / GreatestCommonDivisor(a, b);
@@ -1010,25 +1010,25 @@ namespace Aardvark.Base
 
         #region Conversion
 
-        [Pure]
+        
         public static int ToInt(this float x)
         {
             return (int)x;
         }
 
-        [Pure]
+        
         public static long ToLong(this float x)
         {
             return (long)x;
         }
 
-        [Pure]
+        
         public static int ToInt(this double x)
         {
             return (int)x;
         }
 
-        [Pure]
+        
         public static long ToLong(this double x)
         {
             return (long)x;
@@ -1038,11 +1038,11 @@ namespace Aardvark.Base
 
         #region Weighted Sum
 
-        [Pure]
+        
         public static double WeightedSum(this double[] items, double[] weights)
         {
             var r = 0.0;
-            var count = weights.LongLength;
+            var count = weights.Length;
             for (long i = 0; i < count; i++) r += weights[i] * items[i];
             return r;
         }

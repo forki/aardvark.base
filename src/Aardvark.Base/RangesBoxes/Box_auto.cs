@@ -96,7 +96,7 @@ namespace Aardvark.Base
         public Range1b(byte[] values)
         {
             Min = Max = values[0];
-            long count = values.LongLength;
+            long count = values.Length;
             for (long i = 1; i < count; i++) ExtendBy(values[i]);
         }
 
@@ -483,7 +483,7 @@ namespace Aardvark.Base
                 {
                     case 0: box.Min = value; return;
                     case 1: box.Max = value; return;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             };
 
@@ -557,7 +557,7 @@ namespace Aardvark.Base
         public static Range1b GetBoundingRange1b(
                 this byte[] pointArray)
         {
-            return pointArray.GetBoundingRange1b(pointArray.LongLength);
+            return pointArray.GetBoundingRange1b(pointArray.Length);
         }
 
         /// <summary>
@@ -664,7 +664,7 @@ namespace Aardvark.Base
         public static Range1b GetBoundingRange1b(
                 this long[] indexArray, byte[] pointArray)
         {
-            return indexArray.GetBoundingRange1b(indexArray.LongLength, pointArray);
+            return indexArray.GetBoundingRange1b(indexArray.Length, pointArray);
         }
 
         public static Range1b GetBoundingRange1b(
@@ -802,7 +802,7 @@ namespace Aardvark.Base
         public Range1sb(sbyte[] values)
         {
             Min = Max = values[0];
-            long count = values.LongLength;
+            long count = values.Length;
             for (long i = 1; i < count; i++) ExtendBy(values[i]);
         }
 
@@ -1189,7 +1189,7 @@ namespace Aardvark.Base
                 {
                     case 0: box.Min = value; return;
                     case 1: box.Max = value; return;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             };
 
@@ -1263,7 +1263,7 @@ namespace Aardvark.Base
         public static Range1sb GetBoundingRange1sb(
                 this sbyte[] pointArray)
         {
-            return pointArray.GetBoundingRange1sb(pointArray.LongLength);
+            return pointArray.GetBoundingRange1sb(pointArray.Length);
         }
 
         /// <summary>
@@ -1370,7 +1370,7 @@ namespace Aardvark.Base
         public static Range1sb GetBoundingRange1sb(
                 this long[] indexArray, sbyte[] pointArray)
         {
-            return indexArray.GetBoundingRange1sb(indexArray.LongLength, pointArray);
+            return indexArray.GetBoundingRange1sb(indexArray.Length, pointArray);
         }
 
         public static Range1sb GetBoundingRange1sb(
@@ -1508,7 +1508,7 @@ namespace Aardvark.Base
         public Range1s(short[] values)
         {
             Min = Max = values[0];
-            long count = values.LongLength;
+            long count = values.Length;
             for (long i = 1; i < count; i++) ExtendBy(values[i]);
         }
 
@@ -1895,7 +1895,7 @@ namespace Aardvark.Base
                 {
                     case 0: box.Min = value; return;
                     case 1: box.Max = value; return;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             };
 
@@ -1958,6 +1958,11 @@ namespace Aardvark.Base
                           + Max.ToString(format, fp) + endB;
         }
 
+        public string Format(string format, IFormatProvider formatProvider)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
 
     }
@@ -1969,7 +1974,7 @@ namespace Aardvark.Base
         public static Range1s GetBoundingRange1s(
                 this short[] pointArray)
         {
-            return pointArray.GetBoundingRange1s(pointArray.LongLength);
+            return pointArray.GetBoundingRange1s(pointArray.Length);
         }
 
         /// <summary>
@@ -2076,7 +2081,7 @@ namespace Aardvark.Base
         public static Range1s GetBoundingRange1s(
                 this long[] indexArray, short[] pointArray)
         {
-            return indexArray.GetBoundingRange1s(indexArray.LongLength, pointArray);
+            return indexArray.GetBoundingRange1s(indexArray.Length, pointArray);
         }
 
         public static Range1s GetBoundingRange1s(
@@ -2214,7 +2219,7 @@ namespace Aardvark.Base
         public Range1us(ushort[] values)
         {
             Min = Max = values[0];
-            long count = values.LongLength;
+            long count = values.Length;
             for (long i = 1; i < count; i++) ExtendBy(values[i]);
         }
 
@@ -2601,7 +2606,7 @@ namespace Aardvark.Base
                 {
                     case 0: box.Min = value; return;
                     case 1: box.Max = value; return;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             };
 
@@ -2675,7 +2680,7 @@ namespace Aardvark.Base
         public static Range1us GetBoundingRange1us(
                 this ushort[] pointArray)
         {
-            return pointArray.GetBoundingRange1us(pointArray.LongLength);
+            return pointArray.GetBoundingRange1us(pointArray.Length);
         }
 
         /// <summary>
@@ -2782,7 +2787,7 @@ namespace Aardvark.Base
         public static Range1us GetBoundingRange1us(
                 this long[] indexArray, ushort[] pointArray)
         {
-            return indexArray.GetBoundingRange1us(indexArray.LongLength, pointArray);
+            return indexArray.GetBoundingRange1us(indexArray.Length, pointArray);
         }
 
         public static Range1us GetBoundingRange1us(
@@ -2920,7 +2925,7 @@ namespace Aardvark.Base
         public Range1i(int[] values)
         {
             Min = Max = values[0];
-            long count = values.LongLength;
+            long count = values.Length;
             for (long i = 1; i < count; i++) ExtendBy(values[i]);
         }
 
@@ -3307,7 +3312,7 @@ namespace Aardvark.Base
                 {
                     case 0: box.Min = value; return;
                     case 1: box.Max = value; return;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             };
 
@@ -3381,7 +3386,7 @@ namespace Aardvark.Base
         public static Range1i GetBoundingRange1i(
                 this int[] pointArray)
         {
-            return pointArray.GetBoundingRange1i(pointArray.LongLength);
+            return pointArray.GetBoundingRange1i(pointArray.Length);
         }
 
         /// <summary>
@@ -3488,7 +3493,7 @@ namespace Aardvark.Base
         public static Range1i GetBoundingRange1i(
                 this long[] indexArray, int[] pointArray)
         {
-            return indexArray.GetBoundingRange1i(indexArray.LongLength, pointArray);
+            return indexArray.GetBoundingRange1i(indexArray.Length, pointArray);
         }
 
         public static Range1i GetBoundingRange1i(
@@ -3626,7 +3631,7 @@ namespace Aardvark.Base
         public Range1ui(uint[] values)
         {
             Min = Max = values[0];
-            long count = values.LongLength;
+            long count = values.Length;
             for (long i = 1; i < count; i++) ExtendBy(values[i]);
         }
 
@@ -4013,7 +4018,7 @@ namespace Aardvark.Base
                 {
                     case 0: box.Min = value; return;
                     case 1: box.Max = value; return;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             };
 
@@ -4087,7 +4092,7 @@ namespace Aardvark.Base
         public static Range1ui GetBoundingRange1ui(
                 this uint[] pointArray)
         {
-            return pointArray.GetBoundingRange1ui(pointArray.LongLength);
+            return pointArray.GetBoundingRange1ui(pointArray.Length);
         }
 
         /// <summary>
@@ -4194,7 +4199,7 @@ namespace Aardvark.Base
         public static Range1ui GetBoundingRange1ui(
                 this long[] indexArray, uint[] pointArray)
         {
-            return indexArray.GetBoundingRange1ui(indexArray.LongLength, pointArray);
+            return indexArray.GetBoundingRange1ui(indexArray.Length, pointArray);
         }
 
         public static Range1ui GetBoundingRange1ui(
@@ -4332,7 +4337,7 @@ namespace Aardvark.Base
         public Range1l(long[] values)
         {
             Min = Max = values[0];
-            long count = values.LongLength;
+            long count = values.Length;
             for (long i = 1; i < count; i++) ExtendBy(values[i]);
         }
 
@@ -4719,7 +4724,7 @@ namespace Aardvark.Base
                 {
                     case 0: box.Min = value; return;
                     case 1: box.Max = value; return;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             };
 
@@ -4793,7 +4798,7 @@ namespace Aardvark.Base
         public static Range1l GetBoundingRange1l(
                 this long[] pointArray)
         {
-            return pointArray.GetBoundingRange1l(pointArray.LongLength);
+            return pointArray.GetBoundingRange1l(pointArray.Length);
         }
 
         /// <summary>
@@ -4900,7 +4905,7 @@ namespace Aardvark.Base
         public static Range1l GetBoundingRange1l(
                 this long[] indexArray, long[] pointArray)
         {
-            return indexArray.GetBoundingRange1l(indexArray.LongLength, pointArray);
+            return indexArray.GetBoundingRange1l(indexArray.Length, pointArray);
         }
 
         public static Range1l GetBoundingRange1l(
@@ -5038,7 +5043,7 @@ namespace Aardvark.Base
         public Range1ul(ulong[] values)
         {
             Min = Max = values[0];
-            long count = values.LongLength;
+            long count = values.Length;
             for (long i = 1; i < count; i++) ExtendBy(values[i]);
         }
 
@@ -5425,7 +5430,7 @@ namespace Aardvark.Base
                 {
                     case 0: box.Min = value; return;
                     case 1: box.Max = value; return;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             };
 
@@ -5499,7 +5504,7 @@ namespace Aardvark.Base
         public static Range1ul GetBoundingRange1ul(
                 this ulong[] pointArray)
         {
-            return pointArray.GetBoundingRange1ul(pointArray.LongLength);
+            return pointArray.GetBoundingRange1ul(pointArray.Length);
         }
 
         /// <summary>
@@ -5606,7 +5611,7 @@ namespace Aardvark.Base
         public static Range1ul GetBoundingRange1ul(
                 this long[] indexArray, ulong[] pointArray)
         {
-            return indexArray.GetBoundingRange1ul(indexArray.LongLength, pointArray);
+            return indexArray.GetBoundingRange1ul(indexArray.Length, pointArray);
         }
 
         public static Range1ul GetBoundingRange1ul(
@@ -5744,7 +5749,7 @@ namespace Aardvark.Base
         public Range1f(float[] values)
         {
             Min = Max = values[0];
-            long count = values.LongLength;
+            long count = values.Length;
             for (long i = 1; i < count; i++) ExtendBy(values[i]);
         }
 
@@ -6148,7 +6153,7 @@ namespace Aardvark.Base
                 {
                     case 0: box.Min = value; return;
                     case 1: box.Max = value; return;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             };
 
@@ -6222,7 +6227,7 @@ namespace Aardvark.Base
         public static Range1f GetBoundingRange1f(
                 this float[] pointArray)
         {
-            return pointArray.GetBoundingRange1f(pointArray.LongLength);
+            return pointArray.GetBoundingRange1f(pointArray.Length);
         }
 
         /// <summary>
@@ -6329,7 +6334,7 @@ namespace Aardvark.Base
         public static Range1f GetBoundingRange1f(
                 this long[] indexArray, float[] pointArray)
         {
-            return indexArray.GetBoundingRange1f(indexArray.LongLength, pointArray);
+            return indexArray.GetBoundingRange1f(indexArray.Length, pointArray);
         }
 
         public static Range1f GetBoundingRange1f(
@@ -6467,7 +6472,7 @@ namespace Aardvark.Base
         public Range1d(double[] values)
         {
             Min = Max = values[0];
-            long count = values.LongLength;
+            long count = values.Length;
             for (long i = 1; i < count; i++) ExtendBy(values[i]);
         }
 
@@ -6871,7 +6876,7 @@ namespace Aardvark.Base
                 {
                     case 0: box.Min = value; return;
                     case 1: box.Max = value; return;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             };
 
@@ -6945,7 +6950,7 @@ namespace Aardvark.Base
         public static Range1d GetBoundingRange1d(
                 this double[] pointArray)
         {
-            return pointArray.GetBoundingRange1d(pointArray.LongLength);
+            return pointArray.GetBoundingRange1d(pointArray.Length);
         }
 
         /// <summary>
@@ -7052,7 +7057,7 @@ namespace Aardvark.Base
         public static Range1d GetBoundingRange1d(
                 this long[] indexArray, double[] pointArray)
         {
-            return indexArray.GetBoundingRange1d(indexArray.LongLength, pointArray);
+            return indexArray.GetBoundingRange1d(indexArray.Length, pointArray);
         }
 
         public static Range1d GetBoundingRange1d(
@@ -7201,7 +7206,7 @@ namespace Aardvark.Base
         public Box2i(V2i[] points)
         {
             Min = Max = points[0];
-            long count = points.LongLength;
+            long count = points.Length;
             for (long i = 1; i < count; i++) ExtendBy(points[i]);
         }
 
@@ -7900,7 +7905,7 @@ namespace Aardvark.Base
                 {
                     case 0: box.Min = value; return;
                     case 1: box.Max = value; return;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             };
 
@@ -8164,7 +8169,7 @@ namespace Aardvark.Base
         public static Box2i GetBoundingBox2i(
                 this V2i[] pointArray)
         {
-            return pointArray.GetBoundingBox2i(pointArray.LongLength);
+            return pointArray.GetBoundingBox2i(pointArray.Length);
         }
 
         /// <summary>
@@ -8271,7 +8276,7 @@ namespace Aardvark.Base
         public static Box2i GetBoundingBox2i(
                 this long[] indexArray, V2i[] pointArray)
         {
-            return indexArray.GetBoundingBox2i(indexArray.LongLength, pointArray);
+            return indexArray.GetBoundingBox2i(indexArray.Length, pointArray);
         }
 
         public static Box2i GetBoundingBox2i(
@@ -8420,7 +8425,7 @@ namespace Aardvark.Base
         public Box2l(V2l[] points)
         {
             Min = Max = points[0];
-            long count = points.LongLength;
+            long count = points.Length;
             for (long i = 1; i < count; i++) ExtendBy(points[i]);
         }
 
@@ -9119,7 +9124,7 @@ namespace Aardvark.Base
                 {
                     case 0: box.Min = value; return;
                     case 1: box.Max = value; return;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             };
 
@@ -9383,7 +9388,7 @@ namespace Aardvark.Base
         public static Box2l GetBoundingBox2l(
                 this V2l[] pointArray)
         {
-            return pointArray.GetBoundingBox2l(pointArray.LongLength);
+            return pointArray.GetBoundingBox2l(pointArray.Length);
         }
 
         /// <summary>
@@ -9490,7 +9495,7 @@ namespace Aardvark.Base
         public static Box2l GetBoundingBox2l(
                 this long[] indexArray, V2l[] pointArray)
         {
-            return indexArray.GetBoundingBox2l(indexArray.LongLength, pointArray);
+            return indexArray.GetBoundingBox2l(indexArray.Length, pointArray);
         }
 
         public static Box2l GetBoundingBox2l(
@@ -9639,7 +9644,7 @@ namespace Aardvark.Base
         public Box2f(V2f[] points)
         {
             Min = Max = points[0];
-            long count = points.LongLength;
+            long count = points.Length;
             for (long i = 1; i < count; i++) ExtendBy(points[i]);
         }
 
@@ -10439,7 +10444,7 @@ namespace Aardvark.Base
                 {
                     case 0: box.Min = value; return;
                     case 1: box.Max = value; return;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             };
 
@@ -10692,7 +10697,7 @@ namespace Aardvark.Base
         public static Box2f GetBoundingBox2f(
                 this V2f[] pointArray)
         {
-            return pointArray.GetBoundingBox2f(pointArray.LongLength);
+            return pointArray.GetBoundingBox2f(pointArray.Length);
         }
 
         /// <summary>
@@ -10799,7 +10804,7 @@ namespace Aardvark.Base
         public static Box2f GetBoundingBox2f(
                 this long[] indexArray, V2f[] pointArray)
         {
-            return indexArray.GetBoundingBox2f(indexArray.LongLength, pointArray);
+            return indexArray.GetBoundingBox2f(indexArray.Length, pointArray);
         }
 
         public static Box2f GetBoundingBox2f(
@@ -10948,7 +10953,7 @@ namespace Aardvark.Base
         public Box2d(V2d[] points)
         {
             Min = Max = points[0];
-            long count = points.LongLength;
+            long count = points.Length;
             for (long i = 1; i < count; i++) ExtendBy(points[i]);
         }
 
@@ -11748,7 +11753,7 @@ namespace Aardvark.Base
                 {
                     case 0: box.Min = value; return;
                     case 1: box.Max = value; return;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             };
 
@@ -12001,7 +12006,7 @@ namespace Aardvark.Base
         public static Box2d GetBoundingBox2d(
                 this V2d[] pointArray)
         {
-            return pointArray.GetBoundingBox2d(pointArray.LongLength);
+            return pointArray.GetBoundingBox2d(pointArray.Length);
         }
 
         /// <summary>
@@ -12108,7 +12113,7 @@ namespace Aardvark.Base
         public static Box2d GetBoundingBox2d(
                 this long[] indexArray, V2d[] pointArray)
         {
-            return indexArray.GetBoundingBox2d(indexArray.LongLength, pointArray);
+            return indexArray.GetBoundingBox2d(indexArray.Length, pointArray);
         }
 
         public static Box2d GetBoundingBox2d(
@@ -12259,7 +12264,7 @@ namespace Aardvark.Base
         public Box3i(V3i[] points)
         {
             Min = Max = points[0];
-            long count = points.LongLength;
+            long count = points.Length;
             for (long i = 1; i < count; i++) ExtendBy(points[i]);
         }
 
@@ -12999,7 +13004,7 @@ namespace Aardvark.Base
                 {
                     case 0: box.Min = value; return;
                     case 1: box.Max = value; return;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             };
 
@@ -13240,7 +13245,7 @@ namespace Aardvark.Base
         public static Box3i GetBoundingBox3i(
                 this V3i[] pointArray)
         {
-            return pointArray.GetBoundingBox3i(pointArray.LongLength);
+            return pointArray.GetBoundingBox3i(pointArray.Length);
         }
 
         /// <summary>
@@ -13347,7 +13352,7 @@ namespace Aardvark.Base
         public static Box3i GetBoundingBox3i(
                 this long[] indexArray, V3i[] pointArray)
         {
-            return indexArray.GetBoundingBox3i(indexArray.LongLength, pointArray);
+            return indexArray.GetBoundingBox3i(indexArray.Length, pointArray);
         }
 
         public static Box3i GetBoundingBox3i(
@@ -13498,7 +13503,7 @@ namespace Aardvark.Base
         public Box3l(V3l[] points)
         {
             Min = Max = points[0];
-            long count = points.LongLength;
+            long count = points.Length;
             for (long i = 1; i < count; i++) ExtendBy(points[i]);
         }
 
@@ -14238,7 +14243,7 @@ namespace Aardvark.Base
                 {
                     case 0: box.Min = value; return;
                     case 1: box.Max = value; return;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             };
 
@@ -14479,7 +14484,7 @@ namespace Aardvark.Base
         public static Box3l GetBoundingBox3l(
                 this V3l[] pointArray)
         {
-            return pointArray.GetBoundingBox3l(pointArray.LongLength);
+            return pointArray.GetBoundingBox3l(pointArray.Length);
         }
 
         /// <summary>
@@ -14586,7 +14591,7 @@ namespace Aardvark.Base
         public static Box3l GetBoundingBox3l(
                 this long[] indexArray, V3l[] pointArray)
         {
-            return indexArray.GetBoundingBox3l(indexArray.LongLength, pointArray);
+            return indexArray.GetBoundingBox3l(indexArray.Length, pointArray);
         }
 
         public static Box3l GetBoundingBox3l(
@@ -14737,7 +14742,7 @@ namespace Aardvark.Base
         public Box3f(V3f[] points)
         {
             Min = Max = points[0];
-            long count = points.LongLength;
+            long count = points.Length;
             for (long i = 1; i < count; i++) ExtendBy(points[i]);
         }
 
@@ -15584,7 +15589,7 @@ namespace Aardvark.Base
                 {
                     case 0: box.Min = value; return;
                     case 1: box.Max = value; return;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             };
 
@@ -15813,7 +15818,7 @@ namespace Aardvark.Base
         public static Box3f GetBoundingBox3f(
                 this V3f[] pointArray)
         {
-            return pointArray.GetBoundingBox3f(pointArray.LongLength);
+            return pointArray.GetBoundingBox3f(pointArray.Length);
         }
 
         /// <summary>
@@ -15920,7 +15925,7 @@ namespace Aardvark.Base
         public static Box3f GetBoundingBox3f(
                 this long[] indexArray, V3f[] pointArray)
         {
-            return indexArray.GetBoundingBox3f(indexArray.LongLength, pointArray);
+            return indexArray.GetBoundingBox3f(indexArray.Length, pointArray);
         }
 
         public static Box3f GetBoundingBox3f(
@@ -16071,7 +16076,7 @@ namespace Aardvark.Base
         public Box3d(V3d[] points)
         {
             Min = Max = points[0];
-            long count = points.LongLength;
+            long count = points.Length;
             for (long i = 1; i < count; i++) ExtendBy(points[i]);
         }
 
@@ -16918,7 +16923,7 @@ namespace Aardvark.Base
                 {
                     case 0: box.Min = value; return;
                     case 1: box.Max = value; return;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             };
 
@@ -17147,7 +17152,7 @@ namespace Aardvark.Base
         public static Box3d GetBoundingBox3d(
                 this V3d[] pointArray)
         {
-            return pointArray.GetBoundingBox3d(pointArray.LongLength);
+            return pointArray.GetBoundingBox3d(pointArray.Length);
         }
 
         /// <summary>
@@ -17254,7 +17259,7 @@ namespace Aardvark.Base
         public static Box3d GetBoundingBox3d(
                 this long[] indexArray, V3d[] pointArray)
         {
-            return indexArray.GetBoundingBox3d(indexArray.LongLength, pointArray);
+            return indexArray.GetBoundingBox3d(indexArray.Length, pointArray);
         }
 
         public static Box3d GetBoundingBox3d(

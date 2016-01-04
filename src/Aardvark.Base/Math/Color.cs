@@ -14,12 +14,12 @@ namespace Aardvark.Base
     /// colors. It is intentionally named Col in order to avoid a collision
     /// with the system provided Color class.
     /// </summary>
-    [Serializable]
+    
     public static partial class Col
     {
         #region Space
 
-        [Serializable]
+        
         public enum Space
         {
             None,
@@ -32,7 +32,7 @@ namespace Aardvark.Base
 
         #region Format
 
-        [Serializable]
+        
         public enum Format
         {
             None,
@@ -74,7 +74,7 @@ namespace Aardvark.Base
 
         #region Channel
 
-        [Serializable]
+        
         public enum Channel
         {
             BW,
@@ -1307,7 +1307,7 @@ namespace Aardvark.Base
     /// <summary>
     /// The PixFormat encodes the channel type and the color format of an image.
     /// </summary>
-    [Serializable]
+    
     public struct PixFormat : IEquatable<PixFormat>
     {
         public readonly Type Type;

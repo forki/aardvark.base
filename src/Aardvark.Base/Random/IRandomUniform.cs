@@ -267,7 +267,7 @@ namespace Aardvark.Base
         /// </summary>
         public static void FillUniform(this IRandomUniform rnd, int[] array)
         {
-            long count = array.LongLength;
+            long count = array.Length;
             for (long i = 0; i < count; i++)
                 array[i] = rnd.UniformInt();
         }
@@ -278,7 +278,7 @@ namespace Aardvark.Base
         /// </summary>
         public static void FillUniform(this IRandomUniform rnd, float[] array)
         {
-            long count = array.LongLength;
+            long count = array.Length;
             for (long i = 0; i < count; i++)
                 array[i] = rnd.UniformFloat();
         }
@@ -290,7 +290,7 @@ namespace Aardvark.Base
         public static void FillUniform(
                 this IRandomUniform rnd, double[] array)
         {
-            long count = array.LongLength;
+            long count = array.Length;
             for (long i = 0; i < count; i++)
                 array[i] = rnd.UniformDouble();
         }
@@ -302,7 +302,7 @@ namespace Aardvark.Base
         public static void FillUniformFull(
                 this IRandomUniform rnd, double[] array)
         {
-            long count = array.LongLength;
+            long count = array.Length;
             if (rnd.GeneratesFullDoubles)
             {
                 for (long i = 0; i < count; i++)
@@ -358,7 +358,7 @@ namespace Aardvark.Base
         public static T[] CreateRandomSubsetOfSize<T>(
                 this T[] array, long subsetCount, IRandomUniform rnd)
         {
-            long count = array.LongLength;
+            long count = array.Length;
             Requires.That(subsetCount >= 0 && subsetCount <= count);
             var subset = new T[subsetCount];
             long si = 0;
@@ -486,7 +486,7 @@ namespace Aardvark.Base
         public static void Randomize<T>(
             this IRandomUniform rnd, T[] array)
         {
-            rnd.Randomize(array, array.LongLength);
+            rnd.Randomize(array, array.Length);
         }
 
         /// <summary>

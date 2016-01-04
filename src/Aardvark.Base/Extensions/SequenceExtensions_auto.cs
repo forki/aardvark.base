@@ -122,7 +122,7 @@ namespace Aardvark.Base
         {
             if (sequence == null) throw new ArgumentNullException("sequence");
             if (element_valueSelector == null) throw new ArgumentNullException("element_valueSelector");
-            for (long i = 0; i < sequence.LongLength; i++)
+            for (long i = 0; i < sequence.Length; i++)
             {
                 var value = element_valueSelector(sequence[i]);
                 if (value < minValue) minValue = value;
@@ -139,7 +139,7 @@ namespace Aardvark.Base
         {
             if (sequence == null) throw new ArgumentNullException("sequence");
             if (element_valueSelector == null) throw new ArgumentNullException("element_valueSelector");
-            for (long i = 0; i < sequence.LongLength; i++)
+            for (long i = 0; i < sequence.Length; i++)
             {
                 var element = sequence[i];
                 var value = element_valueSelector(element);
@@ -162,7 +162,7 @@ namespace Aardvark.Base
             if (sequence == null) throw new ArgumentNullException("sequence");
             if (element_valueSelector == null) throw new ArgumentNullException("element_valueSelector");
             var minElement = default(TSeq);
-            for (long i = 0; i < sequence.LongLength; i++)
+            for (long i = 0; i < sequence.Length; i++)
             {
                 var element = sequence[i];
                 var value = element_valueSelector(element);
@@ -286,7 +286,7 @@ namespace Aardvark.Base
         {
             if (sequence == null) throw new ArgumentNullException("sequence");
             if (element_valueSelector == null) throw new ArgumentNullException("element_valueSelector");
-            for (long i = 0; i < sequence.LongLength; i++)
+            for (long i = 0; i < sequence.Length; i++)
             {
                 var value = element_valueSelector(sequence[i]);
                 if (value > maxValue) maxValue = value;
@@ -303,7 +303,7 @@ namespace Aardvark.Base
         {
             if (sequence == null) throw new ArgumentNullException("sequence");
             if (element_valueSelector == null) throw new ArgumentNullException("element_valueSelector");
-            for (long i = 0; i < sequence.LongLength; i++)
+            for (long i = 0; i < sequence.Length; i++)
             {
                 var element = sequence[i];
                 var value = element_valueSelector(element);
@@ -326,7 +326,7 @@ namespace Aardvark.Base
             if (sequence == null) throw new ArgumentNullException("sequence");
             if (element_valueSelector == null) throw new ArgumentNullException("element_valueSelector");
             var maxElement = default(TSeq);
-            for (long i = 0; i < sequence.LongLength; i++)
+            for (long i = 0; i < sequence.Length; i++)
             {
                 var element = sequence[i];
                 var value = element_valueSelector(element);
@@ -350,8 +350,8 @@ namespace Aardvark.Base
         /// </summary>
         public static byte[] MergeAscending(this byte[] a0, byte[] a1)
         {
-            long count0 = a0.LongLength;
-            long count1 = a1.LongLength;
+            long count0 = a0.Length;
+            long count1 = a1.Length;
             var a = new byte[count0 + count1];
             long i = 0, i0 = 0, i1 = 0;
             while (i0 < count0 && i1 < count1)
@@ -373,8 +373,8 @@ namespace Aardvark.Base
         /// </summary>
         public static TSeq[] MergeAscending<TSeq>(this TSeq[] a0, TSeq[] a1, Func<TSeq, byte> element_valueSelector)
         {
-            long count0 = a0.LongLength;
-            long count1 = a1.LongLength;
+            long count0 = a0.Length;
+            long count1 = a1.Length;
             var a = new TSeq[count0 + count1];
             long i = 0, i0 = 0, i1 = 0;
             while (i0 < count0 && i1 < count1)
@@ -396,8 +396,8 @@ namespace Aardvark.Base
         /// </summary>
         public static byte[] MergeDescending(this byte[] a0, byte[] a1)
         {
-            long count0 = a0.LongLength;
-            long count1 = a1.LongLength;
+            long count0 = a0.Length;
+            long count1 = a1.Length;
             var a = new byte[count0 + count1];
             long i = 0, i0 = 0, i1 = 0;
             while (i0 < count0 && i1 < count1)
@@ -419,8 +419,8 @@ namespace Aardvark.Base
         /// </summary>
         public static TSeq[] MergeDescending<TSeq>(this TSeq[] a0, TSeq[] a1, Func<TSeq, byte> element_valueSelector)
         {
-            long count0 = a0.LongLength;
-            long count1 = a1.LongLength;
+            long count0 = a0.Length;
+            long count1 = a1.Length;
             var a = new TSeq[count0 + count1];
             long i = 0, i0 = 0, i1 = 0;
             while (i0 < count0 && i1 < count1)
@@ -554,7 +554,7 @@ namespace Aardvark.Base
         {
             if (sequence == null) throw new ArgumentNullException("sequence");
             if (element_valueSelector == null) throw new ArgumentNullException("element_valueSelector");
-            for (long i = 0; i < sequence.LongLength; i++)
+            for (long i = 0; i < sequence.Length; i++)
             {
                 var value = element_valueSelector(sequence[i]);
                 if (value < minValue) minValue = value;
@@ -571,7 +571,7 @@ namespace Aardvark.Base
         {
             if (sequence == null) throw new ArgumentNullException("sequence");
             if (element_valueSelector == null) throw new ArgumentNullException("element_valueSelector");
-            for (long i = 0; i < sequence.LongLength; i++)
+            for (long i = 0; i < sequence.Length; i++)
             {
                 var element = sequence[i];
                 var value = element_valueSelector(element);
@@ -594,7 +594,7 @@ namespace Aardvark.Base
             if (sequence == null) throw new ArgumentNullException("sequence");
             if (element_valueSelector == null) throw new ArgumentNullException("element_valueSelector");
             var minElement = default(TSeq);
-            for (long i = 0; i < sequence.LongLength; i++)
+            for (long i = 0; i < sequence.Length; i++)
             {
                 var element = sequence[i];
                 var value = element_valueSelector(element);
@@ -718,7 +718,7 @@ namespace Aardvark.Base
         {
             if (sequence == null) throw new ArgumentNullException("sequence");
             if (element_valueSelector == null) throw new ArgumentNullException("element_valueSelector");
-            for (long i = 0; i < sequence.LongLength; i++)
+            for (long i = 0; i < sequence.Length; i++)
             {
                 var value = element_valueSelector(sequence[i]);
                 if (value > maxValue) maxValue = value;
@@ -735,7 +735,7 @@ namespace Aardvark.Base
         {
             if (sequence == null) throw new ArgumentNullException("sequence");
             if (element_valueSelector == null) throw new ArgumentNullException("element_valueSelector");
-            for (long i = 0; i < sequence.LongLength; i++)
+            for (long i = 0; i < sequence.Length; i++)
             {
                 var element = sequence[i];
                 var value = element_valueSelector(element);
@@ -758,7 +758,7 @@ namespace Aardvark.Base
             if (sequence == null) throw new ArgumentNullException("sequence");
             if (element_valueSelector == null) throw new ArgumentNullException("element_valueSelector");
             var maxElement = default(TSeq);
-            for (long i = 0; i < sequence.LongLength; i++)
+            for (long i = 0; i < sequence.Length; i++)
             {
                 var element = sequence[i];
                 var value = element_valueSelector(element);
@@ -782,8 +782,8 @@ namespace Aardvark.Base
         /// </summary>
         public static sbyte[] MergeAscending(this sbyte[] a0, sbyte[] a1)
         {
-            long count0 = a0.LongLength;
-            long count1 = a1.LongLength;
+            long count0 = a0.Length;
+            long count1 = a1.Length;
             var a = new sbyte[count0 + count1];
             long i = 0, i0 = 0, i1 = 0;
             while (i0 < count0 && i1 < count1)
@@ -805,8 +805,8 @@ namespace Aardvark.Base
         /// </summary>
         public static TSeq[] MergeAscending<TSeq>(this TSeq[] a0, TSeq[] a1, Func<TSeq, sbyte> element_valueSelector)
         {
-            long count0 = a0.LongLength;
-            long count1 = a1.LongLength;
+            long count0 = a0.Length;
+            long count1 = a1.Length;
             var a = new TSeq[count0 + count1];
             long i = 0, i0 = 0, i1 = 0;
             while (i0 < count0 && i1 < count1)
@@ -828,8 +828,8 @@ namespace Aardvark.Base
         /// </summary>
         public static sbyte[] MergeDescending(this sbyte[] a0, sbyte[] a1)
         {
-            long count0 = a0.LongLength;
-            long count1 = a1.LongLength;
+            long count0 = a0.Length;
+            long count1 = a1.Length;
             var a = new sbyte[count0 + count1];
             long i = 0, i0 = 0, i1 = 0;
             while (i0 < count0 && i1 < count1)
@@ -851,8 +851,8 @@ namespace Aardvark.Base
         /// </summary>
         public static TSeq[] MergeDescending<TSeq>(this TSeq[] a0, TSeq[] a1, Func<TSeq, sbyte> element_valueSelector)
         {
-            long count0 = a0.LongLength;
-            long count1 = a1.LongLength;
+            long count0 = a0.Length;
+            long count1 = a1.Length;
             var a = new TSeq[count0 + count1];
             long i = 0, i0 = 0, i1 = 0;
             while (i0 < count0 && i1 < count1)
@@ -986,7 +986,7 @@ namespace Aardvark.Base
         {
             if (sequence == null) throw new ArgumentNullException("sequence");
             if (element_valueSelector == null) throw new ArgumentNullException("element_valueSelector");
-            for (long i = 0; i < sequence.LongLength; i++)
+            for (long i = 0; i < sequence.Length; i++)
             {
                 var value = element_valueSelector(sequence[i]);
                 if (value < minValue) minValue = value;
@@ -1003,7 +1003,7 @@ namespace Aardvark.Base
         {
             if (sequence == null) throw new ArgumentNullException("sequence");
             if (element_valueSelector == null) throw new ArgumentNullException("element_valueSelector");
-            for (long i = 0; i < sequence.LongLength; i++)
+            for (long i = 0; i < sequence.Length; i++)
             {
                 var element = sequence[i];
                 var value = element_valueSelector(element);
@@ -1026,7 +1026,7 @@ namespace Aardvark.Base
             if (sequence == null) throw new ArgumentNullException("sequence");
             if (element_valueSelector == null) throw new ArgumentNullException("element_valueSelector");
             var minElement = default(TSeq);
-            for (long i = 0; i < sequence.LongLength; i++)
+            for (long i = 0; i < sequence.Length; i++)
             {
                 var element = sequence[i];
                 var value = element_valueSelector(element);
@@ -1150,7 +1150,7 @@ namespace Aardvark.Base
         {
             if (sequence == null) throw new ArgumentNullException("sequence");
             if (element_valueSelector == null) throw new ArgumentNullException("element_valueSelector");
-            for (long i = 0; i < sequence.LongLength; i++)
+            for (long i = 0; i < sequence.Length; i++)
             {
                 var value = element_valueSelector(sequence[i]);
                 if (value > maxValue) maxValue = value;
@@ -1167,7 +1167,7 @@ namespace Aardvark.Base
         {
             if (sequence == null) throw new ArgumentNullException("sequence");
             if (element_valueSelector == null) throw new ArgumentNullException("element_valueSelector");
-            for (long i = 0; i < sequence.LongLength; i++)
+            for (long i = 0; i < sequence.Length; i++)
             {
                 var element = sequence[i];
                 var value = element_valueSelector(element);
@@ -1190,7 +1190,7 @@ namespace Aardvark.Base
             if (sequence == null) throw new ArgumentNullException("sequence");
             if (element_valueSelector == null) throw new ArgumentNullException("element_valueSelector");
             var maxElement = default(TSeq);
-            for (long i = 0; i < sequence.LongLength; i++)
+            for (long i = 0; i < sequence.Length; i++)
             {
                 var element = sequence[i];
                 var value = element_valueSelector(element);
@@ -1214,8 +1214,8 @@ namespace Aardvark.Base
         /// </summary>
         public static short[] MergeAscending(this short[] a0, short[] a1)
         {
-            long count0 = a0.LongLength;
-            long count1 = a1.LongLength;
+            long count0 = a0.Length;
+            long count1 = a1.Length;
             var a = new short[count0 + count1];
             long i = 0, i0 = 0, i1 = 0;
             while (i0 < count0 && i1 < count1)
@@ -1237,8 +1237,8 @@ namespace Aardvark.Base
         /// </summary>
         public static TSeq[] MergeAscending<TSeq>(this TSeq[] a0, TSeq[] a1, Func<TSeq, short> element_valueSelector)
         {
-            long count0 = a0.LongLength;
-            long count1 = a1.LongLength;
+            long count0 = a0.Length;
+            long count1 = a1.Length;
             var a = new TSeq[count0 + count1];
             long i = 0, i0 = 0, i1 = 0;
             while (i0 < count0 && i1 < count1)
@@ -1260,8 +1260,8 @@ namespace Aardvark.Base
         /// </summary>
         public static short[] MergeDescending(this short[] a0, short[] a1)
         {
-            long count0 = a0.LongLength;
-            long count1 = a1.LongLength;
+            long count0 = a0.Length;
+            long count1 = a1.Length;
             var a = new short[count0 + count1];
             long i = 0, i0 = 0, i1 = 0;
             while (i0 < count0 && i1 < count1)
@@ -1283,8 +1283,8 @@ namespace Aardvark.Base
         /// </summary>
         public static TSeq[] MergeDescending<TSeq>(this TSeq[] a0, TSeq[] a1, Func<TSeq, short> element_valueSelector)
         {
-            long count0 = a0.LongLength;
-            long count1 = a1.LongLength;
+            long count0 = a0.Length;
+            long count1 = a1.Length;
             var a = new TSeq[count0 + count1];
             long i = 0, i0 = 0, i1 = 0;
             while (i0 < count0 && i1 < count1)
@@ -1418,7 +1418,7 @@ namespace Aardvark.Base
         {
             if (sequence == null) throw new ArgumentNullException("sequence");
             if (element_valueSelector == null) throw new ArgumentNullException("element_valueSelector");
-            for (long i = 0; i < sequence.LongLength; i++)
+            for (long i = 0; i < sequence.Length; i++)
             {
                 var value = element_valueSelector(sequence[i]);
                 if (value < minValue) minValue = value;
@@ -1435,7 +1435,7 @@ namespace Aardvark.Base
         {
             if (sequence == null) throw new ArgumentNullException("sequence");
             if (element_valueSelector == null) throw new ArgumentNullException("element_valueSelector");
-            for (long i = 0; i < sequence.LongLength; i++)
+            for (long i = 0; i < sequence.Length; i++)
             {
                 var element = sequence[i];
                 var value = element_valueSelector(element);
@@ -1458,7 +1458,7 @@ namespace Aardvark.Base
             if (sequence == null) throw new ArgumentNullException("sequence");
             if (element_valueSelector == null) throw new ArgumentNullException("element_valueSelector");
             var minElement = default(TSeq);
-            for (long i = 0; i < sequence.LongLength; i++)
+            for (long i = 0; i < sequence.Length; i++)
             {
                 var element = sequence[i];
                 var value = element_valueSelector(element);
@@ -1582,7 +1582,7 @@ namespace Aardvark.Base
         {
             if (sequence == null) throw new ArgumentNullException("sequence");
             if (element_valueSelector == null) throw new ArgumentNullException("element_valueSelector");
-            for (long i = 0; i < sequence.LongLength; i++)
+            for (long i = 0; i < sequence.Length; i++)
             {
                 var value = element_valueSelector(sequence[i]);
                 if (value > maxValue) maxValue = value;
@@ -1599,7 +1599,7 @@ namespace Aardvark.Base
         {
             if (sequence == null) throw new ArgumentNullException("sequence");
             if (element_valueSelector == null) throw new ArgumentNullException("element_valueSelector");
-            for (long i = 0; i < sequence.LongLength; i++)
+            for (long i = 0; i < sequence.Length; i++)
             {
                 var element = sequence[i];
                 var value = element_valueSelector(element);
@@ -1622,7 +1622,7 @@ namespace Aardvark.Base
             if (sequence == null) throw new ArgumentNullException("sequence");
             if (element_valueSelector == null) throw new ArgumentNullException("element_valueSelector");
             var maxElement = default(TSeq);
-            for (long i = 0; i < sequence.LongLength; i++)
+            for (long i = 0; i < sequence.Length; i++)
             {
                 var element = sequence[i];
                 var value = element_valueSelector(element);
@@ -1646,8 +1646,8 @@ namespace Aardvark.Base
         /// </summary>
         public static ushort[] MergeAscending(this ushort[] a0, ushort[] a1)
         {
-            long count0 = a0.LongLength;
-            long count1 = a1.LongLength;
+            long count0 = a0.Length;
+            long count1 = a1.Length;
             var a = new ushort[count0 + count1];
             long i = 0, i0 = 0, i1 = 0;
             while (i0 < count0 && i1 < count1)
@@ -1669,8 +1669,8 @@ namespace Aardvark.Base
         /// </summary>
         public static TSeq[] MergeAscending<TSeq>(this TSeq[] a0, TSeq[] a1, Func<TSeq, ushort> element_valueSelector)
         {
-            long count0 = a0.LongLength;
-            long count1 = a1.LongLength;
+            long count0 = a0.Length;
+            long count1 = a1.Length;
             var a = new TSeq[count0 + count1];
             long i = 0, i0 = 0, i1 = 0;
             while (i0 < count0 && i1 < count1)
@@ -1692,8 +1692,8 @@ namespace Aardvark.Base
         /// </summary>
         public static ushort[] MergeDescending(this ushort[] a0, ushort[] a1)
         {
-            long count0 = a0.LongLength;
-            long count1 = a1.LongLength;
+            long count0 = a0.Length;
+            long count1 = a1.Length;
             var a = new ushort[count0 + count1];
             long i = 0, i0 = 0, i1 = 0;
             while (i0 < count0 && i1 < count1)
@@ -1715,8 +1715,8 @@ namespace Aardvark.Base
         /// </summary>
         public static TSeq[] MergeDescending<TSeq>(this TSeq[] a0, TSeq[] a1, Func<TSeq, ushort> element_valueSelector)
         {
-            long count0 = a0.LongLength;
-            long count1 = a1.LongLength;
+            long count0 = a0.Length;
+            long count1 = a1.Length;
             var a = new TSeq[count0 + count1];
             long i = 0, i0 = 0, i1 = 0;
             while (i0 < count0 && i1 < count1)
@@ -1850,7 +1850,7 @@ namespace Aardvark.Base
         {
             if (sequence == null) throw new ArgumentNullException("sequence");
             if (element_valueSelector == null) throw new ArgumentNullException("element_valueSelector");
-            for (long i = 0; i < sequence.LongLength; i++)
+            for (long i = 0; i < sequence.Length; i++)
             {
                 var value = element_valueSelector(sequence[i]);
                 if (value < minValue) minValue = value;
@@ -1867,7 +1867,7 @@ namespace Aardvark.Base
         {
             if (sequence == null) throw new ArgumentNullException("sequence");
             if (element_valueSelector == null) throw new ArgumentNullException("element_valueSelector");
-            for (long i = 0; i < sequence.LongLength; i++)
+            for (long i = 0; i < sequence.Length; i++)
             {
                 var element = sequence[i];
                 var value = element_valueSelector(element);
@@ -1890,7 +1890,7 @@ namespace Aardvark.Base
             if (sequence == null) throw new ArgumentNullException("sequence");
             if (element_valueSelector == null) throw new ArgumentNullException("element_valueSelector");
             var minElement = default(TSeq);
-            for (long i = 0; i < sequence.LongLength; i++)
+            for (long i = 0; i < sequence.Length; i++)
             {
                 var element = sequence[i];
                 var value = element_valueSelector(element);
@@ -2014,7 +2014,7 @@ namespace Aardvark.Base
         {
             if (sequence == null) throw new ArgumentNullException("sequence");
             if (element_valueSelector == null) throw new ArgumentNullException("element_valueSelector");
-            for (long i = 0; i < sequence.LongLength; i++)
+            for (long i = 0; i < sequence.Length; i++)
             {
                 var value = element_valueSelector(sequence[i]);
                 if (value > maxValue) maxValue = value;
@@ -2031,7 +2031,7 @@ namespace Aardvark.Base
         {
             if (sequence == null) throw new ArgumentNullException("sequence");
             if (element_valueSelector == null) throw new ArgumentNullException("element_valueSelector");
-            for (long i = 0; i < sequence.LongLength; i++)
+            for (long i = 0; i < sequence.Length; i++)
             {
                 var element = sequence[i];
                 var value = element_valueSelector(element);
@@ -2054,7 +2054,7 @@ namespace Aardvark.Base
             if (sequence == null) throw new ArgumentNullException("sequence");
             if (element_valueSelector == null) throw new ArgumentNullException("element_valueSelector");
             var maxElement = default(TSeq);
-            for (long i = 0; i < sequence.LongLength; i++)
+            for (long i = 0; i < sequence.Length; i++)
             {
                 var element = sequence[i];
                 var value = element_valueSelector(element);
@@ -2078,8 +2078,8 @@ namespace Aardvark.Base
         /// </summary>
         public static int[] MergeAscending(this int[] a0, int[] a1)
         {
-            long count0 = a0.LongLength;
-            long count1 = a1.LongLength;
+            long count0 = a0.Length;
+            long count1 = a1.Length;
             var a = new int[count0 + count1];
             long i = 0, i0 = 0, i1 = 0;
             while (i0 < count0 && i1 < count1)
@@ -2101,8 +2101,8 @@ namespace Aardvark.Base
         /// </summary>
         public static TSeq[] MergeAscending<TSeq>(this TSeq[] a0, TSeq[] a1, Func<TSeq, int> element_valueSelector)
         {
-            long count0 = a0.LongLength;
-            long count1 = a1.LongLength;
+            long count0 = a0.Length;
+            long count1 = a1.Length;
             var a = new TSeq[count0 + count1];
             long i = 0, i0 = 0, i1 = 0;
             while (i0 < count0 && i1 < count1)
@@ -2124,8 +2124,8 @@ namespace Aardvark.Base
         /// </summary>
         public static int[] MergeDescending(this int[] a0, int[] a1)
         {
-            long count0 = a0.LongLength;
-            long count1 = a1.LongLength;
+            long count0 = a0.Length;
+            long count1 = a1.Length;
             var a = new int[count0 + count1];
             long i = 0, i0 = 0, i1 = 0;
             while (i0 < count0 && i1 < count1)
@@ -2147,8 +2147,8 @@ namespace Aardvark.Base
         /// </summary>
         public static TSeq[] MergeDescending<TSeq>(this TSeq[] a0, TSeq[] a1, Func<TSeq, int> element_valueSelector)
         {
-            long count0 = a0.LongLength;
-            long count1 = a1.LongLength;
+            long count0 = a0.Length;
+            long count1 = a1.Length;
             var a = new TSeq[count0 + count1];
             long i = 0, i0 = 0, i1 = 0;
             while (i0 < count0 && i1 < count1)
@@ -2282,7 +2282,7 @@ namespace Aardvark.Base
         {
             if (sequence == null) throw new ArgumentNullException("sequence");
             if (element_valueSelector == null) throw new ArgumentNullException("element_valueSelector");
-            for (long i = 0; i < sequence.LongLength; i++)
+            for (long i = 0; i < sequence.Length; i++)
             {
                 var value = element_valueSelector(sequence[i]);
                 if (value < minValue) minValue = value;
@@ -2299,7 +2299,7 @@ namespace Aardvark.Base
         {
             if (sequence == null) throw new ArgumentNullException("sequence");
             if (element_valueSelector == null) throw new ArgumentNullException("element_valueSelector");
-            for (long i = 0; i < sequence.LongLength; i++)
+            for (long i = 0; i < sequence.Length; i++)
             {
                 var element = sequence[i];
                 var value = element_valueSelector(element);
@@ -2322,7 +2322,7 @@ namespace Aardvark.Base
             if (sequence == null) throw new ArgumentNullException("sequence");
             if (element_valueSelector == null) throw new ArgumentNullException("element_valueSelector");
             var minElement = default(TSeq);
-            for (long i = 0; i < sequence.LongLength; i++)
+            for (long i = 0; i < sequence.Length; i++)
             {
                 var element = sequence[i];
                 var value = element_valueSelector(element);
@@ -2446,7 +2446,7 @@ namespace Aardvark.Base
         {
             if (sequence == null) throw new ArgumentNullException("sequence");
             if (element_valueSelector == null) throw new ArgumentNullException("element_valueSelector");
-            for (long i = 0; i < sequence.LongLength; i++)
+            for (long i = 0; i < sequence.Length; i++)
             {
                 var value = element_valueSelector(sequence[i]);
                 if (value > maxValue) maxValue = value;
@@ -2463,7 +2463,7 @@ namespace Aardvark.Base
         {
             if (sequence == null) throw new ArgumentNullException("sequence");
             if (element_valueSelector == null) throw new ArgumentNullException("element_valueSelector");
-            for (long i = 0; i < sequence.LongLength; i++)
+            for (long i = 0; i < sequence.Length; i++)
             {
                 var element = sequence[i];
                 var value = element_valueSelector(element);
@@ -2486,7 +2486,7 @@ namespace Aardvark.Base
             if (sequence == null) throw new ArgumentNullException("sequence");
             if (element_valueSelector == null) throw new ArgumentNullException("element_valueSelector");
             var maxElement = default(TSeq);
-            for (long i = 0; i < sequence.LongLength; i++)
+            for (long i = 0; i < sequence.Length; i++)
             {
                 var element = sequence[i];
                 var value = element_valueSelector(element);
@@ -2510,8 +2510,8 @@ namespace Aardvark.Base
         /// </summary>
         public static uint[] MergeAscending(this uint[] a0, uint[] a1)
         {
-            long count0 = a0.LongLength;
-            long count1 = a1.LongLength;
+            long count0 = a0.Length;
+            long count1 = a1.Length;
             var a = new uint[count0 + count1];
             long i = 0, i0 = 0, i1 = 0;
             while (i0 < count0 && i1 < count1)
@@ -2533,8 +2533,8 @@ namespace Aardvark.Base
         /// </summary>
         public static TSeq[] MergeAscending<TSeq>(this TSeq[] a0, TSeq[] a1, Func<TSeq, uint> element_valueSelector)
         {
-            long count0 = a0.LongLength;
-            long count1 = a1.LongLength;
+            long count0 = a0.Length;
+            long count1 = a1.Length;
             var a = new TSeq[count0 + count1];
             long i = 0, i0 = 0, i1 = 0;
             while (i0 < count0 && i1 < count1)
@@ -2556,8 +2556,8 @@ namespace Aardvark.Base
         /// </summary>
         public static uint[] MergeDescending(this uint[] a0, uint[] a1)
         {
-            long count0 = a0.LongLength;
-            long count1 = a1.LongLength;
+            long count0 = a0.Length;
+            long count1 = a1.Length;
             var a = new uint[count0 + count1];
             long i = 0, i0 = 0, i1 = 0;
             while (i0 < count0 && i1 < count1)
@@ -2579,8 +2579,8 @@ namespace Aardvark.Base
         /// </summary>
         public static TSeq[] MergeDescending<TSeq>(this TSeq[] a0, TSeq[] a1, Func<TSeq, uint> element_valueSelector)
         {
-            long count0 = a0.LongLength;
-            long count1 = a1.LongLength;
+            long count0 = a0.Length;
+            long count1 = a1.Length;
             var a = new TSeq[count0 + count1];
             long i = 0, i0 = 0, i1 = 0;
             while (i0 < count0 && i1 < count1)
@@ -2714,7 +2714,7 @@ namespace Aardvark.Base
         {
             if (sequence == null) throw new ArgumentNullException("sequence");
             if (element_valueSelector == null) throw new ArgumentNullException("element_valueSelector");
-            for (long i = 0; i < sequence.LongLength; i++)
+            for (long i = 0; i < sequence.Length; i++)
             {
                 var value = element_valueSelector(sequence[i]);
                 if (value < minValue) minValue = value;
@@ -2731,7 +2731,7 @@ namespace Aardvark.Base
         {
             if (sequence == null) throw new ArgumentNullException("sequence");
             if (element_valueSelector == null) throw new ArgumentNullException("element_valueSelector");
-            for (long i = 0; i < sequence.LongLength; i++)
+            for (long i = 0; i < sequence.Length; i++)
             {
                 var element = sequence[i];
                 var value = element_valueSelector(element);
@@ -2754,7 +2754,7 @@ namespace Aardvark.Base
             if (sequence == null) throw new ArgumentNullException("sequence");
             if (element_valueSelector == null) throw new ArgumentNullException("element_valueSelector");
             var minElement = default(TSeq);
-            for (long i = 0; i < sequence.LongLength; i++)
+            for (long i = 0; i < sequence.Length; i++)
             {
                 var element = sequence[i];
                 var value = element_valueSelector(element);
@@ -2878,7 +2878,7 @@ namespace Aardvark.Base
         {
             if (sequence == null) throw new ArgumentNullException("sequence");
             if (element_valueSelector == null) throw new ArgumentNullException("element_valueSelector");
-            for (long i = 0; i < sequence.LongLength; i++)
+            for (long i = 0; i < sequence.Length; i++)
             {
                 var value = element_valueSelector(sequence[i]);
                 if (value > maxValue) maxValue = value;
@@ -2895,7 +2895,7 @@ namespace Aardvark.Base
         {
             if (sequence == null) throw new ArgumentNullException("sequence");
             if (element_valueSelector == null) throw new ArgumentNullException("element_valueSelector");
-            for (long i = 0; i < sequence.LongLength; i++)
+            for (long i = 0; i < sequence.Length; i++)
             {
                 var element = sequence[i];
                 var value = element_valueSelector(element);
@@ -2918,7 +2918,7 @@ namespace Aardvark.Base
             if (sequence == null) throw new ArgumentNullException("sequence");
             if (element_valueSelector == null) throw new ArgumentNullException("element_valueSelector");
             var maxElement = default(TSeq);
-            for (long i = 0; i < sequence.LongLength; i++)
+            for (long i = 0; i < sequence.Length; i++)
             {
                 var element = sequence[i];
                 var value = element_valueSelector(element);
@@ -2942,8 +2942,8 @@ namespace Aardvark.Base
         /// </summary>
         public static long[] MergeAscending(this long[] a0, long[] a1)
         {
-            long count0 = a0.LongLength;
-            long count1 = a1.LongLength;
+            long count0 = a0.Length;
+            long count1 = a1.Length;
             var a = new long[count0 + count1];
             long i = 0, i0 = 0, i1 = 0;
             while (i0 < count0 && i1 < count1)
@@ -2965,8 +2965,8 @@ namespace Aardvark.Base
         /// </summary>
         public static TSeq[] MergeAscending<TSeq>(this TSeq[] a0, TSeq[] a1, Func<TSeq, long> element_valueSelector)
         {
-            long count0 = a0.LongLength;
-            long count1 = a1.LongLength;
+            long count0 = a0.Length;
+            long count1 = a1.Length;
             var a = new TSeq[count0 + count1];
             long i = 0, i0 = 0, i1 = 0;
             while (i0 < count0 && i1 < count1)
@@ -2988,8 +2988,8 @@ namespace Aardvark.Base
         /// </summary>
         public static long[] MergeDescending(this long[] a0, long[] a1)
         {
-            long count0 = a0.LongLength;
-            long count1 = a1.LongLength;
+            long count0 = a0.Length;
+            long count1 = a1.Length;
             var a = new long[count0 + count1];
             long i = 0, i0 = 0, i1 = 0;
             while (i0 < count0 && i1 < count1)
@@ -3011,8 +3011,8 @@ namespace Aardvark.Base
         /// </summary>
         public static TSeq[] MergeDescending<TSeq>(this TSeq[] a0, TSeq[] a1, Func<TSeq, long> element_valueSelector)
         {
-            long count0 = a0.LongLength;
-            long count1 = a1.LongLength;
+            long count0 = a0.Length;
+            long count1 = a1.Length;
             var a = new TSeq[count0 + count1];
             long i = 0, i0 = 0, i1 = 0;
             while (i0 < count0 && i1 < count1)
@@ -3146,7 +3146,7 @@ namespace Aardvark.Base
         {
             if (sequence == null) throw new ArgumentNullException("sequence");
             if (element_valueSelector == null) throw new ArgumentNullException("element_valueSelector");
-            for (long i = 0; i < sequence.LongLength; i++)
+            for (long i = 0; i < sequence.Length; i++)
             {
                 var value = element_valueSelector(sequence[i]);
                 if (value < minValue) minValue = value;
@@ -3163,7 +3163,7 @@ namespace Aardvark.Base
         {
             if (sequence == null) throw new ArgumentNullException("sequence");
             if (element_valueSelector == null) throw new ArgumentNullException("element_valueSelector");
-            for (long i = 0; i < sequence.LongLength; i++)
+            for (long i = 0; i < sequence.Length; i++)
             {
                 var element = sequence[i];
                 var value = element_valueSelector(element);
@@ -3186,7 +3186,7 @@ namespace Aardvark.Base
             if (sequence == null) throw new ArgumentNullException("sequence");
             if (element_valueSelector == null) throw new ArgumentNullException("element_valueSelector");
             var minElement = default(TSeq);
-            for (long i = 0; i < sequence.LongLength; i++)
+            for (long i = 0; i < sequence.Length; i++)
             {
                 var element = sequence[i];
                 var value = element_valueSelector(element);
@@ -3310,7 +3310,7 @@ namespace Aardvark.Base
         {
             if (sequence == null) throw new ArgumentNullException("sequence");
             if (element_valueSelector == null) throw new ArgumentNullException("element_valueSelector");
-            for (long i = 0; i < sequence.LongLength; i++)
+            for (long i = 0; i < sequence.Length; i++)
             {
                 var value = element_valueSelector(sequence[i]);
                 if (value > maxValue) maxValue = value;
@@ -3327,7 +3327,7 @@ namespace Aardvark.Base
         {
             if (sequence == null) throw new ArgumentNullException("sequence");
             if (element_valueSelector == null) throw new ArgumentNullException("element_valueSelector");
-            for (long i = 0; i < sequence.LongLength; i++)
+            for (long i = 0; i < sequence.Length; i++)
             {
                 var element = sequence[i];
                 var value = element_valueSelector(element);
@@ -3350,7 +3350,7 @@ namespace Aardvark.Base
             if (sequence == null) throw new ArgumentNullException("sequence");
             if (element_valueSelector == null) throw new ArgumentNullException("element_valueSelector");
             var maxElement = default(TSeq);
-            for (long i = 0; i < sequence.LongLength; i++)
+            for (long i = 0; i < sequence.Length; i++)
             {
                 var element = sequence[i];
                 var value = element_valueSelector(element);
@@ -3374,8 +3374,8 @@ namespace Aardvark.Base
         /// </summary>
         public static ulong[] MergeAscending(this ulong[] a0, ulong[] a1)
         {
-            long count0 = a0.LongLength;
-            long count1 = a1.LongLength;
+            long count0 = a0.Length;
+            long count1 = a1.Length;
             var a = new ulong[count0 + count1];
             long i = 0, i0 = 0, i1 = 0;
             while (i0 < count0 && i1 < count1)
@@ -3397,8 +3397,8 @@ namespace Aardvark.Base
         /// </summary>
         public static TSeq[] MergeAscending<TSeq>(this TSeq[] a0, TSeq[] a1, Func<TSeq, ulong> element_valueSelector)
         {
-            long count0 = a0.LongLength;
-            long count1 = a1.LongLength;
+            long count0 = a0.Length;
+            long count1 = a1.Length;
             var a = new TSeq[count0 + count1];
             long i = 0, i0 = 0, i1 = 0;
             while (i0 < count0 && i1 < count1)
@@ -3420,8 +3420,8 @@ namespace Aardvark.Base
         /// </summary>
         public static ulong[] MergeDescending(this ulong[] a0, ulong[] a1)
         {
-            long count0 = a0.LongLength;
-            long count1 = a1.LongLength;
+            long count0 = a0.Length;
+            long count1 = a1.Length;
             var a = new ulong[count0 + count1];
             long i = 0, i0 = 0, i1 = 0;
             while (i0 < count0 && i1 < count1)
@@ -3443,8 +3443,8 @@ namespace Aardvark.Base
         /// </summary>
         public static TSeq[] MergeDescending<TSeq>(this TSeq[] a0, TSeq[] a1, Func<TSeq, ulong> element_valueSelector)
         {
-            long count0 = a0.LongLength;
-            long count1 = a1.LongLength;
+            long count0 = a0.Length;
+            long count1 = a1.Length;
             var a = new TSeq[count0 + count1];
             long i = 0, i0 = 0, i1 = 0;
             while (i0 < count0 && i1 < count1)
@@ -3578,7 +3578,7 @@ namespace Aardvark.Base
         {
             if (sequence == null) throw new ArgumentNullException("sequence");
             if (element_valueSelector == null) throw new ArgumentNullException("element_valueSelector");
-            for (long i = 0; i < sequence.LongLength; i++)
+            for (long i = 0; i < sequence.Length; i++)
             {
                 var value = element_valueSelector(sequence[i]);
                 if (value < minValue) minValue = value;
@@ -3595,7 +3595,7 @@ namespace Aardvark.Base
         {
             if (sequence == null) throw new ArgumentNullException("sequence");
             if (element_valueSelector == null) throw new ArgumentNullException("element_valueSelector");
-            for (long i = 0; i < sequence.LongLength; i++)
+            for (long i = 0; i < sequence.Length; i++)
             {
                 var element = sequence[i];
                 var value = element_valueSelector(element);
@@ -3618,7 +3618,7 @@ namespace Aardvark.Base
             if (sequence == null) throw new ArgumentNullException("sequence");
             if (element_valueSelector == null) throw new ArgumentNullException("element_valueSelector");
             var minElement = default(TSeq);
-            for (long i = 0; i < sequence.LongLength; i++)
+            for (long i = 0; i < sequence.Length; i++)
             {
                 var element = sequence[i];
                 var value = element_valueSelector(element);
@@ -3742,7 +3742,7 @@ namespace Aardvark.Base
         {
             if (sequence == null) throw new ArgumentNullException("sequence");
             if (element_valueSelector == null) throw new ArgumentNullException("element_valueSelector");
-            for (long i = 0; i < sequence.LongLength; i++)
+            for (long i = 0; i < sequence.Length; i++)
             {
                 var value = element_valueSelector(sequence[i]);
                 if (value > maxValue) maxValue = value;
@@ -3759,7 +3759,7 @@ namespace Aardvark.Base
         {
             if (sequence == null) throw new ArgumentNullException("sequence");
             if (element_valueSelector == null) throw new ArgumentNullException("element_valueSelector");
-            for (long i = 0; i < sequence.LongLength; i++)
+            for (long i = 0; i < sequence.Length; i++)
             {
                 var element = sequence[i];
                 var value = element_valueSelector(element);
@@ -3782,7 +3782,7 @@ namespace Aardvark.Base
             if (sequence == null) throw new ArgumentNullException("sequence");
             if (element_valueSelector == null) throw new ArgumentNullException("element_valueSelector");
             var maxElement = default(TSeq);
-            for (long i = 0; i < sequence.LongLength; i++)
+            for (long i = 0; i < sequence.Length; i++)
             {
                 var element = sequence[i];
                 var value = element_valueSelector(element);
@@ -3806,8 +3806,8 @@ namespace Aardvark.Base
         /// </summary>
         public static float[] MergeAscending(this float[] a0, float[] a1)
         {
-            long count0 = a0.LongLength;
-            long count1 = a1.LongLength;
+            long count0 = a0.Length;
+            long count1 = a1.Length;
             var a = new float[count0 + count1];
             long i = 0, i0 = 0, i1 = 0;
             while (i0 < count0 && i1 < count1)
@@ -3829,8 +3829,8 @@ namespace Aardvark.Base
         /// </summary>
         public static TSeq[] MergeAscending<TSeq>(this TSeq[] a0, TSeq[] a1, Func<TSeq, float> element_valueSelector)
         {
-            long count0 = a0.LongLength;
-            long count1 = a1.LongLength;
+            long count0 = a0.Length;
+            long count1 = a1.Length;
             var a = new TSeq[count0 + count1];
             long i = 0, i0 = 0, i1 = 0;
             while (i0 < count0 && i1 < count1)
@@ -3852,8 +3852,8 @@ namespace Aardvark.Base
         /// </summary>
         public static float[] MergeDescending(this float[] a0, float[] a1)
         {
-            long count0 = a0.LongLength;
-            long count1 = a1.LongLength;
+            long count0 = a0.Length;
+            long count1 = a1.Length;
             var a = new float[count0 + count1];
             long i = 0, i0 = 0, i1 = 0;
             while (i0 < count0 && i1 < count1)
@@ -3875,8 +3875,8 @@ namespace Aardvark.Base
         /// </summary>
         public static TSeq[] MergeDescending<TSeq>(this TSeq[] a0, TSeq[] a1, Func<TSeq, float> element_valueSelector)
         {
-            long count0 = a0.LongLength;
-            long count1 = a1.LongLength;
+            long count0 = a0.Length;
+            long count1 = a1.Length;
             var a = new TSeq[count0 + count1];
             long i = 0, i0 = 0, i1 = 0;
             while (i0 < count0 && i1 < count1)
@@ -4010,7 +4010,7 @@ namespace Aardvark.Base
         {
             if (sequence == null) throw new ArgumentNullException("sequence");
             if (element_valueSelector == null) throw new ArgumentNullException("element_valueSelector");
-            for (long i = 0; i < sequence.LongLength; i++)
+            for (long i = 0; i < sequence.Length; i++)
             {
                 var value = element_valueSelector(sequence[i]);
                 if (value < minValue) minValue = value;
@@ -4027,7 +4027,7 @@ namespace Aardvark.Base
         {
             if (sequence == null) throw new ArgumentNullException("sequence");
             if (element_valueSelector == null) throw new ArgumentNullException("element_valueSelector");
-            for (long i = 0; i < sequence.LongLength; i++)
+            for (long i = 0; i < sequence.Length; i++)
             {
                 var element = sequence[i];
                 var value = element_valueSelector(element);
@@ -4050,7 +4050,7 @@ namespace Aardvark.Base
             if (sequence == null) throw new ArgumentNullException("sequence");
             if (element_valueSelector == null) throw new ArgumentNullException("element_valueSelector");
             var minElement = default(TSeq);
-            for (long i = 0; i < sequence.LongLength; i++)
+            for (long i = 0; i < sequence.Length; i++)
             {
                 var element = sequence[i];
                 var value = element_valueSelector(element);
@@ -4174,7 +4174,7 @@ namespace Aardvark.Base
         {
             if (sequence == null) throw new ArgumentNullException("sequence");
             if (element_valueSelector == null) throw new ArgumentNullException("element_valueSelector");
-            for (long i = 0; i < sequence.LongLength; i++)
+            for (long i = 0; i < sequence.Length; i++)
             {
                 var value = element_valueSelector(sequence[i]);
                 if (value > maxValue) maxValue = value;
@@ -4191,7 +4191,7 @@ namespace Aardvark.Base
         {
             if (sequence == null) throw new ArgumentNullException("sequence");
             if (element_valueSelector == null) throw new ArgumentNullException("element_valueSelector");
-            for (long i = 0; i < sequence.LongLength; i++)
+            for (long i = 0; i < sequence.Length; i++)
             {
                 var element = sequence[i];
                 var value = element_valueSelector(element);
@@ -4214,7 +4214,7 @@ namespace Aardvark.Base
             if (sequence == null) throw new ArgumentNullException("sequence");
             if (element_valueSelector == null) throw new ArgumentNullException("element_valueSelector");
             var maxElement = default(TSeq);
-            for (long i = 0; i < sequence.LongLength; i++)
+            for (long i = 0; i < sequence.Length; i++)
             {
                 var element = sequence[i];
                 var value = element_valueSelector(element);
@@ -4238,8 +4238,8 @@ namespace Aardvark.Base
         /// </summary>
         public static double[] MergeAscending(this double[] a0, double[] a1)
         {
-            long count0 = a0.LongLength;
-            long count1 = a1.LongLength;
+            long count0 = a0.Length;
+            long count1 = a1.Length;
             var a = new double[count0 + count1];
             long i = 0, i0 = 0, i1 = 0;
             while (i0 < count0 && i1 < count1)
@@ -4261,8 +4261,8 @@ namespace Aardvark.Base
         /// </summary>
         public static TSeq[] MergeAscending<TSeq>(this TSeq[] a0, TSeq[] a1, Func<TSeq, double> element_valueSelector)
         {
-            long count0 = a0.LongLength;
-            long count1 = a1.LongLength;
+            long count0 = a0.Length;
+            long count1 = a1.Length;
             var a = new TSeq[count0 + count1];
             long i = 0, i0 = 0, i1 = 0;
             while (i0 < count0 && i1 < count1)
@@ -4284,8 +4284,8 @@ namespace Aardvark.Base
         /// </summary>
         public static double[] MergeDescending(this double[] a0, double[] a1)
         {
-            long count0 = a0.LongLength;
-            long count1 = a1.LongLength;
+            long count0 = a0.Length;
+            long count1 = a1.Length;
             var a = new double[count0 + count1];
             long i = 0, i0 = 0, i1 = 0;
             while (i0 < count0 && i1 < count1)
@@ -4307,8 +4307,8 @@ namespace Aardvark.Base
         /// </summary>
         public static TSeq[] MergeDescending<TSeq>(this TSeq[] a0, TSeq[] a1, Func<TSeq, double> element_valueSelector)
         {
-            long count0 = a0.LongLength;
-            long count1 = a1.LongLength;
+            long count0 = a0.Length;
+            long count1 = a1.Length;
             var a = new TSeq[count0 + count1];
             long i = 0, i0 = 0, i1 = 0;
             while (i0 < count0 && i1 < count1)

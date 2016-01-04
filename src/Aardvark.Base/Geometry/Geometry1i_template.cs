@@ -85,7 +85,7 @@ namespace Aardvark.Base
                     //# d.ForEach(i => {
                     case __i__: return I__i__;
                     //# });
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
             set
@@ -95,7 +95,7 @@ namespace Aardvark.Base
                     //# d.ForEach(i => {
                     case __i__: I__i__ = value; return;
                     //# });
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
         }

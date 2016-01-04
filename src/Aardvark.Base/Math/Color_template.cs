@@ -84,7 +84,7 @@ namespace Aardvark.Base
     //#     var q_fabs = isReal ? ")" : "";
     #region __type__
 
-    [Serializable]
+    
     public partial struct __type__ : IFormattable, IEquatable<__type__>, IRGB/*# if (t.HasAlpha) { */, IOpacity/*# } */
     {
         #region Constructors
@@ -319,7 +319,7 @@ namespace Aardvark.Base
                         __f__ = value;
                         break;/*# }); */
                     default:
-                        throw new IndexOutOfRangeException();
+                        throw new InvalidOperationException();
                 }
             }
             get
@@ -330,7 +330,7 @@ namespace Aardvark.Base
                     case __i__:
                         return __f__;/*# }); */
                     default:
-                        throw new IndexOutOfRangeException();
+                        throw new InvalidOperationException();
                 }
             }
         }
@@ -707,7 +707,7 @@ namespace Aardvark.Base
                     //# fields.ForEach((f, i) => {
                     case __i__: color.__f__ = value; return;
                     //# });
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             };
 

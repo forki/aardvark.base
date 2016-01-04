@@ -208,28 +208,28 @@ namespace Aardvark.Base
         /// <summary>
         /// The inverse of Lerp.
         /// </summary>
-        [Pure]
+        
         public static float InvLerp(this float y, float a, float b)
         { return (a - y) / (a - b); }
 
         /// <summary>
         /// The inverse of Lerp.
         /// </summary>
-        [Pure]
+        
         public static double InvLerp(this float y, double a, double b)
         { return (a - (double)y) / (a - b); }
 
         /// <summary>
         /// The inverse of Lerp.
         /// </summary>
-        [Pure]
+        
         public static float InvLerp(this double y, float a, float b)
         { return (a - (float)y) / (a - b); }
 
         /// <summary>
         /// The inverse of Lerp.
         /// </summary>
-        [Pure]
+        
         public static double InvLerp(this double y, double a, double b)
         { return (a - y) / (a - b); }
 
@@ -237,59 +237,59 @@ namespace Aardvark.Base
 
         #region Interpolation
 
-        [Pure]
+        
         public static byte Lerp(this float x, byte a, byte b)
         { return (byte)(a + (b - a) * x); }
 
-        [Pure]
+        
         public static ushort Lerp(this float x, ushort a, ushort b)
         { return (ushort)(a + (b - a) * x); }
 
-        [Pure]
+        
         public static short Lerp(this float x, short a, short b)
         { return (short)(a + (b - a) * x); }
 
-        [Pure]
+        
         public static uint Lerp(this float x, uint a, uint b)
         { return (uint)(a + (b - a) * x); }
 
-        [Pure]
+        
         public static int Lerp(this float x, int a, int b)
         { return (int)(a + (b - a) * x); }
 
-        [Pure]
+        
         public static float Lerp(this float x, float a, float b)
         { return a + (b - a) * x; }
 
-        [Pure]
+        
         public static double Lerp(this float x, double a, double b)
         { return a + (b - a) * (double)x; }
 
-        [Pure]
+        
         public static byte Lerp(this double x, byte a, byte b)
         { return (byte)(a + (b - a) * x); }
 
-        [Pure]
+        
         public static ushort Lerp(this double x, ushort a, ushort b)
         { return (ushort)(a + (b - a) * x); }
 
-        [Pure]
+        
         public static short Lerp(this double x, short a, short b)
         { return (short)(a + (b - a) * x); }
 
-        [Pure]
+        
         public static uint Lerp(this double x, uint a, uint b)
         { return (uint)(a + (b - a) * x); }
 
-        [Pure]
+        
         public static int Lerp(this double x, int a, int b)
         { return (int)(a + (b - a) * x); }
 
-        [Pure]
+        
         public static float Lerp(this double x, float a, float b)
         { return a + (b - a) * (float)x; }
 
-        [Pure]
+        
         public static double Lerp(this double x, double a, double b)
         { return a + (b - a) * x; }
 
@@ -520,11 +520,11 @@ namespace Aardvark.Base
 
         #region Step
 
-        [Pure]
+        
         public static T Step<T>(this float x, T a, T b)
         { return x < 0.5f ? a : b; }
 
-        [Pure]
+        
         public static T Step<T>(this double x, T a, T b)
         { return x < 0.5 ? a : b; }
 

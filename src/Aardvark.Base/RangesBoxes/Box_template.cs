@@ -113,7 +113,7 @@ namespace Aardvark.Base
         public __type__(__ltype__[] points)
         {
             Min = Max = points[0];
-            long count = points.LongLength;
+            long count = points.Length;
             for (long i = 1; i < count; i++) ExtendBy(points[i]);
         }
 
@@ -176,7 +176,7 @@ namespace Aardvark.Base
         public __type__(__ftype__[] values)
         {
             Min = Max = values[0];
-            long count = values.LongLength;
+            long count = values.Length;
             for (long i = 1; i < count; i++) ExtendBy(values[i]);
         }
 
@@ -1145,7 +1145,7 @@ namespace Aardvark.Base
                 {
                     case 0: box.Min = value; return;
                     case 1: box.Max = value; return;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             };
 
@@ -1428,7 +1428,7 @@ namespace Aardvark.Base
         public static __type__ GetBounding__type__(
                 this __ltype__[] pointArray)
         {
-            return pointArray.GetBounding__type__(pointArray.LongLength);
+            return pointArray.GetBounding__type__(pointArray.Length);
         }
 
         /// <summary>
@@ -1494,7 +1494,7 @@ namespace Aardvark.Base
         }
 
         //# foreach (var itype in new[] { "int", "long" }) {
-        //#     var getlength = itype == "int" ? "Length" : "LongLength";
+        //#     var getlength = itype == "int" ? "Length" : "Length";
         public static __type__ GetBounding__type__(
                 this __itype__[] indexArray, __ltype__[] pointArray)
         {

@@ -62,69 +62,6 @@ namespace Aardvark.Base
 
         #endregion
 
-        #region Average of vectors
 
-        public static V2d Average(this IEnumerable<V2i> vs)
-        {
-            var vl = vs as IList;
-            return (V2d)Sum(vs) / ((vl != null) ? vl.Count : vs.Count());
-        }
-        public static V2d Average(this IEnumerable<V2l> vs)
-        {
-            var vl = vs as IList;
-            return (V2d)Sum(vs) / ((vl != null) ? vl.Count : vs.Count());
-        }
-        public static V2f Average(this IEnumerable<V2f> vs)
-        {
-            var vl = vs as IList;
-            return Sum(vs) / ((vl != null) ? vl.Count : vs.Count());
-        }
-        public static V2d Average(this IEnumerable<V2d> vs)
-        {
-            var vl = vs as IList;
-            return Sum(vs) / ((vl != null) ? vl.Count : vs.Count());
-        }
-        public static V3d Average(this IEnumerable<V3i> vs)
-        {
-            var vl = vs as IList;
-            return (V3d)Sum(vs) / ((vl != null) ? vl.Count : vs.Count());
-        }
-        public static V3d Average(this IEnumerable<V3l> vs)
-        {
-            var vl = vs as IList;
-            return (V3d)Sum(vs) / ((vl != null) ? vl.Count : vs.Count());
-        }
-        public static V3f Average(this IEnumerable<V3f> vs)
-        {
-            var vl = vs as IList;
-            return Sum(vs) / ((vl != null) ? vl.Count : vs.Count());
-        }
-        public static V3d Average(this IEnumerable<V3d> vs)
-        {
-            var vl = vs as IList;
-            return Sum(vs) / ((vl != null) ? vl.Count : vs.Count());
-        }
-        public static V4d Average(this IEnumerable<V4i> vs)
-        {
-            var vl = vs as IList;
-            return (V4d)Sum(vs) / ((vl != null) ? vl.Count : vs.Count());
-        }
-        public static V4d Average(this IEnumerable<V4l> vs)
-        {
-            var vl = vs as IList;
-            return (V4d)Sum(vs) / ((vl != null) ? vl.Count : vs.Count());
-        }
-        public static V4f Average(this IEnumerable<V4f> vs)
-        {
-            var vl = vs as IList;
-            return Sum(vs) / ((vl != null) ? vl.Count : vs.Count());
-        }
-        public static V4d Average(this IEnumerable<V4d> vs)
-        {
-            var vl = vs as IList;
-            return Sum(vs) / ((vl != null) ? vl.Count : vs.Count());
-        }
-
-        #endregion
     }
 }

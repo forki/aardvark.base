@@ -629,17 +629,7 @@ namespace Aardvark.Base
             return points.Select(x => local2global.TransformPos(x.XYO)).ToArray();
         }
 #else
-        /// <summary>
-        /// Transforms points from plane space to world space.
-        /// </summary>
-        public static V3d[] Unproject(this Plane3d plane, IReadOnlyList<V2d> points)
-        {
-            var local2global = plane.GetPlaneToWorld();
-            var xs = new V3d[points.Count];
-            for (var i = 0; i < points.Count; i++)
-                xs[i] = local2global.TransformPos(points[i].XYO);
-            return xs;
-        }
+
 #endif
     }
 }

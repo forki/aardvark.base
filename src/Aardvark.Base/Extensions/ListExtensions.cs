@@ -705,8 +705,8 @@ namespace Aardvark.Base
         public static T[] MergeSortAscending<T>(this T[] a0, T[] a1)
             where T : IComparable<T>
         {
-            long c0 = a0.LongLength;
-            long c1 = a1.LongLength;
+            long c0 = a0.Length;
+            long c1 = a1.Length;
             var a = new T[c0 + c1];
             long i0 = 0, i1 = 0, i = 0;
             while (i0 < c0 && i1 < c1)

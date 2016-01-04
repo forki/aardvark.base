@@ -5,6 +5,7 @@ using System.IO;
 using System.Text;
 using System.Threading;
 using System.ComponentModel;
+using Bridge.Html5;
 #if __ANDROID__
 using Log = Android.Util.Log;
 #endif
@@ -146,66 +147,17 @@ namespace Aardvark.Base
 
         public static void ConsoleWriteAct(int threadIndex, LogType type, int level, string message)
         {
-            Console.Write(message); Console.Out.Flush();
         }
 
 		#if !__ANDROID__
-        private static ConsoleColor s_defaultForeground = Console.ForegroundColor;
-        private static ConsoleColor s_defaultBackground = Console.BackgroundColor;
 
         public static void ConsoleColoredWriteAct(int threadIndex, LogType type, int level, string message)
         {
-            bool resetBackground = false;
-            switch (type)
-            {
-                case LogType.Fatal:
-                    {
-                        Console.ForegroundColor = ConsoleColor.Black;
-                        Console.BackgroundColor = ConsoleColor.Red;
-                        resetBackground = true;
-                        break;
-                    }
-                case LogType.Error: Console.ForegroundColor = ConsoleColor.Red; break;
-                case LogType.Warn:  Console.ForegroundColor = ConsoleColor.Yellow; break;
-                case LogType.Info:
-                    switch (level)
-                    {
-                        case 0: Console.ForegroundColor = s_defaultForeground; break;
-                        case 1: Console.ForegroundColor = ConsoleColor.Gray; break;
-                        case 2: Console.ForegroundColor = ConsoleColor.DarkGray; break;
-                        default: Console.ForegroundColor = ConsoleColor.DarkGreen; break;
-                    }
-                    break;
-                default: Console.ForegroundColor = s_defaultForeground; break;
-            }
-            Console.Write(message);
-            Console.ForegroundColor = s_defaultForeground;
-            if (resetBackground) Console.BackgroundColor = s_defaultBackground;
-            Console.Out.Flush();
         }
 
         public static void ConsoleForegroundColoredWriteAct(
                 int threadIndex, LogType type, int level, string message)
-        {
-            switch (type)
-            {
-                case LogType.Fatal: Console.ForegroundColor = ConsoleColor.Red; break;
-                case LogType.Error: Console.ForegroundColor = ConsoleColor.Red; break;
-                case LogType.Warn:  Console.ForegroundColor = ConsoleColor.Yellow; break;
-                case LogType.Info:
-                    switch (level)
-                    {
-                        case 0: Console.ForegroundColor = s_defaultForeground; break;
-                        case 1: Console.ForegroundColor = ConsoleColor.Gray; break;
-                        case 2: Console.ForegroundColor = ConsoleColor.DarkGray; break;
-                        default: Console.ForegroundColor = ConsoleColor.DarkGreen; break;
-                    }
-                    break;
-                default: Console.ForegroundColor = s_defaultForeground; break;
-            }
-            Console.Write(message);
-            Console.ForegroundColor = s_defaultForeground;
-            Console.Out.Flush();
+        { 
         }
 
 		#else
@@ -350,7 +302,7 @@ namespace Aardvark.Base
         /// hierarchical children of this block (treeview).
         /// At the <see cref="End()"/> of the block the run time is reported.
         /// </summary>
-        public static ReportJob JobTimed(int level, [Localizable(true)] string message, params object[] args)
+        public static ReportJob JobTimed(int level,  string message, params object[] args)
         {
             CountCallsToBeginTimed.Increment();
             return s_reporter.Begin(level, RootTarget, Format(message, args), true);
@@ -363,7 +315,7 @@ namespace Aardvark.Base
         /// hierarchical children of this block (treeview).
         /// At the <see cref="End()"/> of the block the run time is reported.
         /// </summary>
-        public static ReportJob JobTimed([Localizable(true)] string message, params object[] args)
+        public static ReportJob JobTimed( string message, params object[] args)
         {
             CountCallsToBeginTimed.Increment();
             return s_reporter.Begin(0, RootTarget, Format(message, args), true);
@@ -375,7 +327,7 @@ namespace Aardvark.Base
         /// <see cref="End()"/> are either indented (console/stream) or
         /// hierarchical children of this block (treeview).
         /// </summary>
-        public static ReportJob Job(int level, [Localizable(true)] string message, params object[] args)
+        public static ReportJob Job(int level,  string message, params object[] args)
         {
             CountCallsToBegin.Increment();
             return s_reporter.Begin(level, RootTarget, Format(message, args), false);
@@ -387,7 +339,7 @@ namespace Aardvark.Base
         /// <see cref="End()"/> are either indented (console/stream) or
         /// hierarchical children of this block (treeview).
         /// </summary>
-        public static ReportJob Job([Localizable(true)] string message, params object[] args)
+        public static ReportJob Job( string message, params object[] args)
         {
             CountCallsToBegin.Increment();
             return s_reporter.Begin(0, RootTarget, Format(message, args), false);
@@ -401,7 +353,7 @@ namespace Aardvark.Base
         /// hierarchical children of this block (treeview).
         /// At the <see cref="End()"/> of the block the run time is reported.
         /// </summary>
-        public static void BeginTimed(int level, [Localizable(true)] string message, params object[] args)
+        public static void BeginTimed(int level,  string message, params object[] args)
         {
             CountCallsToBeginTimed.Increment();
             s_reporter.Begin(level, RootTarget, Format(message, args), true);
@@ -414,7 +366,7 @@ namespace Aardvark.Base
         /// hierarchical children of this block (treeview).
         /// At the <see cref="End()"/> of the block the run time is reported.
         /// </summary>
-        public static void BeginTimed([Localizable(true)] string message, params object[] args)
+        public static void BeginTimed( string message, params object[] args)
         {
             CountCallsToBeginTimed.Increment();
             s_reporter.Begin(0, RootTarget, Format(message, args), true);
@@ -428,7 +380,7 @@ namespace Aardvark.Base
         /// <see cref="End()"/> are either indented (console/stream) or
         /// hierarchical children of this block (treeview).
         /// </summary>
-        public static void Begin(int level, [Localizable(true)] string message, params object[] args)
+        public static void Begin(int level,  string message, params object[] args)
         {
             CountCallsToBegin.Increment();
             s_reporter.Begin(level, RootTarget, Format(message, args), false);
@@ -440,7 +392,7 @@ namespace Aardvark.Base
         /// <see cref="End()"/> are either indented (console/stream) or
         /// hierarchical children of this block (treeview).
         /// </summary>
-        public static void Begin([Localizable(true)] string message, params object[] args)
+        public static void Begin( string message, params object[] args)
         {
             CountCallsToBegin.Increment();
             s_reporter.Begin(0, RootTarget, Format(message, args), false);
@@ -502,7 +454,7 @@ namespace Aardvark.Base
         /// same and does not start with a continuation character, it is used
         /// as a distinct end message.
         /// </summary>
-        public static double End(int level, [Localizable(true)] string message, params object[] args)
+        public static double End(int level,  string message, params object[] args)
         {
             CountCallsToEnd.Increment();
             return s_reporter.End(level, RootTarget, Format(message, args));
@@ -517,7 +469,7 @@ namespace Aardvark.Base
         /// same and does not start with a continuation character, it is used
         /// as a distinct end message.
         /// </summary>
-        public static double End([Localizable(true)] string message, params object[] args)
+        public static double End( string message, params object[] args)
         {
             CountCallsToEnd.Increment();
             return s_reporter.End(0, RootTarget, Format(message, args));
@@ -526,7 +478,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Report a single message line with formatted parameters.
         /// </summary>
-        public static void Line(int level, [Localizable(true)] string line, params object[] args)
+        public static void Line(int level,  string line, params object[] args)
         {
             CountCallsToLine.Increment();
             s_reporter.Line(LogType.Info, level, RootTarget, Format(line, args));
@@ -535,7 +487,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Report a single message line with formatted parameters.
         /// </summary>
-        public static void Line([Localizable(true)] string line, params object[] args)
+        public static void Line( string line, params object[] args)
         {
             CountCallsToLine.Increment();
             s_reporter.Line(LogType.Info, 0, RootTarget, Format(line, args));
@@ -562,7 +514,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Report a (possibly multilined) message with formatted parameters.
         /// </summary>
-        public static void Text(int level, [Localizable(true)] string message, params object[] args)
+        public static void Text(int level,  string message, params object[] args)
         {
             CountCallsToText.Increment();
             s_reporter.Text(level, RootTarget, Format(message, args));
@@ -571,7 +523,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Report a (possibly multilined) message with formatted parameters.
         /// </summary>
-        public static void Text([Localizable(true)] string message, params object[] args)
+        public static void Text( string message, params object[] args)
         {
             CountCallsToText.Increment();
             s_reporter.Text(0, RootTarget, Format(message, args));
@@ -581,7 +533,7 @@ namespace Aardvark.Base
         /// Report a message that will be written in the current line if it fits, or in
         /// the next line (with correct indent) if it does not fit.
         /// </summary>
-        public static void Wrap(int level, [Localizable(true)] string message, params object[] args)
+        public static void Wrap(int level,  string message, params object[] args)
         {
             CountCallsToText.Increment();
             s_reporter.Wrap(level, RootTarget, Format(message, args));
@@ -591,7 +543,7 @@ namespace Aardvark.Base
         /// Report a message that will be written in the current line if it fits, or in
         /// the next line (with correct indent) if it does not fit.
         /// </summary>
-        public static void Wrap([Localizable(true)] string message, params object[] args)
+        public static void Wrap( string message, params object[] args)
         {
             CountCallsToText.Increment();
             s_reporter.Wrap(0, RootTarget, Format(message, args));
@@ -601,7 +553,7 @@ namespace Aardvark.Base
         /// Write a warning. Warnings are at level 0 and cannot be
         /// suppressed.
         /// </summary>
-        public static void Warn([Localizable(true)] string line, params object[] args)
+        public static void Warn( string line, params object[] args)
         {
             CountCallsToWarn.Increment();
             s_reporter.Line(LogType.Warn, 0, RootTarget, "WARNING:", 0, Format(line, args));
@@ -610,7 +562,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Write a debug message.
         /// </summary>
-        public static void Debug([Localizable(true)] string line, params object[] args)
+        public static void Debug( string line, params object[] args)
         {
             CountCallsToDebug.Increment();
             s_reporter.Line(LogType.Debug, 0, RootTarget, "Debug:", 0, Format(line, args));
@@ -619,7 +571,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Write a debug message.
         /// </summary>
-        public static void Debug(int level, [Localizable(true)] string line, params object[] args)
+        public static void Debug(int level,  string line, params object[] args)
         {
             CountCallsToDebug.Increment();
             s_reporter.Line(LogType.Debug, level, RootTarget, "Debug:", 0, Format(line, args));
@@ -628,7 +580,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Write a debug message.
         /// </summary>
-        public static void Trace([Localizable(true)] string line, params object[] args)
+        public static void Trace( string line, params object[] args)
         {
             CountCallsToTrace.Increment();
             s_reporter.Line(LogType.Trace, 0, RootTarget, "Trace:", 0, Format(line, args));
@@ -637,7 +589,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Write a debug message.
         /// </summary>
-        public static void Trace(int level, [Localizable(true)] string line, params object[] args)
+        public static void Trace(int level,  string line, params object[] args)
         {
             CountCallsToTrace.Increment();
             s_reporter.Line(LogType.Trace, level, RootTarget, "Trace:", 0, Format(line, args));
@@ -647,7 +599,7 @@ namespace Aardvark.Base
         /// Write an error. Erors are at level 0 and cannot be
         /// suppressed. More serious than a Warning, the program commences.
         /// </summary>
-        public static void Error([Localizable(true)] string line, params object[] args)
+        public static void Error( string line, params object[] args)
         {
             var output = Format(line, args);
             CountCallsToError.Increment();
@@ -666,7 +618,7 @@ namespace Aardvark.Base
         /// Report a critical failure and break into the debugger, if
         /// one is attached.
         /// </summary>
-        public static void Fatal([Localizable(true)] string line, params object[] args)
+        public static void Fatal( string line, params object[] args)
         {
             CountCallsToFatal.Increment();
 
@@ -705,7 +657,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Report a single, named, reportable value.
         /// </summary>
-        public static void Value(int level, [Localizable(true)] string name, IReportable reportable)
+        public static void Value(int level,  string name, IReportable reportable)
         {
             CountCallsToValues.Increment();
             reportable.ReportValue(level, name);
@@ -714,7 +666,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Report a single, named, reportable value.
         /// </summary>
-        public static void Value([Localizable(true)] string name, IReportable reportable)
+        public static void Value( string name, IReportable reportable)
         {
             CountCallsToValues.Increment();
             reportable.ReportValue(0, name);
@@ -723,7 +675,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Report a single, named, formattable value.
         /// </summary>
-        public static void Value(int level, [Localizable(true)] string name, object value)
+        public static void Value(int level,  string name, object value)
         {
             CountCallsToValues.Increment();
             s_reporter.Values(level, RootTarget, name, null, value.IntoArray());
@@ -732,7 +684,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Report a single, named, formattable value.
         /// </summary>
-        public static void Value([Localizable(true)] string name, object value)
+        public static void Value( string name, object value)
         {
             CountCallsToValues.Increment();
             s_reporter.Values(0, RootTarget, name, null, value.IntoArray());
@@ -741,7 +693,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Report a sequence of formattable values.
         /// </summary>
-        public static void Values(int level, [Localizable(true)] string name, string separator, params object[] values)
+        public static void Values(int level,  string name, string separator, params object[] values)
         {
             CountCallsToValues.Increment();
             s_reporter.Values(level, RootTarget, name, separator, values);
@@ -750,7 +702,7 @@ namespace Aardvark.Base
         /// <summary>
         /// Report a sequence of formattable values.
         /// </summary>
-        public static void Values([Localizable(true)] string name, string separator, params object[] values)
+        public static void Values( string name, string separator, params object[] values)
         {
             CountCallsToValues.Increment();
             s_reporter.Values(0, RootTarget, name, separator, values);

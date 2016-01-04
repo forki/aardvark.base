@@ -88,7 +88,7 @@ namespace Aardvark.Base
     {
     }
 
-    [Serializable]
+    
     public abstract partial class PixImage : IPix, IPixImage2d
     {
         public Col.Format Format;
@@ -788,7 +788,7 @@ namespace Aardvark.Base
     /// The generic PixImage stores an image with a specific channel type that
     /// is specified as type parameter.
     /// </summary>
-    [Serializable]
+    
     public partial class PixImage<T> : PixImage //, IPixImage2d
     {
         public Volume<T> Volume;

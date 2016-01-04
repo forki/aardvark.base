@@ -225,7 +225,7 @@ namespace Aardvark.Base
         public static bool LuFactorize(
                 this double[] alu, long a0, long ax, long ay, int[] p)
         {
-            long n = p.LongLength;
+            long n = p.Length;
             p.SetByIndex(i => i);
             for (long k = 0, ak = a0, a_k = 0; k < n - 1; k++, ak += ay, a_k += ax)
             {
@@ -270,7 +270,7 @@ namespace Aardvark.Base
                 this double[] lu, long l0, long lx, long ly, int[] p,
                 double[] b, long b0, long bd, double[] x, long x0, long xd)
         {
-            long n = p.LongLength;
+            long n = p.Length;
             for (long i = 0, xi = x0; i < n; i++, xi += xd)
                 x[xi] = b[b0 + p[i] * bd];
 

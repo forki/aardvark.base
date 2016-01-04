@@ -16,7 +16,7 @@ namespace Aardvark.Base
 		/// <returns>this</returns>
 		public static T[] Set<T>(this T[] self, T value)
 		{
-			var len = self.LongLength;
+			var len = self.Length;
 			for (int i = 0; i < len; i++) self[i] = value;
 			return self;
 		}
@@ -27,7 +27,7 @@ namespace Aardvark.Base
 		/// <returns>this</returns>
 		public static T[] Set<T>(this T[] self, long count, T value)
 		{
-			if (count > self.LongLength) count = self.LongLength;
+			if (count > self.Length) count = self.Length;
 			for (long i = 0; i < count; i++) self[i] = value;
 			return self;
 		}
@@ -40,7 +40,7 @@ namespace Aardvark.Base
 		public static T[] Set<T>(
 				this T[] self, long start, long count, T value)
 		{
-			long end = start + System.Math.Min(count, self.LongLength - start);
+			long end = start + System.Math.Min(count, self.Length - start);
 			for (long i = start; i < end; i++) self[i] = value;
 			return self;
 		}
@@ -62,7 +62,7 @@ namespace Aardvark.Base
 		/// <returns>this</returns>
 		public static T[] SetByIndexLong<T>(this T[] self, Func<long, T> index_fun)
 		{
-			long count = self.LongLength;
+			long count = self.Length;
 			for (long i = 0; i < count; i++) self[i] = index_fun(i);
 			return self;
 		}
@@ -86,7 +86,7 @@ namespace Aardvark.Base
 		public static T[] SetByIndexLong<T>(
 				this T[] self, long count, Func<long, T> index_fun)
 		{
-			if (count > self.LongLength) count = self.LongLength;
+			if (count > self.Length) count = self.Length;
 			for (long i = 0; i < count; i++) self[i] = index_fun(i);
 			return self;
 		}
@@ -112,7 +112,7 @@ namespace Aardvark.Base
 		public static T[] SetByIndexLong<T>(
 				this T[] self, long start, long count, Func<long, T> index_fun)
 		{
-			long end = System.Math.Min(start + count, self.LongLength);
+			long end = System.Math.Min(start + count, self.Length);
 			for (long i = start; i < end; i++) self[i] = index_fun(i);
 			return self;
 		}
@@ -122,7 +122,7 @@ namespace Aardvark.Base
 		/// </summary>
 		public static T[] Set<T>(this T[] self, T[] array)
 		{
-			long len = System.Math.Min(self.LongLength, array.LongLength);
+			long len = System.Math.Min(self.Length, array.Length);
 			for (long i = 0; i < len; i++) self[i] = array[i];
 			return self;
 		}
@@ -134,8 +134,8 @@ namespace Aardvark.Base
 		public static T[,] Set<T>(this T[,] self, T value)
 		{
 
-			for (long i = 0; i < self.GetLongLength(0); i++)
-				for (long j = 0; j < self.GetLongLength(1); j++)
+			for (long i = 0; i < self.GetLength(0); i++)
+				for (long j = 0; j < self.GetLength(1); j++)
 					self[i, j] = value;
 			return self;
 		}
@@ -149,7 +149,7 @@ namespace Aardvark.Base
 		/// </summary>
 		public static T[] Copy<T>(this T[] array)
 		{
-			var count = array.LongLength;
+			var count = array.Length;
 			var result = new T[count];
 			for (var i = 0L; i < count; i++) result[i] = array[i];
 			return result;
@@ -162,7 +162,7 @@ namespace Aardvark.Base
 		public static T[] Copy<T>(this T[] array, long count)
 		{
 			var result = new T[count];
-			var len = System.Math.Min(count, array.LongLength);
+			var len = System.Math.Min(count, array.Length);
 			for (var i = 0L; i < len; i++) result[i] = array[i];
 			return result;
 		}
@@ -174,7 +174,7 @@ namespace Aardvark.Base
 		public static T[] Copy<T>(this T[] array, long start, long count)
 		{
 			var result = new T[count];
-			var len = System.Math.Min(count, array.LongLength - start);
+			var len = System.Math.Min(count, array.Length - start);
 			for (var i = 0L; i < len; i++) result[i] = array[i + start];
 			return result;
 		}
@@ -190,7 +190,7 @@ namespace Aardvark.Base
         /// </summary>
         public static Tr[] Map<T, Tr>(this T[] array, Func<T, Tr> item_fun)
 		{
-			var len = array.LongLength;
+			var len = array.Length;
 			var result = new Tr[len];
 			for (var i = 0L; i < len; i++) result[i] = item_fun(array[i]);
 			return result;
@@ -204,7 +204,7 @@ namespace Aardvark.Base
         public static Tr[] Map2<T0, T1, Tr>(
                 this T0[] array0, T1[] array1, Func<T0, T1, Tr> item0_item1_fun)
         {
-            var len = Fun.Min(array0.LongLength, array1.LongLength);
+            var len = Fun.Min(array0.Length, array1.Length);
             var result = new Tr[len];
             for (var i = 0L; i < len; i++) result[i] = item0_item1_fun(array0[i], array1[i]);
             return result;
@@ -218,7 +218,7 @@ namespace Aardvark.Base
         public static Tr[] Map3<T0, T1, T2, Tr>(
                 this T0[] array0, T1[] array1, T2[] array2, Func<T0, T1, T2, Tr> item0_item1_item2_fun)
         {
-            var len = Fun.Min(array0.LongLength, array1.LongLength, array2.LongLength);
+            var len = Fun.Min(array0.Length, array1.Length, array2.Length);
             var result = new Tr[len];
             for (var i = 0L; i < len; i++)
                 result[i] = item0_item1_item2_fun(array0[i], array1[i], array2[i]);
@@ -237,7 +237,7 @@ namespace Aardvark.Base
         /// </summary>
         public static Tr[] Map<T, Tr>(this T[] array, Func<T, long, Tr> item_index_fun)
 		{
-			var len = array.LongLength;
+			var len = array.Length;
 			var result = new Tr[len];
 			for (var i = 0L; i < len; i++) result[i] = item_index_fun(array[i], i);
 			return result;
@@ -246,7 +246,7 @@ namespace Aardvark.Base
         public static Tr[] Map2<T0, T1, Tr>(
                 this T0[] array0, T1[] array1, Func<T0, T1, long, Tr> item0_item1_index_fun)
         {
-            var len = Fun.Min(array0.LongLength, array1.LongLength);
+            var len = Fun.Min(array0.Length, array1.Length);
             var result = new Tr[len];
             for (var i = 0L; i < len; i++)
                 result[i] = item0_item1_index_fun(array0[i], array1[i], i);
@@ -257,7 +257,7 @@ namespace Aardvark.Base
                 this T0[] array0, T1[] array1, T2[] array2,
                 Func<T0, T1, T2, long, Tr> item0_item1_item2_index_fun)
         {
-            var len = Fun.Min(array0.LongLength, array1.LongLength, array2.LongLength);
+            var len = Fun.Min(array0.Length, array1.Length, array2.Length);
             var result = new Tr[len];
             for (var i = 0L; i < len; i++)
                 result[i] = item0_item1_item2_index_fun(array0[i], array1[i], array2[i], i);
@@ -280,7 +280,7 @@ namespace Aardvark.Base
 				this T[] array, long count, Func<T, Tr> element_fun)
 		{
 			var result = new Tr[count];
-			var len = System.Math.Min(count, array.LongLength);
+			var len = System.Math.Min(count, array.Length);
 			for (var i = 0L; i < len; i++) result[i] = element_fun(array[i]);
 			return result;
 		}
@@ -302,7 +302,7 @@ namespace Aardvark.Base
 				this T[] array, long count, Func<T, long, Tr> element_index_fun)
 		{
 			var result = new Tr[count];
-			var len = System.Math.Min(count, array.LongLength);
+			var len = System.Math.Min(count, array.Length);
 			for (var i = 0L; i < len; i++) result[i] = element_index_fun(array[i], i);
 			return result;
 		}
@@ -322,7 +322,7 @@ namespace Aardvark.Base
 				this T[] array, long start, long count, Func<T, Tr> element_fun)
 		{
 			var result = new Tr[count];
-			var len = System.Math.Min(count, array.LongLength - start);
+			var len = System.Math.Min(count, array.Length - start);
 			for (var i = 0L; i < len; i++) result[i] = element_fun(array[start + i]);
 			return result;
 		}
@@ -344,7 +344,7 @@ namespace Aardvark.Base
 				this T[] array, long start, long count, Func<T, long, Tr> element_index_fun)
 		{
 			var result = new Tr[count];
-			var len = System.Math.Min(count, array.LongLength - start);
+			var len = System.Math.Min(count, array.Length - start);
 			for (var i = 0L; i < len; i++) result[i] = element_index_fun(array[start + i], i);
 			return result;
 		}
@@ -434,8 +434,8 @@ namespace Aardvark.Base
 		/// </summary>
 		public static T[] CopyReversed<T>(this T[] array)
 		{
-			var result = new T[array.LongLength];
-			var lastIndex = array.LongLength - 1;
+			var result = new T[array.Length];
+			var lastIndex = array.Length - 1;
 			for (var i = 0L; i <= lastIndex; i++)
 			{
 				result[i] = array[lastIndex - i];
@@ -450,7 +450,7 @@ namespace Aardvark.Base
 		public static long LongSum<T>(this T[] array, Func<T, long> selector)
 		{
 			long sum = 0;
-			for (long i = 0; i < array.LongLength; i++) sum += selector(array[i]);
+			for (long i = 0; i < array.Length; i++) sum += selector(array[i]);
 			return sum;
 		}
 
@@ -463,7 +463,7 @@ namespace Aardvark.Base
 		public static T[] Resized<T>(this T[] array, long newSize)
 		{
 			var resized = new T[newSize];
-			newSize = Math.Min(array.LongLength, newSize);
+			newSize = Math.Min(array.Length, newSize);
 			for (long i = 0; i < newSize; i++) resized[i] = array[i];
 			return resized;
 		}
@@ -479,7 +479,7 @@ namespace Aardvark.Base
 		{
 			if (fraction < 0.0 || fraction > 1.0)
 				throw new ArgumentOutOfRangeException("Fraction not in range [0.0, 1.0].");
-			long take = (long)(array.LongLength * fraction);
+			long take = (long)(array.Length * fraction);
 			for (long i = 0; i < take; i++) yield return array[i];
 		}
 
@@ -491,7 +491,7 @@ namespace Aardvark.Base
 		public static IEnumerable<T> SkipLast<T>(
 				this T[] array, long count = 1)
 		{
-			count = array.LongLength - count;
+			count = array.Length - count;
 			for (long i = 0; i < count; i++) yield return array[i];
 		}
 
@@ -506,7 +506,7 @@ namespace Aardvark.Base
 		public static void Merge<T>(this T[] array, T[] left, T[] right, Func<T, T, int> comparer)
 		{
 			long li = 0, ri = 0, ti = 0;
-			long lc = left.LongLength, rc = right.LongLength;
+			long lc = left.Length, rc = right.Length;
 
 			while (li < lc && ri < rc)
 			{
@@ -564,7 +564,7 @@ namespace Aardvark.Base
 		/// </summary>
 		public static T[] Apply<T>(this T[] self, Func<T, T> element_fun)
 		{
-			long count = self.LongLength;
+			long count = self.Length;
 			for (long i = 0; i < count; i++) self[i] = element_fun(self[i]);
 			return self;
 		}
@@ -575,7 +575,7 @@ namespace Aardvark.Base
 		/// </summary>
 		public static T[] Apply<T>(this T[] self, long count, Func<T, T> element_fun)
 		{
-			if (count > self.LongLength) count = self.LongLength;
+			if (count > self.Length) count = self.Length;
 			for (long i = 0; i < count; i++) self[i] = element_fun(self[i]);
 			return self;
 		}
@@ -586,14 +586,14 @@ namespace Aardvark.Base
 		/// </summary>
 		public static T[] Apply<T>(this T[] self, long start, long count, Func<T, T> element_fun)
 		{
-			var end = Fun.Min(start + count, self.LongLength);
+			var end = Fun.Min(start + count, self.Length);
 			for (long i = start; i < end; i++) self[i] = element_fun(self[i]);
 			return self;
 		}
 
 		public static T[] Apply<T>(this T[] self, Func<T, long, T> element_index_fun)
 		{
-			long count = self.LongLength;
+			long count = self.Length;
 			for (long i = 0; i < count; i++) self[i] = element_index_fun(self[i], i);
 			return self;
 		}
@@ -604,7 +604,7 @@ namespace Aardvark.Base
 		/// </summary>
 		public static T[] Apply<T>(this T[] self, long count, Func<T, long, T> element_index_fun)
 		{
-			if (count > self.LongLength) count = self.LongLength;
+			if (count > self.Length) count = self.Length;
 			for (long i = 0; i < count; i++) self[i] = element_index_fun(self[i], i);
 			return self;
 		}
@@ -615,7 +615,7 @@ namespace Aardvark.Base
 		/// </summary>
 		public static T[] Apply<T>(this T[] self, long start, long count, Func<T, long, T> element_index_fun)
 		{
-			var end = Fun.Min(start + count, self.LongLength);
+			var end = Fun.Min(start + count, self.Length);
 			for (long i = start; i < end; i++) self[i] = element_index_fun(self[i], i);
 			return self;
 		}
@@ -644,7 +644,7 @@ namespace Aardvark.Base
         public static void SetMap<T, T0>(
                 this T[] array, T0[] array0, Func<T0, T> item0_fun)
         {
-            var count = Fun.Min(array.LongLength, array0.LongLength);
+            var count = Fun.Min(array.Length, array0.Length);
             for (long i = 0; i < count; i++)
                 array[i] = item0_fun(array0[i]);
         }
@@ -657,7 +657,7 @@ namespace Aardvark.Base
                 this T[] array, T0[] array0, T1[] array1,
                 Func<T0, T1, T> item0_item1_fun)
         {
-            var count = Fun.Min(array.LongLength, array0.LongLength, array1.LongLength);
+            var count = Fun.Min(array.Length, array0.Length, array1.Length);
             for (long i = 0; i < count; i++)
                 array[i] = item0_item1_fun(array0[i], array1[i]);
         }
@@ -670,8 +670,8 @@ namespace Aardvark.Base
                 this T[] array, T0[] array0, T1[] array1, T2[] array2,
                 Func<T0, T1, T2, T> item0_item1_item2_fun)
         {
-            var count = Fun.Min(array.LongLength, array0.LongLength,
-                                array1.LongLength, array2.LongLength);
+            var count = Fun.Min(array.Length, array0.Length,
+                                array1.Length, array2.Length);
             for (long i = 0; i < count; i++)
                 array[i] = item0_item1_item2_fun(array0[i], array1[i], array2[i]);
         }
@@ -704,7 +704,7 @@ namespace Aardvark.Base
 
 		public static void Revert<T>(this T[] array)
 		{
-			array.ReverseRange(0, array.LongLength);
+			array.ReverseRange(0, array.Length);
 		}
 
         /// <summary>
@@ -718,7 +718,7 @@ namespace Aardvark.Base
 				array[index] = item;
 				return array;
 			}
-			var len = array.LongLength;
+			var len = array.Length;
 			if (index < len) { array[index] = item; return array; }
 			var newArray = new T[index + 1];
 			for (long i = 0; i < len; i++) newArray[i] = array[i];
@@ -809,7 +809,7 @@ namespace Aardvark.Base
 		public static TSum FoldLeft<TVal, TSum>(
 				this TVal[] array, TSum seed, Func<TSum, TVal, TSum> sum_item_fun)
 		{
-			long count = array.LongLength;
+			long count = array.Length;
 			for (long i = 0; i < count; i++)
 				seed = sum_item_fun(seed, array[i]);
 			return seed;
@@ -825,7 +825,7 @@ namespace Aardvark.Base
                 this T0[] array0, T1[] array1,
                 TSum seed, Func<TSum, T0, T1, TSum> sum_item0_item1_fun)
         {
-            long count = Fun.Min(array0.LongLength, array1.LongLength);
+            long count = Fun.Min(array0.Length, array1.Length);
             for (long i = 0; i < count; i++)
                 seed = sum_item0_item1_fun(seed, array0[i], array1[i]);
             return seed;
@@ -841,7 +841,7 @@ namespace Aardvark.Base
                 this T0[] array0, T1[] array1, T2[] array2,
                 TSum seed, Func<TSum, T0, T1, T2, TSum> sum_item0_item1_item2_fun)
         {
-            long count = Fun.Min(array0.LongLength, array1.LongLength, array2.LongLength);
+            long count = Fun.Min(array0.Length, array1.Length, array2.Length);
             for (long i = 0; i < count; i++)
                 seed = sum_item0_item1_item2_fun(seed, array0[i], array1[i], array2[i]);
             return seed;
@@ -855,7 +855,7 @@ namespace Aardvark.Base
         public static TSum FoldRight<TVal, TSum>(
 				this TVal[] array, Func<TVal, TSum, TSum> item_sum_fun, TSum seed)
 		{
-			long count = array.LongLength;
+			long count = array.Length;
 			for (long i = count - 1; i >= 0; i--)
 				seed = item_sum_fun(array[i], seed);
 			return seed;
@@ -871,7 +871,7 @@ namespace Aardvark.Base
                 this T0[] array0, T1[] array1,
                 Func<T0, T1, TSum, TSum> item0_item1_sum_fun, TSum seed)
         {
-            long count = Fun.Min(array0.LongLength, array1.LongLength);
+            long count = Fun.Min(array0.Length, array1.Length);
             for (long i = count - 1; i >= 0; i--)
                 seed = item0_item1_sum_fun(array0[i], array1[i], seed);
             return seed;
@@ -887,7 +887,7 @@ namespace Aardvark.Base
                 this T0[] array0, T1[] array1, T2[] array2,
                 Func<T0, T1, T2, TSum, TSum> item0_item1_item2_sum_fun, TSum seed)
         {
-            long count = Fun.Min(array0.LongLength, array1.LongLength, array2.LongLength);
+            long count = Fun.Min(array0.Length, array1.Length, array2.Length);
             for (long i = count - 1; i >= 0; i--)
                 seed = item0_item1_item2_sum_fun(array0[i], array1[i], array2[i], seed);
             return seed;
@@ -933,7 +933,7 @@ namespace Aardvark.Base
 		public static TSum[] ScanLeft<TVal, TSum>(
 				this TVal[] array, TSum leftSum, Func<TSum, TVal, TSum> sum_val_addFun)
 		{
-			long count = array.LongLength;
+			long count = array.Length;
 			var result = new TSum[count];
 			for (long i = 0; i < count; i++)
 			{
@@ -953,7 +953,7 @@ namespace Aardvark.Base
 		public static TSum[] ScanLeft<TVal, TSum>(
 			this TVal[] array, TSum leftSum, Func<TSum, TVal, long, TSum> sum_val_index_addFun)
 		{
-			long count = array.LongLength;
+			long count = array.Length;
 			var result = new TSum[count];
 			for (long i = 0; i < count; i++)
 			{
@@ -973,7 +973,7 @@ namespace Aardvark.Base
 		public static TSum[] ScanRight<TVal, TSum>(
 				this TVal[] array, Func<TVal, TSum, TSum> val_sum_addFun, TSum rightSum)
 		{
-			long count = array.LongLength;
+			long count = array.Length;
 			var result = new TSum[count];
 			for (long i = count - 1; i >= 0; i--)
 			{
@@ -993,7 +993,7 @@ namespace Aardvark.Base
 		public static TSum[] ScanRight<TVal, TSum>(
 			this TVal[] array, Func<TVal, long, TSum, TSum> val_index_sum_addFun, TSum rightSum)
 		{
-			long count = array.LongLength;
+			long count = array.Length;
 			var result = new TSum[count];
 			for (long i = count - 1; i >= 0; i--)
 			{
@@ -1094,7 +1094,7 @@ namespace Aardvark.Base
 				TSum seed, Func<TSum, TMul, TSum> addFun)
 		{
 			if (array == null) throw new ArgumentException("array must be != null");
-			if (count > Math.Min(array.LongLength, other.LongLength))
+			if (count > Math.Min(array.Length, other.Length))
 				throw new ArgumentException("count must be smaller than minimum of array lengths");
 			for (long i = 0; i < count; i++)
 				seed = addFun(seed, mulFun(array[i], other[i]));
@@ -1113,7 +1113,7 @@ namespace Aardvark.Base
 				Func<TSum, bool> sum_exitIfTrueFun)
 		{
 			if (array == null) throw new ArgumentException("array must be != null");
-			if (count > Math.Min(array.LongLength, other.LongLength))
+			if (count > Math.Min(array.Length, other.Length))
 				throw new ArgumentException("count must be smaller than minimum of array lengths");
 			for (long i = 0; i < count; i++)
 			{
@@ -1134,7 +1134,7 @@ namespace Aardvark.Base
 				TSum seed, Func<TSum, TProduct, TSum> sum_product_sumFun)
 		{
 			return InnerProduct(array0, array1,
-								Math.Min(array0.LongLength, array1.LongLength),
+								Math.Min(array0.Length, array1.Length),
 								item0_item1_productFun, seed, sum_product_sumFun);
 		}
 
@@ -1150,7 +1150,7 @@ namespace Aardvark.Base
 				Func<TSum, bool> sum_exitIfTrueFun)
 		{
 			return InnerProduct(array0, array1,
-								Math.Min(array0.LongLength, array1.LongLength),
+								Math.Min(array0.Length, array1.Length),
 								item0_item1_productFun, seed, sum_product_sumFun, sum_exitIfTrueFun);
 		}
 
@@ -1158,7 +1158,7 @@ namespace Aardvark.Base
 				this T0[] array0, T1[] array1,
 				Func<T0, T1, TProduct> item0_item1_productFun)
 		{
-			return ProductArray(array0, array1, Math.Min(array0.LongLength, array1.LongLength),
+			return ProductArray(array0, array1, Math.Min(array0.Length, array1.Length),
 								item0_item1_productFun);
 		}
 
@@ -1176,7 +1176,7 @@ namespace Aardvark.Base
 				this T0[] array0, T1[] array1,
 				Func<T0, T1, long, TProduct> item0_item1_index_productFun)
 		{
-			return ProductArray(array0, array1, Math.Min(array0.LongLength, array1.LongLength),
+			return ProductArray(array0, array1, Math.Min(array0.Length, array1.Length),
 								item0_item1_index_productFun);
 		}
 
@@ -1193,8 +1193,8 @@ namespace Aardvark.Base
 		public static bool AllEqual<T0, T1>(
 				this T0[] array0, T1[] array1, Func<T0, T1, bool> item0_item1_equalFun)
 		{
-			var len = array0.LongLength;
-			return len == array1.LongLength
+			var len = array0.Length;
+			return len == array1.Length
 					&& array0.InnerProduct(array1, len, item0_item1_equalFun,
 										   true, (s, p) => s && p, s => !s);
 		}
@@ -1208,7 +1208,7 @@ namespace Aardvark.Base
 		/// </summary>
 		public static T[][] JaggedCopy<T>(this T[][] array)
 		{
-			long count = array.LongLength;
+			long count = array.Length;
 			var result = new T[count][];
 			for (long i = 0; i < count; i++) result[i] = array[i].Copy();
 			return result;
@@ -1216,7 +1216,7 @@ namespace Aardvark.Base
 
 		public static T[][][] JaggedCopy<T>(this T[][][] array)
 		{
-			long count = array.LongLength;
+			long count = array.Length;
 			var result = new T[count][][];
 			for (long i = 0; i < count; i++) result[i] = array[i].JaggedCopy();
 			return result;
@@ -1224,33 +1224,33 @@ namespace Aardvark.Base
 
 		public static long FlatCount<T>(this T[][] array)
 		{
-			return array.LongSum(a => a.LongLength);
+			return array.LongSum(a => a.Length);
 		}
 
 		public static long FlatCount<T>(this T[][][] array)
 		{
-			return array.LongSum(a => a.LongSum(b => b.LongLength));
+			return array.LongSum(a => a.LongSum(b => b.Length));
 		}
 
 		public static void FlatCopyTo<T>(this T[][] array, T[] target, long start)
 		{
-			for (long j = 0; j < array.LongLength; j++)
+			for (long j = 0; j < array.Length; j++)
 			{
 				var aj = array[j];
-				for (long i = 0; i < aj.LongLength; i++)
+				for (long i = 0; i < aj.Length; i++)
 					target[start++] = aj[i];
 			}
 		}
 
 		public static void FlatCopyTo<T>(this T[][][] array, T[] target, long start)
 		{
-			for (long k = 0; k < array.LongLength; k++)
+			for (long k = 0; k < array.Length; k++)
 			{
 				var ak = array[k];
-				for (long j = 0; j < ak.LongLength; j++)
+				for (long j = 0; j < ak.Length; j++)
 				{
 					var akj = ak[j];
-					for (long i = 0; i < akj.LongLength; i++)
+					for (long i = 0; i < akj.Length; i++)
 						target[start++] = akj[i];
 				}
 			}
@@ -1360,7 +1360,7 @@ namespace Aardvark.Base
 		public static void BackMappedCopyTo<T>(
 				this T[] source, T[] target, long[] backMap, long offset)
 		{
-			long count = backMap.LongLength;
+			long count = backMap.Length;
 			for (long i = 0; i < count; i++)
 				target[i + offset] = source[backMap[i]];
 		}
@@ -1454,7 +1454,7 @@ namespace Aardvark.Base
 		public static T[] BackMappedCopy<T>(
 				this T[] array, long[] backMap, long count = 0)
 		{
-			if (count <= 0) count = backMap.LongLength;
+			if (count <= 0) count = backMap.Length;
 			var target = new T[count];
 			count = Fun.Min(backMap.Length, count);
 			for (long i = 0; i < count; i++) target[i] = array[backMap[i]];
@@ -1470,7 +1470,7 @@ namespace Aardvark.Base
 		public static Tr[] BackMappedCopy<T, Tr>(
 				this T[] array, long[] backMap, Func<T, Tr> fun, long count = 0)
 		{
-			if (count <= 0) count = backMap.LongLength;
+			if (count <= 0) count = backMap.Length;
 			var target = new Tr[count];
 			count = Fun.Min(backMap.Length, count);
 			for (long i = 0; i < count; i++) target[i] = fun(array[backMap[i]]);
@@ -1814,7 +1814,7 @@ namespace Aardvark.Base
 		/// </summary>
 		public static int Integrate(this int[] array, int sum = 0)
 		{
-			for (long i = 0; i < array.LongLength; i++)
+			for (long i = 0; i < array.Length; i++)
 			{
 				var delta = array[i]; array[i] = sum; sum += delta;
 			}
@@ -1829,7 +1829,7 @@ namespace Aardvark.Base
 		/// </summary>
 		public static long Integrate(this long[] array, long sum = 0)
 		{
-			for (long i = 0; i < array.LongLength; i++)
+			for (long i = 0; i < array.Length; i++)
 			{
 				var delta = array[i]; array[i] = sum; sum += delta;
 			}
@@ -1843,7 +1843,7 @@ namespace Aardvark.Base
 		/// </summary>
 		public static double Integrate(this double[] array, double sum = 0.0)
 		{
-			for (long i = 0; i < array.LongLength; i++)
+			for (long i = 0; i < array.Length; i++)
 			{
 				var value = array[i]; array[i] = sum; sum += value;
 			}
@@ -1986,7 +1986,7 @@ namespace Aardvark.Base
 		{
 			long index = 0;
 			T min = a[0];
-			for (long i = 1; i < a.LongLength; i++)
+			for (long i = 1; i < a.Length; i++)
 				if (a[i].CompareTo(min) < 0) { min = a[i]; index = i; }
 			return index;
 		}
@@ -1996,7 +1996,7 @@ namespace Aardvark.Base
 		{
 			long index = 0;
 			T max = a[0];
-			for (long i = 1; i < a.LongLength; i++)
+			for (long i = 1; i < a.Length; i++)
 				if (a[i].CompareTo(max) > 0) { max = a[i]; index = i; }
 			return index;
 		}
@@ -2005,7 +2005,7 @@ namespace Aardvark.Base
 		{
 			long index = 0;
 			T min = a[0];
-			for (long i = 1; i < a.LongLength; i++)
+			for (long i = 1; i < a.Length; i++)
 				if (compare(a[i], min) < 0) { min = a[i]; index = i; }
 			return index;
 		}
@@ -2014,7 +2014,7 @@ namespace Aardvark.Base
 		{
 			long index = 0;
 			T max = a[0];
-			for (long i = 1; i < a.LongLength; i++)
+			for (long i = 1; i < a.Length; i++)
 				if (compare(a[i], max) > 0) { max = a[i]; index = i; }
 			return index;
 		}
@@ -2059,8 +2059,8 @@ namespace Aardvark.Base
 		/// <returns>this</returns>
 		public static T[,] SetByIndexLong<T>(this T[,] self, Func<long, long, T> fun)
 		{
-			long count0 = self.GetLongLength(0);
-			long count1 = self.GetLongLength(1);
+			long count0 = self.GetLength(0);
+			long count1 = self.GetLength(1);
 			for (long i0 = 0; i0 < count0; i0++)
 				for (long i1 = 0; i1 < count1; i1++)
 					self[i0, i1] = fun(i0, i1);
@@ -2089,9 +2089,9 @@ namespace Aardvark.Base
 		/// <returns>this</returns>
 		public static T[, ,] SetByIndexLong<T>(this T[, ,] self, Func<long, long, long, T> fun)
 		{
-			long count0 = self.GetLongLength(0);
-			long count1 = self.GetLongLength(1);
-			long count2 = self.GetLongLength(2);
+			long count0 = self.GetLength(0);
+			long count1 = self.GetLength(1);
+			long count2 = self.GetLength(2);
 			for (long i0 = 0; i0 < count0; i0++)
 				for (long i1 = 0; i1 < count1; i1++)
 					for (long i2 = 0; i2 < count2; i2++)

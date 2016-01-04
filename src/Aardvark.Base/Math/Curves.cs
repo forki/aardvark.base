@@ -11,7 +11,7 @@ namespace Aardvark.Base
         {
             public static Func<double, V3d, V3d, V3d, V3d, V3d> Fun(int derivative)
             {
-                if (derivative < 0) throw new IndexOutOfRangeException();
+                if (derivative < 0) throw new InvalidOperationException();
                 switch (derivative)
                 {
                     case 0: return Eval;
@@ -115,7 +115,7 @@ namespace Aardvark.Base
         {
             public static Func<double, V3d, V3d, V3d, V3d, V3d> Fun(int derivative)
             {
-                if (derivative < 0) throw new IndexOutOfRangeException();
+                if (derivative < 0) throw new InvalidOperationException();
                 switch (derivative)
                 {
                     case 0: return Eval;
@@ -207,7 +207,7 @@ namespace Aardvark.Base
         {
             public static Func<double, V3d, V3d, V3d, V3d, double, double, V3d> Fun(int derivative)
             {
-                if (derivative < 0) throw new IndexOutOfRangeException();
+                if (derivative < 0) throw new InvalidOperationException();
                 switch (derivative)
                 {
                     case 0: return Eval;

@@ -55,16 +55,15 @@
     <Compile Include="AlgoDat\LruCache.cs" />
     <None Include="Extensions\FuncActionExtensions_template.cs" />
     <Compile Include="Extensions\FuncActionExtensions_auto.cs" />
+    <Compile Include="Guid.cs" />
     <Compile Include="Extensions\VariousExtensions.cs" />
     <Compile Include="Images\EdgeFilter.cs" />
     <Compile Include="Images\ImageLoadException.cs" />
     <Compile Include="Images\IPix.cs" />
     <Compile Include="Images\IPixImage.cs" />
     <Compile Include="Images\PixImage.cs" />
-    <Compile Include="Images\PixImageBitmap.cs" />
     <Compile Include="Images\PixImageCreators.cs" />
     <Compile Include="Images\PixImageCube.cs" />
-    <Compile Include="Images\PixImageDevil.cs" />
     <Compile Include="Images\PixImageExtensions.cs" />
     <Compile Include="Images\PixImageFreeImage.cs" />
     <Compile Include="Images\PixImageMipMap.cs" />
@@ -93,7 +92,6 @@
     <Compile Include="Extensions\IListExtensions.cs" />
     <Compile Include="Extensions\SequenceExtensions_auto.cs" />
     <None Include="Extensions\SequenceExtensions_template.cs" />
-    <Compile Include="Extensions\SystemDrawingExtensions.cs" />
     <Compile Include="Geometry\Conic2d.cs" />
     <Compile Include="Geometry\Ellipse2d.cs" />
     <Compile Include="Geo\GeoConsts.cs" />
@@ -145,7 +143,6 @@
     <Compile Include="Rendering\RasterizerState.cs" />
     <Compile Include="Rendering\SamplerState.cs" />
     <Compile Include="Rendering\StencilMode.cs" />
-    <Compile Include="Runtime\Introspection.cs" />
     <Compile Include="Telemetry\Debug.cs" />
     <Compile Include="Telemetry\Environment.cs" />
     <Compile Include="Telemetry\HardwareThread.cs" />
@@ -273,6 +270,9 @@
     <Compile Include="Math\Mapping.cs" />
     <Compile Include="Math\SampleGrid2d.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Runtime\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Choose>

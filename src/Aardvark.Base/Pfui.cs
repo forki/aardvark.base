@@ -4,11 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Aardvark.Base.Web
+namespace Aardvark.Base
 {
-    public enum EditorBrowsableState { Never };
+    public enum DebuggerBrowsableState { Never };
     class DebuggerBrowsable : Attribute
     {
-        public DebuggerBrowsable(EditorBrowsableState a) { }
+        public DebuggerBrowsable(DebuggerBrowsableState a) { }
     }
+
+    public enum LayoutKind { Sequential };
+    class StructLayout : Attribute
+    {
+        public StructLayout(LayoutKind kind) { }
+    }
+
 }

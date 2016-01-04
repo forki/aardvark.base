@@ -36,7 +36,7 @@ namespace Aardvark.Base
     //#     var args = fields.ToLower();
     #region __vtype__
 
-    [Serializable]
+    
     [StructLayout(LayoutKind.Sequential)]
     public partial struct __vtype__ : IVector<double>, ISize__d__d, IFormattable, IEquatable<__vtype__>
     {
@@ -399,7 +399,7 @@ namespace Aardvark.Base
 
         /// <summary>
         /// Gets or sets element with given index.
-        /// An IndexOutOfRangeException is thrown for invalid index values.
+        /// An InvalidOperationException is thrown for invalid index values.
         /// </summary>
         public __ftype__ this[int index]
         {
@@ -410,7 +410,7 @@ namespace Aardvark.Base
                     //# fields.ForEach((f, i) => {
                     case __i__: return __f__;
                     //# });
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
             set
@@ -420,7 +420,7 @@ namespace Aardvark.Base
                     //# fields.ForEach((f, i) => {
                     case __i__: __f__ = value; return;
                     //# });
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
         }
@@ -580,7 +580,7 @@ namespace Aardvark.Base
                     //# fields.ForEach((f, i) => {
                     case __i__: return v.__f__;
                     //# });
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             };
 
@@ -595,7 +595,7 @@ namespace Aardvark.Base
                     //# fields.ForEach((f, i) => {
                     case __i__: v.__f__ = s; return;
                     //# });
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             };
 
@@ -610,7 +610,7 @@ namespace Aardvark.Base
                     //# fields.ForEach((f, i) => {
                     case __i__: return v.__f__;
                     //# });
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             };
 
@@ -625,7 +625,7 @@ namespace Aardvark.Base
                     //# fields.ForEach((f, i) => {
                     case __i__: v.__f__ = s; return;
                     //# });
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             };
 
@@ -1850,7 +1850,7 @@ namespace Aardvark.Base
                 //# fields.ForEach((f, i) => {
                 case __i__: return self.Map(v => v.__f__);
                 //# });
-                default: throw new IndexOutOfRangeException();
+                default: throw new InvalidOperationException();
             }
         }
 
@@ -1859,7 +1859,7 @@ namespace Aardvark.Base
                 this __vtype__[] vectorArray, __ftype__[] weightArray)
         {
             var r = __vtype__.Zero;
-            var count = vectorArray.LongLength;
+            var count = vectorArray.Length;
             for (long i = 0; i < count; i++) r += vectorArray[i] * weightArray[i];
             return r;
         }

@@ -932,7 +932,7 @@ namespace Aardvark.Base
                     //# pc.ForEach(i => {
                     case __i__: return P__i__;
                     //# });
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
             set
@@ -942,7 +942,7 @@ namespace Aardvark.Base
                     //# pc.ForEach(i => {
                     case __i__: P__i__ = value; return;
                     //# });
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
         }

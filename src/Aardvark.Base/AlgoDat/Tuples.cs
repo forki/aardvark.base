@@ -69,7 +69,7 @@ namespace Aardvark.Base
                 {
                     case 0: return E0;
                     case 1: return E1;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
             set
@@ -78,7 +78,7 @@ namespace Aardvark.Base
                 {
                     case 0: E0 = value; return;
                     case 1: E1 = value; return;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
         }
@@ -263,7 +263,7 @@ namespace Aardvark.Base
                     case 0: return E0;
                     case 1: return E1;
                     case 2: return E2;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
             set
@@ -273,7 +273,7 @@ namespace Aardvark.Base
                     case 0: E0 = value; return;
                     case 1: E1 = value; return;
                     case 2: E2 = value; return;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
         }
@@ -430,7 +430,7 @@ namespace Aardvark.Base
                     case 1: return E1;
                     case 2: return E2;
                     case 3: return E3;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
             set
@@ -441,7 +441,7 @@ namespace Aardvark.Base
                     case 1: E1 = value; return;
                     case 2: E2 = value; return;
                     case 3: E3 = value; return;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
         }

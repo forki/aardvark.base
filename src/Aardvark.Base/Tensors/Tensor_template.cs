@@ -213,7 +213,7 @@ namespace Aardvark.Base
     /// <summary>
     /// A __ttnl__ info contains the complete indexing information for a __ttnl__, but no data array.
     /// </summary>
-    [Serializable]
+    
     public struct __ttn__Info : ITensorInfo
     {
         public long Origin;
@@ -1381,7 +1381,7 @@ namespace Aardvark.Base
     //# if (dt != vt) {
     /// <typeparam name="__vtn__">view element type</typeparam>
     //# }
-    [Serializable]
+    
     public partial struct __ttn__<__dvtn__> : IValidity, I__ttn__<__vtn__>, IArray__ttn__
     {
         public __dtn__[] Data;
@@ -2466,7 +2466,7 @@ namespace Aardvark.Base
         public __ttn__<__dvtn__> Copy()
         {
             //# if (dt != vt) {
-            return new __ttn__<__dvtn__>(new Td[Data.LongLength], Info) { Getter = Getter, Setter = Setter }.Set(this);
+            return new __ttn__<__dvtn__>(new Td[Data.Length], Info) { Getter = Getter, Setter = Setter }.Set(this);
             //# } else {
             return new __ttn__<__dvtn__>(Info.S).Set(this);
             //# }
@@ -2537,7 +2537,7 @@ namespace Aardvark.Base
         [Obsolete("Use 'Map' instead (same functionality and parameters)", false)]
         public __ttn__<__dvtn__> Copy(Func<__vtn__, __vtn__> fun)
         {
-            return new __ttn__<__dvtn__>(new Td[Data.LongLength], Info) { Getter = Getter, Setter = Setter }.SetMap(this, fun);
+            return new __ttn__<__dvtn__>(new Td[Data.Length], Info) { Getter = Getter, Setter = Setter }.SetMap(this, fun);
         }
 
         /// <summary>
@@ -2546,7 +2546,7 @@ namespace Aardvark.Base
         /// </summary>
         public __ttn__<__dvtn__> Map(Func<__vtn__, __vtn__> fun)
         {
-            return new __ttn__<__dvtn__>(new Td[Data.LongLength], Info) { Getter = Getter, Setter = Setter }.SetMap(this, fun);
+            return new __ttn__<__dvtn__>(new Td[Data.Length], Info) { Getter = Getter, Setter = Setter }.SetMap(this, fun);
         }
 
         /// <summary>
@@ -2556,7 +2556,7 @@ namespace Aardvark.Base
         [Obsolete("Use 'MapWindow' instead (same functionality and parameters)", false)]
         public __ttn__<__dvtn__> CopyWindow(Func<__vtn__, __vtn__> fun)
         {
-            return new __ttn__<__dvtn__>(new Td[Data.LongLength], Info)
+            return new __ttn__<__dvtn__>(new Td[Data.Length], Info)
             { F = F, Getter = Getter, Setter = Setter }.SetMap(this, fun);
         }
 
@@ -2566,7 +2566,7 @@ namespace Aardvark.Base
         /// </summary>
         public __ttn__<__dvtn__> MapWindow(Func<__vtn__, __vtn__> fun)
         {
-            return new __ttn__<__dvtn__>(new Td[Data.LongLength], Info)
+            return new __ttn__<__dvtn__>(new Td[Data.Length], Info)
                         { F = F, Getter = Getter, Setter = Setter }.SetMap(this, fun);
         }
 

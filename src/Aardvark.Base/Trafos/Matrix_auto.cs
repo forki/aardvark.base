@@ -9,7 +9,7 @@ namespace Aardvark.Base
 
     #region M22i
 
-    [Serializable]
+    
     [StructLayout(LayoutKind.Sequential)]
     public partial struct M22i : IValidity, IMatrix<double>
     {
@@ -544,7 +544,7 @@ namespace Aardvark.Base
                     case 1: return M01;
                     case 2: return M10;
                     case 3: return M11;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
             set
@@ -555,7 +555,7 @@ namespace Aardvark.Base
                     case 1: M01 = value; return;
                     case 2: M10 = value; return;
                     case 3: M11 = value; return;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
         }
@@ -570,15 +570,15 @@ namespace Aardvark.Base
                             {
                                 case 0: return M00;
                                 case 1: return M01;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 1: switch (column)
                             {
                                 case 0: return M10;
                                 case 1: return M11;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
             set
@@ -589,15 +589,15 @@ namespace Aardvark.Base
                             {
                                 case 0: M00 = value; return;
                                 case 1: M01 = value; return;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 1: switch (column)
                             {
                                 case 0: M10 = value; return;
                                 case 1: M11 = value; return;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
         }
@@ -1863,7 +1863,7 @@ namespace Aardvark.Base
             {
                 case 0: return R0;
                 case 1: return R1;
-                default: throw new IndexOutOfRangeException();
+                default: throw new InvalidOperationException();
             }
         }
 
@@ -1876,7 +1876,7 @@ namespace Aardvark.Base
             {
                 case 0: return C0;
                 case 1: return C1;
-                default: throw new IndexOutOfRangeException();
+                default: throw new InvalidOperationException();
             }
         }
 
@@ -2061,7 +2061,7 @@ namespace Aardvark.Base
 
     #region M22l
 
-    [Serializable]
+    
     [StructLayout(LayoutKind.Sequential)]
     public partial struct M22l : IValidity, IMatrix<double>
     {
@@ -2596,7 +2596,7 @@ namespace Aardvark.Base
                     case 1: return M01;
                     case 2: return M10;
                     case 3: return M11;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
             set
@@ -2607,7 +2607,7 @@ namespace Aardvark.Base
                     case 1: M01 = value; return;
                     case 2: M10 = value; return;
                     case 3: M11 = value; return;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
         }
@@ -2622,15 +2622,15 @@ namespace Aardvark.Base
                             {
                                 case 0: return M00;
                                 case 1: return M01;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 1: switch (column)
                             {
                                 case 0: return M10;
                                 case 1: return M11;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
             set
@@ -2641,15 +2641,15 @@ namespace Aardvark.Base
                             {
                                 case 0: M00 = value; return;
                                 case 1: M01 = value; return;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 1: switch (column)
                             {
                                 case 0: M10 = value; return;
                                 case 1: M11 = value; return;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
         }
@@ -3719,7 +3719,7 @@ namespace Aardvark.Base
             {
                 case 0: return R0;
                 case 1: return R1;
-                default: throw new IndexOutOfRangeException();
+                default: throw new InvalidOperationException();
             }
         }
 
@@ -3732,7 +3732,7 @@ namespace Aardvark.Base
             {
                 case 0: return C0;
                 case 1: return C1;
-                default: throw new IndexOutOfRangeException();
+                default: throw new InvalidOperationException();
             }
         }
 
@@ -3917,7 +3917,7 @@ namespace Aardvark.Base
 
     #region M22f
 
-    [Serializable]
+    
     [StructLayout(LayoutKind.Sequential)]
     public partial struct M22f : IValidity, IMatrix<double>
     {
@@ -4452,7 +4452,7 @@ namespace Aardvark.Base
                     case 1: return M01;
                     case 2: return M10;
                     case 3: return M11;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
             set
@@ -4463,7 +4463,7 @@ namespace Aardvark.Base
                     case 1: M01 = value; return;
                     case 2: M10 = value; return;
                     case 3: M11 = value; return;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
         }
@@ -4478,15 +4478,15 @@ namespace Aardvark.Base
                             {
                                 case 0: return M00;
                                 case 1: return M01;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 1: switch (column)
                             {
                                 case 0: return M10;
                                 case 1: return M11;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
             set
@@ -4497,15 +4497,15 @@ namespace Aardvark.Base
                             {
                                 case 0: M00 = value; return;
                                 case 1: M01 = value; return;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 1: switch (column)
                             {
                                 case 0: M10 = value; return;
                                 case 1: M11 = value; return;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
         }
@@ -5379,7 +5379,7 @@ namespace Aardvark.Base
             {
                 case 0: return R0;
                 case 1: return R1;
-                default: throw new IndexOutOfRangeException();
+                default: throw new InvalidOperationException();
             }
         }
 
@@ -5392,7 +5392,7 @@ namespace Aardvark.Base
             {
                 case 0: return C0;
                 case 1: return C1;
-                default: throw new IndexOutOfRangeException();
+                default: throw new InvalidOperationException();
             }
         }
 
@@ -5652,7 +5652,7 @@ namespace Aardvark.Base
 
     #region M22d
 
-    [Serializable]
+    
     [StructLayout(LayoutKind.Sequential)]
     public partial struct M22d : IValidity, IMatrix<double>
     {
@@ -6187,7 +6187,7 @@ namespace Aardvark.Base
                     case 1: return M01;
                     case 2: return M10;
                     case 3: return M11;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
             set
@@ -6198,7 +6198,7 @@ namespace Aardvark.Base
                     case 1: M01 = value; return;
                     case 2: M10 = value; return;
                     case 3: M11 = value; return;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
         }
@@ -6213,15 +6213,15 @@ namespace Aardvark.Base
                             {
                                 case 0: return M00;
                                 case 1: return M01;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 1: switch (column)
                             {
                                 case 0: return M10;
                                 case 1: return M11;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
             set
@@ -6232,15 +6232,15 @@ namespace Aardvark.Base
                             {
                                 case 0: M00 = value; return;
                                 case 1: M01 = value; return;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 1: switch (column)
                             {
                                 case 0: M10 = value; return;
                                 case 1: M11 = value; return;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
         }
@@ -6918,7 +6918,7 @@ namespace Aardvark.Base
             {
                 case 0: return R0;
                 case 1: return R1;
-                default: throw new IndexOutOfRangeException();
+                default: throw new InvalidOperationException();
             }
         }
 
@@ -6931,7 +6931,7 @@ namespace Aardvark.Base
             {
                 case 0: return C0;
                 case 1: return C1;
-                default: throw new IndexOutOfRangeException();
+                default: throw new InvalidOperationException();
             }
         }
 
@@ -7191,7 +7191,7 @@ namespace Aardvark.Base
 
     #region M23i
 
-    [Serializable]
+    
     [StructLayout(LayoutKind.Sequential)]
     public partial struct M23i : IValidity, IMatrix<double>
     {
@@ -7757,7 +7757,7 @@ namespace Aardvark.Base
                     case 3: return M10;
                     case 4: return M11;
                     case 5: return M12;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
             set
@@ -7770,7 +7770,7 @@ namespace Aardvark.Base
                     case 3: M10 = value; return;
                     case 4: M11 = value; return;
                     case 5: M12 = value; return;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
         }
@@ -7786,16 +7786,16 @@ namespace Aardvark.Base
                                 case 0: return M00;
                                 case 1: return M01;
                                 case 2: return M02;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 1: switch (column)
                             {
                                 case 0: return M10;
                                 case 1: return M11;
                                 case 2: return M12;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
             set
@@ -7807,16 +7807,16 @@ namespace Aardvark.Base
                                 case 0: M00 = value; return;
                                 case 1: M01 = value; return;
                                 case 2: M02 = value; return;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 1: switch (column)
                             {
                                 case 0: M10 = value; return;
                                 case 1: M11 = value; return;
                                 case 2: M12 = value; return;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
         }
@@ -9124,7 +9124,7 @@ namespace Aardvark.Base
             {
                 case 0: return R0;
                 case 1: return R1;
-                default: throw new IndexOutOfRangeException();
+                default: throw new InvalidOperationException();
             }
         }
 
@@ -9138,7 +9138,7 @@ namespace Aardvark.Base
                 case 0: return C0;
                 case 1: return C1;
                 case 2: return C2;
-                default: throw new IndexOutOfRangeException();
+                default: throw new InvalidOperationException();
             }
         }
 
@@ -9286,7 +9286,7 @@ namespace Aardvark.Base
 
     #region M23l
 
-    [Serializable]
+    
     [StructLayout(LayoutKind.Sequential)]
     public partial struct M23l : IValidity, IMatrix<double>
     {
@@ -9852,7 +9852,7 @@ namespace Aardvark.Base
                     case 3: return M10;
                     case 4: return M11;
                     case 5: return M12;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
             set
@@ -9865,7 +9865,7 @@ namespace Aardvark.Base
                     case 3: M10 = value; return;
                     case 4: M11 = value; return;
                     case 5: M12 = value; return;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
         }
@@ -9881,16 +9881,16 @@ namespace Aardvark.Base
                                 case 0: return M00;
                                 case 1: return M01;
                                 case 2: return M02;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 1: switch (column)
                             {
                                 case 0: return M10;
                                 case 1: return M11;
                                 case 2: return M12;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
             set
@@ -9902,16 +9902,16 @@ namespace Aardvark.Base
                                 case 0: M00 = value; return;
                                 case 1: M01 = value; return;
                                 case 2: M02 = value; return;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 1: switch (column)
                             {
                                 case 0: M10 = value; return;
                                 case 1: M11 = value; return;
                                 case 2: M12 = value; return;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
         }
@@ -11023,7 +11023,7 @@ namespace Aardvark.Base
             {
                 case 0: return R0;
                 case 1: return R1;
-                default: throw new IndexOutOfRangeException();
+                default: throw new InvalidOperationException();
             }
         }
 
@@ -11037,7 +11037,7 @@ namespace Aardvark.Base
                 case 0: return C0;
                 case 1: return C1;
                 case 2: return C2;
-                default: throw new IndexOutOfRangeException();
+                default: throw new InvalidOperationException();
             }
         }
 
@@ -11185,7 +11185,7 @@ namespace Aardvark.Base
 
     #region M23f
 
-    [Serializable]
+    
     [StructLayout(LayoutKind.Sequential)]
     public partial struct M23f : IValidity, IMatrix<double>
     {
@@ -11751,7 +11751,7 @@ namespace Aardvark.Base
                     case 3: return M10;
                     case 4: return M11;
                     case 5: return M12;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
             set
@@ -11764,7 +11764,7 @@ namespace Aardvark.Base
                     case 3: M10 = value; return;
                     case 4: M11 = value; return;
                     case 5: M12 = value; return;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
         }
@@ -11780,16 +11780,16 @@ namespace Aardvark.Base
                                 case 0: return M00;
                                 case 1: return M01;
                                 case 2: return M02;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 1: switch (column)
                             {
                                 case 0: return M10;
                                 case 1: return M11;
                                 case 2: return M12;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
             set
@@ -11801,16 +11801,16 @@ namespace Aardvark.Base
                                 case 0: M00 = value; return;
                                 case 1: M01 = value; return;
                                 case 2: M02 = value; return;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 1: switch (column)
                             {
                                 case 0: M10 = value; return;
                                 case 1: M11 = value; return;
                                 case 2: M12 = value; return;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
         }
@@ -12726,7 +12726,7 @@ namespace Aardvark.Base
             {
                 case 0: return R0;
                 case 1: return R1;
-                default: throw new IndexOutOfRangeException();
+                default: throw new InvalidOperationException();
             }
         }
 
@@ -12740,7 +12740,7 @@ namespace Aardvark.Base
                 case 0: return C0;
                 case 1: return C1;
                 case 2: return C2;
-                default: throw new IndexOutOfRangeException();
+                default: throw new InvalidOperationException();
             }
         }
 
@@ -12888,7 +12888,7 @@ namespace Aardvark.Base
 
     #region M23d
 
-    [Serializable]
+    
     [StructLayout(LayoutKind.Sequential)]
     public partial struct M23d : IValidity, IMatrix<double>
     {
@@ -13454,7 +13454,7 @@ namespace Aardvark.Base
                     case 3: return M10;
                     case 4: return M11;
                     case 5: return M12;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
             set
@@ -13467,7 +13467,7 @@ namespace Aardvark.Base
                     case 3: M10 = value; return;
                     case 4: M11 = value; return;
                     case 5: M12 = value; return;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
         }
@@ -13483,16 +13483,16 @@ namespace Aardvark.Base
                                 case 0: return M00;
                                 case 1: return M01;
                                 case 2: return M02;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 1: switch (column)
                             {
                                 case 0: return M10;
                                 case 1: return M11;
                                 case 2: return M12;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
             set
@@ -13504,16 +13504,16 @@ namespace Aardvark.Base
                                 case 0: M00 = value; return;
                                 case 1: M01 = value; return;
                                 case 2: M02 = value; return;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 1: switch (column)
                             {
                                 case 0: M10 = value; return;
                                 case 1: M11 = value; return;
                                 case 2: M12 = value; return;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
         }
@@ -14233,7 +14233,7 @@ namespace Aardvark.Base
             {
                 case 0: return R0;
                 case 1: return R1;
-                default: throw new IndexOutOfRangeException();
+                default: throw new InvalidOperationException();
             }
         }
 
@@ -14247,7 +14247,7 @@ namespace Aardvark.Base
                 case 0: return C0;
                 case 1: return C1;
                 case 2: return C2;
-                default: throw new IndexOutOfRangeException();
+                default: throw new InvalidOperationException();
             }
         }
 
@@ -14395,7 +14395,7 @@ namespace Aardvark.Base
 
     #region M33i
 
-    [Serializable]
+    
     [StructLayout(LayoutKind.Sequential)]
     public partial struct M33i : IValidity, IMatrix<double>
     {
@@ -15059,7 +15059,7 @@ namespace Aardvark.Base
                     case 6: return M20;
                     case 7: return M21;
                     case 8: return M22;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
             set
@@ -15075,7 +15075,7 @@ namespace Aardvark.Base
                     case 6: M20 = value; return;
                     case 7: M21 = value; return;
                     case 8: M22 = value; return;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
         }
@@ -15091,23 +15091,23 @@ namespace Aardvark.Base
                                 case 0: return M00;
                                 case 1: return M01;
                                 case 2: return M02;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 1: switch (column)
                             {
                                 case 0: return M10;
                                 case 1: return M11;
                                 case 2: return M12;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 2: switch (column)
                             {
                                 case 0: return M20;
                                 case 1: return M21;
                                 case 2: return M22;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
             set
@@ -15119,23 +15119,23 @@ namespace Aardvark.Base
                                 case 0: M00 = value; return;
                                 case 1: M01 = value; return;
                                 case 2: M02 = value; return;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 1: switch (column)
                             {
                                 case 0: M10 = value; return;
                                 case 1: M11 = value; return;
                                 case 2: M12 = value; return;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 2: switch (column)
                             {
                                 case 0: M20 = value; return;
                                 case 1: M21 = value; return;
                                 case 2: M22 = value; return;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
         }
@@ -16715,7 +16715,7 @@ namespace Aardvark.Base
                 case 0: return R0;
                 case 1: return R1;
                 case 2: return R2;
-                default: throw new IndexOutOfRangeException();
+                default: throw new InvalidOperationException();
             }
         }
 
@@ -16729,7 +16729,7 @@ namespace Aardvark.Base
                 case 0: return C0;
                 case 1: return C1;
                 case 2: return C2;
-                default: throw new IndexOutOfRangeException();
+                default: throw new InvalidOperationException();
             }
         }
 
@@ -16934,7 +16934,7 @@ namespace Aardvark.Base
 
     #region M33l
 
-    [Serializable]
+    
     [StructLayout(LayoutKind.Sequential)]
     public partial struct M33l : IValidity, IMatrix<double>
     {
@@ -17598,7 +17598,7 @@ namespace Aardvark.Base
                     case 6: return M20;
                     case 7: return M21;
                     case 8: return M22;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
             set
@@ -17614,7 +17614,7 @@ namespace Aardvark.Base
                     case 6: M20 = value; return;
                     case 7: M21 = value; return;
                     case 8: M22 = value; return;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
         }
@@ -17630,23 +17630,23 @@ namespace Aardvark.Base
                                 case 0: return M00;
                                 case 1: return M01;
                                 case 2: return M02;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 1: switch (column)
                             {
                                 case 0: return M10;
                                 case 1: return M11;
                                 case 2: return M12;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 2: switch (column)
                             {
                                 case 0: return M20;
                                 case 1: return M21;
                                 case 2: return M22;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
             set
@@ -17658,23 +17658,23 @@ namespace Aardvark.Base
                                 case 0: M00 = value; return;
                                 case 1: M01 = value; return;
                                 case 2: M02 = value; return;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 1: switch (column)
                             {
                                 case 0: M10 = value; return;
                                 case 1: M11 = value; return;
                                 case 2: M12 = value; return;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 2: switch (column)
                             {
                                 case 0: M20 = value; return;
                                 case 1: M21 = value; return;
                                 case 2: M22 = value; return;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
         }
@@ -19030,7 +19030,7 @@ namespace Aardvark.Base
                 case 0: return R0;
                 case 1: return R1;
                 case 2: return R2;
-                default: throw new IndexOutOfRangeException();
+                default: throw new InvalidOperationException();
             }
         }
 
@@ -19044,7 +19044,7 @@ namespace Aardvark.Base
                 case 0: return C0;
                 case 1: return C1;
                 case 2: return C2;
-                default: throw new IndexOutOfRangeException();
+                default: throw new InvalidOperationException();
             }
         }
 
@@ -19249,7 +19249,7 @@ namespace Aardvark.Base
 
     #region M33f
 
-    [Serializable]
+    
     [StructLayout(LayoutKind.Sequential)]
     public partial struct M33f : IValidity, IMatrix<double>
     {
@@ -19913,7 +19913,7 @@ namespace Aardvark.Base
                     case 6: return M20;
                     case 7: return M21;
                     case 8: return M22;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
             set
@@ -19929,7 +19929,7 @@ namespace Aardvark.Base
                     case 6: M20 = value; return;
                     case 7: M21 = value; return;
                     case 8: M22 = value; return;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
         }
@@ -19945,23 +19945,23 @@ namespace Aardvark.Base
                                 case 0: return M00;
                                 case 1: return M01;
                                 case 2: return M02;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 1: switch (column)
                             {
                                 case 0: return M10;
                                 case 1: return M11;
                                 case 2: return M12;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 2: switch (column)
                             {
                                 case 0: return M20;
                                 case 1: return M21;
                                 case 2: return M22;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
             set
@@ -19973,23 +19973,23 @@ namespace Aardvark.Base
                                 case 0: M00 = value; return;
                                 case 1: M01 = value; return;
                                 case 2: M02 = value; return;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 1: switch (column)
                             {
                                 case 0: M10 = value; return;
                                 case 1: M11 = value; return;
                                 case 2: M12 = value; return;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 2: switch (column)
                             {
                                 case 0: M20 = value; return;
                                 case 1: M21 = value; return;
                                 case 2: M22 = value; return;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
         }
@@ -21121,7 +21121,7 @@ namespace Aardvark.Base
                 case 0: return R0;
                 case 1: return R1;
                 case 2: return R2;
-                default: throw new IndexOutOfRangeException();
+                default: throw new InvalidOperationException();
             }
         }
 
@@ -21135,7 +21135,7 @@ namespace Aardvark.Base
                 case 0: return C0;
                 case 1: return C1;
                 case 2: return C2;
-                default: throw new IndexOutOfRangeException();
+                default: throw new InvalidOperationException();
             }
         }
 
@@ -21415,7 +21415,7 @@ namespace Aardvark.Base
 
     #region M33d
 
-    [Serializable]
+    
     [StructLayout(LayoutKind.Sequential)]
     public partial struct M33d : IValidity, IMatrix<double>
     {
@@ -22079,7 +22079,7 @@ namespace Aardvark.Base
                     case 6: return M20;
                     case 7: return M21;
                     case 8: return M22;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
             set
@@ -22095,7 +22095,7 @@ namespace Aardvark.Base
                     case 6: M20 = value; return;
                     case 7: M21 = value; return;
                     case 8: M22 = value; return;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
         }
@@ -22111,23 +22111,23 @@ namespace Aardvark.Base
                                 case 0: return M00;
                                 case 1: return M01;
                                 case 2: return M02;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 1: switch (column)
                             {
                                 case 0: return M10;
                                 case 1: return M11;
                                 case 2: return M12;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 2: switch (column)
                             {
                                 case 0: return M20;
                                 case 1: return M21;
                                 case 2: return M22;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
             set
@@ -22139,23 +22139,23 @@ namespace Aardvark.Base
                                 case 0: M00 = value; return;
                                 case 1: M01 = value; return;
                                 case 2: M02 = value; return;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 1: switch (column)
                             {
                                 case 0: M10 = value; return;
                                 case 1: M11 = value; return;
                                 case 2: M12 = value; return;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 2: switch (column)
                             {
                                 case 0: M20 = value; return;
                                 case 1: M21 = value; return;
                                 case 2: M22 = value; return;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
         }
@@ -23063,7 +23063,7 @@ namespace Aardvark.Base
                 case 0: return R0;
                 case 1: return R1;
                 case 2: return R2;
-                default: throw new IndexOutOfRangeException();
+                default: throw new InvalidOperationException();
             }
         }
 
@@ -23077,7 +23077,7 @@ namespace Aardvark.Base
                 case 0: return C0;
                 case 1: return C1;
                 case 2: return C2;
-                default: throw new IndexOutOfRangeException();
+                default: throw new InvalidOperationException();
             }
         }
 
@@ -23357,7 +23357,7 @@ namespace Aardvark.Base
 
     #region M34i
 
-    [Serializable]
+    
     [StructLayout(LayoutKind.Sequential)]
     public partial struct M34i : IValidity, IMatrix<double>
     {
@@ -24055,7 +24055,7 @@ namespace Aardvark.Base
                     case 9: return M21;
                     case 10: return M22;
                     case 11: return M23;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
             set
@@ -24074,7 +24074,7 @@ namespace Aardvark.Base
                     case 9: M21 = value; return;
                     case 10: M22 = value; return;
                     case 11: M23 = value; return;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
         }
@@ -24091,7 +24091,7 @@ namespace Aardvark.Base
                                 case 1: return M01;
                                 case 2: return M02;
                                 case 3: return M03;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 1: switch (column)
                             {
@@ -24099,7 +24099,7 @@ namespace Aardvark.Base
                                 case 1: return M11;
                                 case 2: return M12;
                                 case 3: return M13;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 2: switch (column)
                             {
@@ -24107,9 +24107,9 @@ namespace Aardvark.Base
                                 case 1: return M21;
                                 case 2: return M22;
                                 case 3: return M23;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
             set
@@ -24122,7 +24122,7 @@ namespace Aardvark.Base
                                 case 1: M01 = value; return;
                                 case 2: M02 = value; return;
                                 case 3: M03 = value; return;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 1: switch (column)
                             {
@@ -24130,7 +24130,7 @@ namespace Aardvark.Base
                                 case 1: M11 = value; return;
                                 case 2: M12 = value; return;
                                 case 3: M13 = value; return;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 2: switch (column)
                             {
@@ -24138,9 +24138,9 @@ namespace Aardvark.Base
                                 case 1: M21 = value; return;
                                 case 2: M22 = value; return;
                                 case 3: M23 = value; return;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
         }
@@ -25714,7 +25714,7 @@ namespace Aardvark.Base
                 case 0: return R0;
                 case 1: return R1;
                 case 2: return R2;
-                default: throw new IndexOutOfRangeException();
+                default: throw new InvalidOperationException();
             }
         }
 
@@ -25729,7 +25729,7 @@ namespace Aardvark.Base
                 case 1: return C1;
                 case 2: return C2;
                 case 3: return C3;
-                default: throw new IndexOutOfRangeException();
+                default: throw new InvalidOperationException();
             }
         }
 
@@ -25901,7 +25901,7 @@ namespace Aardvark.Base
 
     #region M34l
 
-    [Serializable]
+    
     [StructLayout(LayoutKind.Sequential)]
     public partial struct M34l : IValidity, IMatrix<double>
     {
@@ -26599,7 +26599,7 @@ namespace Aardvark.Base
                     case 9: return M21;
                     case 10: return M22;
                     case 11: return M23;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
             set
@@ -26618,7 +26618,7 @@ namespace Aardvark.Base
                     case 9: M21 = value; return;
                     case 10: M22 = value; return;
                     case 11: M23 = value; return;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
         }
@@ -26635,7 +26635,7 @@ namespace Aardvark.Base
                                 case 1: return M01;
                                 case 2: return M02;
                                 case 3: return M03;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 1: switch (column)
                             {
@@ -26643,7 +26643,7 @@ namespace Aardvark.Base
                                 case 1: return M11;
                                 case 2: return M12;
                                 case 3: return M13;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 2: switch (column)
                             {
@@ -26651,9 +26651,9 @@ namespace Aardvark.Base
                                 case 1: return M21;
                                 case 2: return M22;
                                 case 3: return M23;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
             set
@@ -26666,7 +26666,7 @@ namespace Aardvark.Base
                                 case 1: M01 = value; return;
                                 case 2: M02 = value; return;
                                 case 3: M03 = value; return;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 1: switch (column)
                             {
@@ -26674,7 +26674,7 @@ namespace Aardvark.Base
                                 case 1: M11 = value; return;
                                 case 2: M12 = value; return;
                                 case 3: M13 = value; return;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 2: switch (column)
                             {
@@ -26682,9 +26682,9 @@ namespace Aardvark.Base
                                 case 1: M21 = value; return;
                                 case 2: M22 = value; return;
                                 case 3: M23 = value; return;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
         }
@@ -28034,7 +28034,7 @@ namespace Aardvark.Base
                 case 0: return R0;
                 case 1: return R1;
                 case 2: return R2;
-                default: throw new IndexOutOfRangeException();
+                default: throw new InvalidOperationException();
             }
         }
 
@@ -28049,7 +28049,7 @@ namespace Aardvark.Base
                 case 1: return C1;
                 case 2: return C2;
                 case 3: return C3;
-                default: throw new IndexOutOfRangeException();
+                default: throw new InvalidOperationException();
             }
         }
 
@@ -28221,7 +28221,7 @@ namespace Aardvark.Base
 
     #region M34f
 
-    [Serializable]
+    
     [StructLayout(LayoutKind.Sequential)]
     public partial struct M34f : IValidity, IMatrix<double>
     {
@@ -28919,7 +28919,7 @@ namespace Aardvark.Base
                     case 9: return M21;
                     case 10: return M22;
                     case 11: return M23;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
             set
@@ -28938,7 +28938,7 @@ namespace Aardvark.Base
                     case 9: M21 = value; return;
                     case 10: M22 = value; return;
                     case 11: M23 = value; return;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
         }
@@ -28955,7 +28955,7 @@ namespace Aardvark.Base
                                 case 1: return M01;
                                 case 2: return M02;
                                 case 3: return M03;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 1: switch (column)
                             {
@@ -28963,7 +28963,7 @@ namespace Aardvark.Base
                                 case 1: return M11;
                                 case 2: return M12;
                                 case 3: return M13;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 2: switch (column)
                             {
@@ -28971,9 +28971,9 @@ namespace Aardvark.Base
                                 case 1: return M21;
                                 case 2: return M22;
                                 case 3: return M23;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
             set
@@ -28986,7 +28986,7 @@ namespace Aardvark.Base
                                 case 1: M01 = value; return;
                                 case 2: M02 = value; return;
                                 case 3: M03 = value; return;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 1: switch (column)
                             {
@@ -28994,7 +28994,7 @@ namespace Aardvark.Base
                                 case 1: M11 = value; return;
                                 case 2: M12 = value; return;
                                 case 3: M13 = value; return;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 2: switch (column)
                             {
@@ -29002,9 +29002,9 @@ namespace Aardvark.Base
                                 case 1: M21 = value; return;
                                 case 2: M22 = value; return;
                                 case 3: M23 = value; return;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
         }
@@ -30130,7 +30130,7 @@ namespace Aardvark.Base
                 case 0: return R0;
                 case 1: return R1;
                 case 2: return R2;
-                default: throw new IndexOutOfRangeException();
+                default: throw new InvalidOperationException();
             }
         }
 
@@ -30145,7 +30145,7 @@ namespace Aardvark.Base
                 case 1: return C1;
                 case 2: return C2;
                 case 3: return C3;
-                default: throw new IndexOutOfRangeException();
+                default: throw new InvalidOperationException();
             }
         }
 
@@ -30317,7 +30317,7 @@ namespace Aardvark.Base
 
     #region M34d
 
-    [Serializable]
+    
     [StructLayout(LayoutKind.Sequential)]
     public partial struct M34d : IValidity, IMatrix<double>
     {
@@ -31015,7 +31015,7 @@ namespace Aardvark.Base
                     case 9: return M21;
                     case 10: return M22;
                     case 11: return M23;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
             set
@@ -31034,7 +31034,7 @@ namespace Aardvark.Base
                     case 9: M21 = value; return;
                     case 10: M22 = value; return;
                     case 11: M23 = value; return;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
         }
@@ -31051,7 +31051,7 @@ namespace Aardvark.Base
                                 case 1: return M01;
                                 case 2: return M02;
                                 case 3: return M03;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 1: switch (column)
                             {
@@ -31059,7 +31059,7 @@ namespace Aardvark.Base
                                 case 1: return M11;
                                 case 2: return M12;
                                 case 3: return M13;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 2: switch (column)
                             {
@@ -31067,9 +31067,9 @@ namespace Aardvark.Base
                                 case 1: return M21;
                                 case 2: return M22;
                                 case 3: return M23;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
             set
@@ -31082,7 +31082,7 @@ namespace Aardvark.Base
                                 case 1: M01 = value; return;
                                 case 2: M02 = value; return;
                                 case 3: M03 = value; return;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 1: switch (column)
                             {
@@ -31090,7 +31090,7 @@ namespace Aardvark.Base
                                 case 1: M11 = value; return;
                                 case 2: M12 = value; return;
                                 case 3: M13 = value; return;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 2: switch (column)
                             {
@@ -31098,9 +31098,9 @@ namespace Aardvark.Base
                                 case 1: M21 = value; return;
                                 case 2: M22 = value; return;
                                 case 3: M23 = value; return;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
         }
@@ -32002,7 +32002,7 @@ namespace Aardvark.Base
                 case 0: return R0;
                 case 1: return R1;
                 case 2: return R2;
-                default: throw new IndexOutOfRangeException();
+                default: throw new InvalidOperationException();
             }
         }
 
@@ -32017,7 +32017,7 @@ namespace Aardvark.Base
                 case 1: return C1;
                 case 2: return C2;
                 case 3: return C3;
-                default: throw new IndexOutOfRangeException();
+                default: throw new InvalidOperationException();
             }
         }
 
@@ -32189,7 +32189,7 @@ namespace Aardvark.Base
 
     #region M44i
 
-    [Serializable]
+    
     [StructLayout(LayoutKind.Sequential)]
     public partial struct M44i : IValidity, IMatrix<double>
     {
@@ -32996,7 +32996,7 @@ namespace Aardvark.Base
                     case 13: return M31;
                     case 14: return M32;
                     case 15: return M33;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
             set
@@ -33019,7 +33019,7 @@ namespace Aardvark.Base
                     case 13: M31 = value; return;
                     case 14: M32 = value; return;
                     case 15: M33 = value; return;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
         }
@@ -33036,7 +33036,7 @@ namespace Aardvark.Base
                                 case 1: return M01;
                                 case 2: return M02;
                                 case 3: return M03;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 1: switch (column)
                             {
@@ -33044,7 +33044,7 @@ namespace Aardvark.Base
                                 case 1: return M11;
                                 case 2: return M12;
                                 case 3: return M13;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 2: switch (column)
                             {
@@ -33052,7 +33052,7 @@ namespace Aardvark.Base
                                 case 1: return M21;
                                 case 2: return M22;
                                 case 3: return M23;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 3: switch (column)
                             {
@@ -33060,9 +33060,9 @@ namespace Aardvark.Base
                                 case 1: return M31;
                                 case 2: return M32;
                                 case 3: return M33;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
             set
@@ -33075,7 +33075,7 @@ namespace Aardvark.Base
                                 case 1: M01 = value; return;
                                 case 2: M02 = value; return;
                                 case 3: M03 = value; return;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 1: switch (column)
                             {
@@ -33083,7 +33083,7 @@ namespace Aardvark.Base
                                 case 1: M11 = value; return;
                                 case 2: M12 = value; return;
                                 case 3: M13 = value; return;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 2: switch (column)
                             {
@@ -33091,7 +33091,7 @@ namespace Aardvark.Base
                                 case 1: M21 = value; return;
                                 case 2: M22 = value; return;
                                 case 3: M23 = value; return;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 3: switch (column)
                             {
@@ -33099,9 +33099,9 @@ namespace Aardvark.Base
                                 case 1: M31 = value; return;
                                 case 2: M32 = value; return;
                                 case 3: M33 = value; return;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
         }
@@ -34976,7 +34976,7 @@ namespace Aardvark.Base
                 case 1: return R1;
                 case 2: return R2;
                 case 3: return R3;
-                default: throw new IndexOutOfRangeException();
+                default: throw new InvalidOperationException();
             }
         }
 
@@ -34991,7 +34991,7 @@ namespace Aardvark.Base
                 case 1: return C1;
                 case 2: return C2;
                 case 3: return C3;
-                default: throw new IndexOutOfRangeException();
+                default: throw new InvalidOperationException();
             }
         }
 
@@ -35226,7 +35226,7 @@ namespace Aardvark.Base
 
     #region M44l
 
-    [Serializable]
+    
     [StructLayout(LayoutKind.Sequential)]
     public partial struct M44l : IValidity, IMatrix<double>
     {
@@ -36033,7 +36033,7 @@ namespace Aardvark.Base
                     case 13: return M31;
                     case 14: return M32;
                     case 15: return M33;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
             set
@@ -36056,7 +36056,7 @@ namespace Aardvark.Base
                     case 13: M31 = value; return;
                     case 14: M32 = value; return;
                     case 15: M33 = value; return;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
         }
@@ -36073,7 +36073,7 @@ namespace Aardvark.Base
                                 case 1: return M01;
                                 case 2: return M02;
                                 case 3: return M03;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 1: switch (column)
                             {
@@ -36081,7 +36081,7 @@ namespace Aardvark.Base
                                 case 1: return M11;
                                 case 2: return M12;
                                 case 3: return M13;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 2: switch (column)
                             {
@@ -36089,7 +36089,7 @@ namespace Aardvark.Base
                                 case 1: return M21;
                                 case 2: return M22;
                                 case 3: return M23;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 3: switch (column)
                             {
@@ -36097,9 +36097,9 @@ namespace Aardvark.Base
                                 case 1: return M31;
                                 case 2: return M32;
                                 case 3: return M33;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
             set
@@ -36112,7 +36112,7 @@ namespace Aardvark.Base
                                 case 1: M01 = value; return;
                                 case 2: M02 = value; return;
                                 case 3: M03 = value; return;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 1: switch (column)
                             {
@@ -36120,7 +36120,7 @@ namespace Aardvark.Base
                                 case 1: M11 = value; return;
                                 case 2: M12 = value; return;
                                 case 3: M13 = value; return;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 2: switch (column)
                             {
@@ -36128,7 +36128,7 @@ namespace Aardvark.Base
                                 case 1: M21 = value; return;
                                 case 2: M22 = value; return;
                                 case 3: M23 = value; return;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 3: switch (column)
                             {
@@ -36136,9 +36136,9 @@ namespace Aardvark.Base
                                 case 1: M31 = value; return;
                                 case 2: M32 = value; return;
                                 case 3: M33 = value; return;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
         }
@@ -37761,7 +37761,7 @@ namespace Aardvark.Base
                 case 1: return R1;
                 case 2: return R2;
                 case 3: return R3;
-                default: throw new IndexOutOfRangeException();
+                default: throw new InvalidOperationException();
             }
         }
 
@@ -37776,7 +37776,7 @@ namespace Aardvark.Base
                 case 1: return C1;
                 case 2: return C2;
                 case 3: return C3;
-                default: throw new IndexOutOfRangeException();
+                default: throw new InvalidOperationException();
             }
         }
 
@@ -38011,7 +38011,7 @@ namespace Aardvark.Base
 
     #region M44f
 
-    [Serializable]
+    
     [StructLayout(LayoutKind.Sequential)]
     public partial struct M44f : IValidity, IMatrix<double>
     {
@@ -38818,7 +38818,7 @@ namespace Aardvark.Base
                     case 13: return M31;
                     case 14: return M32;
                     case 15: return M33;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
             set
@@ -38841,7 +38841,7 @@ namespace Aardvark.Base
                     case 13: M31 = value; return;
                     case 14: M32 = value; return;
                     case 15: M33 = value; return;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
         }
@@ -38858,7 +38858,7 @@ namespace Aardvark.Base
                                 case 1: return M01;
                                 case 2: return M02;
                                 case 3: return M03;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 1: switch (column)
                             {
@@ -38866,7 +38866,7 @@ namespace Aardvark.Base
                                 case 1: return M11;
                                 case 2: return M12;
                                 case 3: return M13;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 2: switch (column)
                             {
@@ -38874,7 +38874,7 @@ namespace Aardvark.Base
                                 case 1: return M21;
                                 case 2: return M22;
                                 case 3: return M23;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 3: switch (column)
                             {
@@ -38882,9 +38882,9 @@ namespace Aardvark.Base
                                 case 1: return M31;
                                 case 2: return M32;
                                 case 3: return M33;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
             set
@@ -38897,7 +38897,7 @@ namespace Aardvark.Base
                                 case 1: M01 = value; return;
                                 case 2: M02 = value; return;
                                 case 3: M03 = value; return;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 1: switch (column)
                             {
@@ -38905,7 +38905,7 @@ namespace Aardvark.Base
                                 case 1: M11 = value; return;
                                 case 2: M12 = value; return;
                                 case 3: M13 = value; return;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 2: switch (column)
                             {
@@ -38913,7 +38913,7 @@ namespace Aardvark.Base
                                 case 1: M21 = value; return;
                                 case 2: M22 = value; return;
                                 case 3: M23 = value; return;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 3: switch (column)
                             {
@@ -38921,9 +38921,9 @@ namespace Aardvark.Base
                                 case 1: M31 = value; return;
                                 case 2: M32 = value; return;
                                 case 3: M33 = value; return;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
         }
@@ -40294,7 +40294,7 @@ namespace Aardvark.Base
                 case 1: return R1;
                 case 2: return R2;
                 case 3: return R3;
-                default: throw new IndexOutOfRangeException();
+                default: throw new InvalidOperationException();
             }
         }
 
@@ -40309,7 +40309,7 @@ namespace Aardvark.Base
                 case 1: return C1;
                 case 2: return C2;
                 case 3: return C3;
-                default: throw new IndexOutOfRangeException();
+                default: throw new InvalidOperationException();
             }
         }
 
@@ -40619,7 +40619,7 @@ namespace Aardvark.Base
 
     #region M44d
 
-    [Serializable]
+    
     [StructLayout(LayoutKind.Sequential)]
     public partial struct M44d : IValidity, IMatrix<double>
     {
@@ -41426,7 +41426,7 @@ namespace Aardvark.Base
                     case 13: return M31;
                     case 14: return M32;
                     case 15: return M33;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
             set
@@ -41449,7 +41449,7 @@ namespace Aardvark.Base
                     case 13: M31 = value; return;
                     case 14: M32 = value; return;
                     case 15: M33 = value; return;
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
         }
@@ -41466,7 +41466,7 @@ namespace Aardvark.Base
                                 case 1: return M01;
                                 case 2: return M02;
                                 case 3: return M03;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 1: switch (column)
                             {
@@ -41474,7 +41474,7 @@ namespace Aardvark.Base
                                 case 1: return M11;
                                 case 2: return M12;
                                 case 3: return M13;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 2: switch (column)
                             {
@@ -41482,7 +41482,7 @@ namespace Aardvark.Base
                                 case 1: return M21;
                                 case 2: return M22;
                                 case 3: return M23;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 3: switch (column)
                             {
@@ -41490,9 +41490,9 @@ namespace Aardvark.Base
                                 case 1: return M31;
                                 case 2: return M32;
                                 case 3: return M33;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
             set
@@ -41505,7 +41505,7 @@ namespace Aardvark.Base
                                 case 1: M01 = value; return;
                                 case 2: M02 = value; return;
                                 case 3: M03 = value; return;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 1: switch (column)
                             {
@@ -41513,7 +41513,7 @@ namespace Aardvark.Base
                                 case 1: M11 = value; return;
                                 case 2: M12 = value; return;
                                 case 3: M13 = value; return;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 2: switch (column)
                             {
@@ -41521,7 +41521,7 @@ namespace Aardvark.Base
                                 case 1: M21 = value; return;
                                 case 2: M22 = value; return;
                                 case 3: M23 = value; return;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
                     case 3: switch (column)
                             {
@@ -41529,9 +41529,9 @@ namespace Aardvark.Base
                                 case 1: M31 = value; return;
                                 case 2: M32 = value; return;
                                 case 3: M33 = value; return;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new InvalidOperationException();
                             }
-                    default: throw new IndexOutOfRangeException();
+                    default: throw new InvalidOperationException();
                 }
             }
         }
@@ -42650,7 +42650,7 @@ namespace Aardvark.Base
                 case 1: return R1;
                 case 2: return R2;
                 case 3: return R3;
-                default: throw new IndexOutOfRangeException();
+                default: throw new InvalidOperationException();
             }
         }
 
@@ -42665,7 +42665,7 @@ namespace Aardvark.Base
                 case 1: return C1;
                 case 2: return C2;
                 case 3: return C3;
-                default: throw new IndexOutOfRangeException();
+                default: throw new InvalidOperationException();
             }
         }
 

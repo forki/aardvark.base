@@ -16,7 +16,7 @@ namespace Aardvark.Base
         public static double RowNorm2(
                 this double[,] array, long row)
         {
-            return array.RowNorm2(row, 0, array.GetLongLength(1));
+            return array.RowNorm2(row, 0, array.GetLength(1));
         }
 
         /// <summary>
@@ -25,7 +25,7 @@ namespace Aardvark.Base
         public static double ColNorm2(
                 this double[,] array, long col)
         {
-            return array.ColNorm2(col, 0, array.GetLongLength(0));
+            return array.ColNorm2(col, 0, array.GetLength(0));
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace Aardvark.Base
         public static double RowDotRow(
                 this double[,] array, long r0, long r1)
         {
-            return array.RowDotRow(r0, r1, 0, array.GetLongLength(1));
+            return array.RowDotRow(r0, r1, 0, array.GetLength(1));
         }
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace Aardvark.Base
         public static double ColDotCol(
                 this double[,] array, long c0, long c1)
         {
-            return array.ColDotCol(c0, c1, 0, array.GetLongLength(0));
+            return array.ColDotCol(c0, c1, 0, array.GetLength(0));
         }
 
         /// <summary>

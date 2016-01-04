@@ -7045,7 +7045,7 @@ namespace Aardvark.Base
                 ++m_extraCount;
                 if (m_freeIndex < 0)
                 {
-                    var length = m_extraArray.LongLength;
+                    var length = m_extraArray.Length;
                     m_extraArray = m_extraArray.Resized(length * 2);
                     m_freeIndex = AddSlotsToFreeList(m_extraArray, length);
                 }
@@ -8399,7 +8399,7 @@ namespace Aardvark.Base
             var firstArray = new NextHashKeyValueLong<TKey, TValue>[newCapacity];
             var extraArray = new HashKeyValueNextLong<TKey, TValue>[
                                     System.Math.Max((long)DictConstant.MinExtraCapacity,
-                                                    m_extraArray.LongLength / 2)];
+                                                    m_extraArray.Length / 2)];
             var freeIndex = AddSlotsToFreeList(extraArray, 1);
             ulong newExtraCount = 0;
             if ((m_capacityIndex & 1) != 0)
@@ -9260,7 +9260,7 @@ namespace Aardvark.Base
             var firstArray = new NextHashKeyLong<TKey>[newCapacity];
             var extraArray = new HashKeyNextLong<TKey>[
                                     System.Math.Max((long)DictConstant.MinExtraCapacity,
-                                                    m_extraArray.LongLength / 2)];
+                                                    m_extraArray.Length / 2)];
             var freeIndex = AddSlotsToFreeList(extraArray, 1);
             ulong newExtraCount = 0;
             if ((m_capacityIndex & 1) != 0)
@@ -22247,7 +22247,7 @@ namespace Aardvark.Base
                 ++m_extraCount;
                 if (m_freeIndex < 0)
                 {
-                    var length = m_extraArray.LongLength;
+                    var length = m_extraArray.Length;
                     m_extraArray = m_extraArray.Resized(length * 2);
                     m_freeIndex = AddSlotsToFreeList(m_extraArray, length);
                 }
@@ -23684,7 +23684,7 @@ namespace Aardvark.Base
             var firstArray = new NextHashKeyValueLong<TKey, TValue>[newCapacity];
             var extraArray = new HashKeyValueNextLong<TKey, TValue>[
                                     System.Math.Max((long)DictConstant.MinExtraCapacity,
-                                                    m_extraArray.LongLength / 2)];
+                                                    m_extraArray.Length / 2)];
             var freeIndex = AddSlotsToFreeList(extraArray, 1);
             ulong newExtraCount = 0;
             if ((m_capacityIndex & 1) != 0)
@@ -24570,7 +24570,7 @@ namespace Aardvark.Base
             var firstArray = new NextHashKeyLong<TKey>[newCapacity];
             var extraArray = new HashKeyNextLong<TKey>[
                                     System.Math.Max((long)DictConstant.MinExtraCapacity,
-                                                    m_extraArray.LongLength / 2)];
+                                                    m_extraArray.Length / 2)];
             var freeIndex = AddSlotsToFreeList(extraArray, 1);
             ulong newExtraCount = 0;
             if ((m_capacityIndex & 1) != 0)
@@ -29699,7 +29699,7 @@ namespace Aardvark.Base
                 ++m_extraCount;
                 if (m_freeIndex < 0)
                 {
-                    var length = m_extraArray.LongLength;
+                    var length = m_extraArray.Length;
                     m_extraArray = m_extraArray.Resized(length * 2);
                     m_freeIndex = AddSlotsToFreeList(m_extraArray, length);
                 }
@@ -31053,7 +31053,7 @@ namespace Aardvark.Base
             var firstArray = new NextHashKeyValueLong<TKey, TValue>[newCapacity];
             var extraArray = new HashKeyValueNextLong<TKey, TValue>[
                                     System.Math.Max((long)DictConstant.MinExtraCapacity,
-                                                    m_extraArray.LongLength / 2)];
+                                                    m_extraArray.Length / 2)];
             var freeIndex = AddSlotsToFreeList(extraArray, 1);
             ulong newExtraCount = 0;
             if ((m_capacityIndex & 1) != 0)
@@ -31915,7 +31915,7 @@ namespace Aardvark.Base
             var firstArray = new NextHashKeyLong<TKey>[newCapacity];
             var extraArray = new HashKeyNextLong<TKey>[
                                     System.Math.Max((long)DictConstant.MinExtraCapacity,
-                                                    m_extraArray.LongLength / 2)];
+                                                    m_extraArray.Length / 2)];
             var freeIndex = AddSlotsToFreeList(extraArray, 1);
             ulong newExtraCount = 0;
             if ((m_capacityIndex & 1) != 0)
@@ -36861,7 +36861,7 @@ namespace Aardvark.Base
                 ++m_extraCount;
                 if (m_freeIndex < 0)
                 {
-                    var length = m_extraArray.LongLength;
+                    var length = m_extraArray.Length;
                     m_extraArray = m_extraArray.Resized(length * 2);
                     m_freeIndex = AddSlotsToFreeList(m_extraArray, length);
                 }
@@ -38298,7 +38298,7 @@ namespace Aardvark.Base
             var firstArray = new NextHashKeyValueLong<TKey, TValue>[newCapacity];
             var extraArray = new HashKeyValueNextLong<TKey, TValue>[
                                     System.Math.Max((long)DictConstant.MinExtraCapacity,
-                                                    m_extraArray.LongLength / 2)];
+                                                    m_extraArray.Length / 2)];
             var freeIndex = AddSlotsToFreeList(extraArray, 1);
             ulong newExtraCount = 0;
             if ((m_capacityIndex & 1) != 0)
@@ -39185,7 +39185,7 @@ namespace Aardvark.Base
             var firstArray = new NextHashKeyLong<TKey>[newCapacity];
             var extraArray = new HashKeyNextLong<TKey>[
                                     System.Math.Max((long)DictConstant.MinExtraCapacity,
-                                                    m_extraArray.LongLength / 2)];
+                                                    m_extraArray.Length / 2)];
             var freeIndex = AddSlotsToFreeList(extraArray, 1);
             ulong newExtraCount = 0;
             if ((m_capacityIndex & 1) != 0)
