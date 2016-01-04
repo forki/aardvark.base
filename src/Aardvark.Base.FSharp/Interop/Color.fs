@@ -11,6 +11,9 @@ module ColorConv =
 
             if a = b then id |> unbox
 
+            #if __SLIM__
+            #else
+
             //color => color
             elif a = typeof<C3f> && b = typeof<C4f> then (fun (a : C3f) -> a.ToC4f()) |> unbox
             elif a = typeof<C3f> && b = typeof<C3b> then (fun (a : C3f) -> a.ToC3b()) |> unbox
@@ -59,7 +62,7 @@ module ColorConv =
             elif a = typeof<V3d> && b = typeof<C3b> then (fun (a : V3d) -> a.ToC3f().ToC3b()) |> unbox
             elif a = typeof<V4d> && b = typeof<C4b> then (fun (a : V4d) -> a.ToC4f().ToC4b()) |> unbox
             elif a = typeof<V4d> && b = typeof<C3b> then (fun (a : V4d) -> a.ToC3f().ToC3b()) |> unbox
-
+            #endif
 
             else failwithf "unsupported color conversion from %A to %A" a.Name b.Name
 

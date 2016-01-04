@@ -1,5 +1,8 @@
 ﻿namespace Aardvark.Base
 
+#if __SLIM__
+#else
+
 [<AutoOpen>]
 module ``Tensor Slice Extensions`` =
 
@@ -63,3 +66,4 @@ module ``Tensor Slice Extensions`` =
             let max = defaultArg max (V2i x.Size - V2i.II)
             x.SubMatrix(int64 min.X, int64 min.Y, 1L + int64 (max.X - min.X), 1L + int64 (max.Y - min.Y))
 
+#endif

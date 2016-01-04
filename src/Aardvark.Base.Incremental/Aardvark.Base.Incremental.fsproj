@@ -84,20 +84,15 @@
       <Project>{8bfea4ef-bf0a-4c1a-b7ac-cbdd930306fd}</Project>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="../Aardvark.Base.FSharp/Aardvark.Base.FSharp.fsproj">
+    <ProjectReference Include="..\Aardvark.Base.FSharp\Aardvark.Base.FSharp.fsproj">
       <Name>Aardvark.Base.FSharp</Name>
       <Project>{692a3617-719b-4ea2-abc1-407ae20094ae}</Project>
-      <Private>False</Private>
+      <Private>True</Private>
     </ProjectReference>
-    <ProjectReference Include="../Aardvark.Base/Aardvark.Base.csproj">
-      <Name>Aardvark.Base</Name>
-      <Project>{377DA721-C821-45F6-B803-9C8724C7B37F}</Project>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="../Aardvark.Base.Essentials/Aardvark.Base.Essentials.csproj">
-      <Name>Aardvark.Base.Essentials</Name>
-      <Project>{7FEF0693-EFC3-4B85-8F42-933B25F353A8}</Project>
-      <Private>False</Private>
+    <ProjectReference Include="..\Aardvark.Base.Slim\Aardvark.Base.Slim.fsproj">
+      <Name>Aardvark.Base.Slim</Name>
+      <Project>{8833e283-c6eb-47de-a854-aee46073ecd3}</Project>
+      <Private>True</Private>
     </ProjectReference>
     <Reference Include="mscorlib" />
     <Reference Include="FSharp.Core, Version=$(TargetFSharpCoreVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">

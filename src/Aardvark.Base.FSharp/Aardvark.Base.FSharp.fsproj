@@ -27,10 +27,12 @@
     <Optimize>true</Optimize>
     <Tailcalls>true</Tailcalls>
     <OutputPath>..\..\bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;__SLIM__</DefineConstants>
     <WarningLevel>3</WarningLevel>
     <DocumentationFile>
     </DocumentationFile>
+    <OtherFlags>
+    </OtherFlags>
   </PropertyGroup>
   <PropertyGroup>
     <MinimumVisualStudioVersion Condition="'$(MinimumVisualStudioVersion)' == ''">11</MinimumVisualStudioVersion>
@@ -59,7 +61,6 @@
     <Compile Include="OrderMaintenance.fs" />
     <Compile Include="SkipList.fs" />
     <Compile Include="AVL.fs" />
-    <Compile Include="StableSet.fs" />
     <Compile Include="FingerTree.fs" />
     <Compile Include="Interop\Dictionary.fs" />
     <Compile Include="Interop\Symbol.fs" />
@@ -74,6 +75,7 @@
     <Compile Include="Reflection\TypeInfo.fs" />
     <Compile Include="Reflection\FunctionReflection.fs" />
     <Compile Include="Reflection\UnmanagedFunctions.fs" />
+    <Compile Include="StableSet.fs" />
     <Compile Include="Runtime\DynamicLinker.fs" />
     <Compile Include="Runtime\MemoryUtilities.fs" />
     <Compile Include="Runtime\ExecutableMemory.fs" />
@@ -96,14 +98,14 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.Numerics" />
+    <ProjectReference Include="..\Aardvark.Base.Slim\Aardvark.Base.Slim.fsproj">
+      <Name>Aardvark.Base.Slim</Name>
+      <Project>{8833e283-c6eb-47de-a854-aee46073ecd3}</Project>
+      <Private>True</Private>
+    </ProjectReference>
     <ProjectReference Include="..\Aardvark.Base.TypeProviders\Aardvark.Base.TypeProviders.fsproj">
       <Name>Aardvark.Base.TypeProviders</Name>
       <Project>{8BFEA4EF-BF0A-4C1A-B7AC-CBDD930306FD}</Project>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\Aardvark.Base\Aardvark.Base.csproj">
-      <Name>Aardvark.Base</Name>
-      <Project>{377DA721-C821-45F6-B803-9C8724C7B37F}</Project>
       <Private>False</Private>
     </ProjectReference>
     <Reference Include="FSharp.Core, Version=$(TargetFSharpCoreVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
@@ -146,6 +148,190 @@
       <ItemGroup>
         <Reference Include="RegexProvider">
           <HintPath>..\..\packages\RegexProvider\lib\net40\RegexProvider.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Choose>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETCore'">
+      <ItemGroup>
+        <Reference Include="System.Reactive.Core">
+          <HintPath>..\..\packages\Rx-Core\lib\windows8\System.Reactive.Core.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And ($(TargetFrameworkVersion) == 'v4.0')">
+      <ItemGroup>
+        <Reference Include="System.Reactive.Core">
+          <HintPath>..\..\packages\Rx-Core\lib\net40\System.Reactive.Core.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <When Condition="$(TargetFrameworkIdentifier) == 'Silverlight' And $(TargetFrameworkVersion) == 'v5.0'">
+      <ItemGroup>
+        <Reference Include="System.Reactive.Core">
+          <HintPath>..\..\packages\Rx-Core\lib\sl5\System.Reactive.Core.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <When Condition="$(TargetFrameworkIdentifier) == 'WindowsPhone' And $(TargetFrameworkVersion) == 'v7.1'">
+      <ItemGroup>
+        <Reference Include="System.Reactive.Core">
+          <HintPath>..\..\packages\Rx-Core\lib\windowsphone71\System.Reactive.Core.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <When Condition="$(TargetFrameworkIdentifier) == 'WindowsPhone' And ($(TargetFrameworkVersion) == 'v8.0' Or $(TargetFrameworkVersion) == 'v8.1')">
+      <ItemGroup>
+        <Reference Include="System.Reactive.Core">
+          <HintPath>..\..\packages\Rx-Core\lib\windowsphone8\System.Reactive.Core.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <When Condition="($(TargetFrameworkIdentifier) == '.NETFramework' And ($(TargetFrameworkVersion) == 'v4.5' Or $(TargetFrameworkVersion) == 'v4.5.1' Or $(TargetFrameworkVersion) == 'v4.5.2' Or $(TargetFrameworkVersion) == 'v4.5.3' Or $(TargetFrameworkVersion) == 'v4.6')) Or ($(TargetFrameworkIdentifier) == 'MonoAndroid') Or ($(TargetFrameworkIdentifier) == 'MonoTouch')">
+      <ItemGroup>
+        <Reference Include="System.Reactive.Core">
+          <HintPath>..\..\packages\Rx-Core\lib\net45\System.Reactive.Core.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <When Condition="($(TargetFrameworkIdentifier) == 'WindowsPhoneApp') Or ($(TargetFrameworkProfile) == 'Profile32')">
+      <ItemGroup>
+        <Reference Include="System.Reactive.Core">
+          <HintPath>..\..\packages\Rx-Core\lib\portable-win81+wpa81\System.Reactive.Core.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <When Condition="($(TargetFrameworkProfile) == 'Profile5') Or ($(TargetFrameworkProfile) == 'Profile6') Or ($(TargetFrameworkProfile) == 'Profile14') Or ($(TargetFrameworkProfile) == 'Profile19') Or ($(TargetFrameworkProfile) == 'Profile24') Or ($(TargetFrameworkProfile) == 'Profile37') Or ($(TargetFrameworkProfile) == 'Profile42') Or ($(TargetFrameworkProfile) == 'Profile47') Or ($(TargetFrameworkProfile) == 'Profile147') Or ($(TargetFrameworkProfile) == 'Profile158')">
+      <ItemGroup>
+        <Reference Include="System.Reactive.Core">
+          <HintPath>..\..\packages\Rx-Core\lib\portable-net40+sl5+win8+wp8\System.Reactive.Core.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <When Condition="($(TargetFrameworkProfile) == 'Profile7') Or ($(TargetFrameworkProfile) == 'Profile31') Or ($(TargetFrameworkProfile) == 'Profile44') Or ($(TargetFrameworkProfile) == 'Profile49') Or ($(TargetFrameworkProfile) == 'Profile78')">
+      <ItemGroup>
+        <Reference Include="System.Reactive.Core">
+          <HintPath>..\..\packages\Rx-Core\lib\portable-windows8+net45+wp8\System.Reactive.Core.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <When Condition="($(TargetFrameworkProfile) == 'Profile84') Or ($(TargetFrameworkProfile) == 'Profile111') Or ($(TargetFrameworkProfile) == 'Profile151') Or ($(TargetFrameworkProfile) == 'Profile157') Or ($(TargetFrameworkProfile) == 'Profile259')">
+      <ItemGroup>
+        <Reference Include="System.Reactive.Core">
+          <HintPath>..\..\packages\Rx-Core\lib\portable-net45+winrt45+wp8+wpa81\System.Reactive.Core.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Choose>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETCore'">
+      <ItemGroup>
+        <Reference Include="System.Reactive.Interfaces">
+          <HintPath>..\..\packages\Rx-Interfaces\lib\windows8\System.Reactive.Interfaces.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And ($(TargetFrameworkVersion) == 'v4.0')">
+      <ItemGroup>
+        <Reference Include="System.Reactive.Interfaces">
+          <HintPath>..\..\packages\Rx-Interfaces\lib\net40\System.Reactive.Interfaces.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <When Condition="$(TargetFrameworkIdentifier) == 'Silverlight' And $(TargetFrameworkVersion) == 'v5.0'">
+      <ItemGroup>
+        <Reference Include="System.Reactive.Interfaces">
+          <HintPath>..\..\packages\Rx-Interfaces\lib\sl5\System.Reactive.Interfaces.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <When Condition="$(TargetFrameworkIdentifier) == 'WindowsPhone' And $(TargetFrameworkVersion) == 'v7.1'">
+      <ItemGroup>
+        <Reference Include="System.Reactive.Interfaces">
+          <HintPath>..\..\packages\Rx-Interfaces\lib\windowsphone71\System.Reactive.Interfaces.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <When Condition="$(TargetFrameworkIdentifier) == 'WindowsPhone' And ($(TargetFrameworkVersion) == 'v8.0' Or $(TargetFrameworkVersion) == 'v8.1')">
+      <ItemGroup>
+        <Reference Include="System.Reactive.Interfaces">
+          <HintPath>..\..\packages\Rx-Interfaces\lib\windowsphone8\System.Reactive.Interfaces.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <When Condition="($(TargetFrameworkIdentifier) == '.NETFramework' And ($(TargetFrameworkVersion) == 'v4.5' Or $(TargetFrameworkVersion) == 'v4.5.1' Or $(TargetFrameworkVersion) == 'v4.5.2' Or $(TargetFrameworkVersion) == 'v4.5.3' Or $(TargetFrameworkVersion) == 'v4.6')) Or ($(TargetFrameworkIdentifier) == 'MonoAndroid') Or ($(TargetFrameworkIdentifier) == 'MonoTouch')">
+      <ItemGroup>
+        <Reference Include="System.Reactive.Interfaces">
+          <HintPath>..\..\packages\Rx-Interfaces\lib\net45\System.Reactive.Interfaces.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <When Condition="($(TargetFrameworkIdentifier) == 'WindowsPhoneApp') Or ($(TargetFrameworkProfile) == 'Profile32')">
+      <ItemGroup>
+        <Reference Include="System.Reactive.Interfaces">
+          <HintPath>..\..\packages\Rx-Interfaces\lib\portable-win81+wpa81\System.Reactive.Interfaces.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <When Condition="($(TargetFrameworkProfile) == 'Profile5') Or ($(TargetFrameworkProfile) == 'Profile6') Or ($(TargetFrameworkProfile) == 'Profile14') Or ($(TargetFrameworkProfile) == 'Profile19') Or ($(TargetFrameworkProfile) == 'Profile24') Or ($(TargetFrameworkProfile) == 'Profile37') Or ($(TargetFrameworkProfile) == 'Profile42') Or ($(TargetFrameworkProfile) == 'Profile47') Or ($(TargetFrameworkProfile) == 'Profile147') Or ($(TargetFrameworkProfile) == 'Profile158')">
+      <ItemGroup>
+        <Reference Include="System.Reactive.Interfaces">
+          <HintPath>..\..\packages\Rx-Interfaces\lib\portable-net40+sl5+win8+wp8\System.Reactive.Interfaces.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <When Condition="($(TargetFrameworkProfile) == 'Profile7') Or ($(TargetFrameworkProfile) == 'Profile31') Or ($(TargetFrameworkProfile) == 'Profile44') Or ($(TargetFrameworkProfile) == 'Profile49') Or ($(TargetFrameworkProfile) == 'Profile78')">
+      <ItemGroup>
+        <Reference Include="System.Reactive.Interfaces">
+          <HintPath>..\..\packages\Rx-Interfaces\lib\portable-windows8+net45+wp8\System.Reactive.Interfaces.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <When Condition="($(TargetFrameworkProfile) == 'Profile84') Or ($(TargetFrameworkProfile) == 'Profile111') Or ($(TargetFrameworkProfile) == 'Profile151') Or ($(TargetFrameworkProfile) == 'Profile157') Or ($(TargetFrameworkProfile) == 'Profile259')">
+      <ItemGroup>
+        <Reference Include="System.Reactive.Interfaces">
+          <HintPath>..\..\packages\Rx-Interfaces\lib\portable-net45+winrt45+wp8+wpa81\System.Reactive.Interfaces.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
