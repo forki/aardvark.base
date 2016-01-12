@@ -169,16 +169,48 @@ module private Helpers =
             None
 
 type IRuntimeMethod =
+    [<Security.SuppressUnmanagedCodeSecurity>]
     abstract member Invoke : obj[] -> obj
 
 module RuntimeMethodBuilder =
     open System.Reflection.Emit
 
-    let internal bAss = AppDomain.CurrentDomain.DefineDynamicAssembly(AssemblyName("IRuntimeMethods"), AssemblyBuilderAccess.RunAndSave)
+    let internal bAss = AppDomain.CurrentDomain.DefineDynamicAssembly(AssemblyName("IRuntimeMethods"), AssemblyBuilderAccess.Run, null, Security.SecurityContextSource.CurrentAssembly)
+    do bAss.PermissionSet.AddPermission(Security.Permissions.ReflectionPermission(Security.Permissions.PermissionState.Unrestricted)) |> ignore
     let internal bMod = bAss.DefineDynamicModule("MainModule")
 
     exception UnknownException of Type[]
     exception UnsupportedTypesException of Type[]
+
+
+    let createTable (types : Type[]) =
+        let handles = types |> Array.map (fun t -> t, t.TypeHandle.Value)
+
+        let min = handles |> Seq.map snd |> Seq.min
+        let max = handles |> Seq.map snd |> Seq.max
+        let handleValues = handles |> Array.map (fun (_,h) -> (h - min))
+
+        let rec tryCreate (size : nativeint) =
+            let table = Array.zeroCreate (int size)
+            let mutable success = true
+
+            for t in types do
+                let key = t.TypeHandle.Value % size
+                if isNull table.[int key] then
+                    table.[int key] <- t
+                else
+                    success <- false
+
+            if success then 
+                min, table
+            else
+                tryCreate (size + 1n)
+
+        tryCreate (nativeint handles.Length)
+
+
+
+
 
     let inlineCache (argCount : int) (f : Type[] -> Option<obj * MethodInfo>) : obj[] -> obj =
         let created = ref false
@@ -186,103 +218,386 @@ module RuntimeMethodBuilder =
 
         let all = List<Type[] * obj * MethodInfo>()
 
+        let build() =
+            let bType = bMod.DefineType(Guid.NewGuid().ToString(), TypeAttributes.Public ||| TypeAttributes.Class)
+            let bMeth = bType.DefineMethod("Invoke", MethodAttributes.Public ||| MethodAttributes.Virtual, typeof<obj>, [|typeof<obj[]>|])
+
+            let il = bMeth.GetILGenerator()
+
+            let bTargets = bType.DefineField("targets", typeof<obj[]>, FieldAttributes.Private)
+
+            let args = Array.init argCount (fun i -> il.DeclareLocal(typeof<obj>))
+            let typeVars = Array.init argCount (fun i -> il.DeclareLocal(typeof<Type>))
+            
+            let arr = il.DeclareLocal(typeof<Type[]>)
+
+            for i in 0..argCount-1 do
+                il.Emit(OpCodes.Ldarg_1)
+                il.Emit(OpCodes.Ldc_I4, i)
+                il.Emit(OpCodes.Ldelem_Ref)
+
+                il.Emit(OpCodes.Dup)
+                il.Emit(OpCodes.Stloc, args.[i])
+
+                il.EmitCall(OpCodes.Callvirt, typeof<obj>.GetMethod "GetType", null)
+                il.Emit(OpCodes.Stloc, typeVars.[i])
+
+            for ai in 0..all.Count-1 do
+                let (t, target, meth) = all.[ai]
+                let paramters = meth.GetParameters()
+
+                let fLabel = il.DefineLabel()
+
+                for i in 0..argCount-1 do
+                    let ti = t.[i]
+                    il.Emit(OpCodes.Ldloc, typeVars.[i])
+                    il.Emit(OpCodes.Ldtoken, ti)
+                    il.Emit(OpCodes.Bne_Un, fLabel)
+
+                // load the targets[ai]
+                if not meth.IsStatic then
+                    il.Emit(OpCodes.Ldarg_0)
+                    il.Emit(OpCodes.Ldfld, bTargets)
+                    il.Emit(OpCodes.Ldc_I4, ai)
+                    il.Emit(OpCodes.Ldelem, meth.DeclaringType)
+
+                        
+                for i in 0..argCount-1 do
+                    let at = paramters.[i].ParameterType
+                    
+                    il.Emit(OpCodes.Ldloc, args.[i])
+    //                            il.Emit(OpCodes.Ldarg_1)
+    //                            il.Emit(OpCodes.Ldc_I4, i)
+    //                            il.Emit(OpCodes.Ldelem_Ref)
+                    il.Emit(OpCodes.Unbox_Any, at)
+
+                il.EmitCall(OpCodes.Call, meth, null)
+                if meth.ReturnType = typeof<System.Void> then
+                    il.Emit(OpCodes.Ldnull)
+                elif meth.ReturnType.IsValueType then
+                    il.Emit(OpCodes.Box, meth.ReturnType)
+                else
+                    il.Emit(OpCodes.Unbox_Any, typeof<obj>)
+
+                il.Emit(OpCodes.Ret)
+
+                il.MarkLabel(fLabel)
+
+
+            il.Emit(OpCodes.Ldc_I4, argCount)
+            il.Emit(OpCodes.Newarr, typeof<Type>)
+            il.Emit(OpCodes.Stloc, arr)
+
+            for i in 0..argCount-1 do
+                il.Emit(OpCodes.Ldloc, arr)
+                il.Emit(OpCodes.Ldc_I4, i)
+                il.Emit(OpCodes.Ldloc, typeVars.[i])
+                il.Emit(OpCodes.Stelem_Ref)
+
+            
+            il.Emit(OpCodes.Ldloc, arr)
+            il.Emit(OpCodes.Newobj, typeof<UnknownException>.GetConstructor [|typeof<Type[]>|])
+            il.Emit(OpCodes.Throw)
+            il.Emit(OpCodes.Ret)
+
+
+            let bCtor = bType.DefineConstructor(MethodAttributes.Public, CallingConventions.Standard, [|typeof<obj[]>|])
+            let il = bCtor.GetILGenerator()
+            il.Emit(OpCodes.Ldarg_0)
+            il.Emit(OpCodes.Call, typeof<obj>.GetConstructor [||])
+            il.Emit(OpCodes.Ldarg_0)
+            il.Emit(OpCodes.Ldarg_1)
+            il.Emit(OpCodes.Stfld, bTargets)
+            il.Emit(OpCodes.Ret)
+
+            bType.AddInterfaceImplementation(typeof<IRuntimeMethod>)
+            bType.DefineMethodOverride(bMeth, typeof<IRuntimeMethod>.GetMethod "Invoke")
+
+            let t = bType.CreateType()
+
+            let ctor = t.GetConstructor [|typeof<obj[]> |]
+            let targets = all |> Seq.map (fun (_,t,_) -> t) |> Seq.toArray
+            ctor.Invoke([|targets :> obj|]) |> unbox<IRuntimeMethod>        
+
+        let buildHash() =
+            if argCount <> 1 then failwith "not implemented"
+
+            let cases = all |> Seq.map (fun (t,_,_) -> t.[0]) |> Seq.toArray
+            let caseIds = cases |> Array.mapi (fun i t -> t,i) |> Dictionary.ofArray
+
+            let bType = bMod.DefineType(Guid.NewGuid().ToString(), TypeAttributes.Public ||| TypeAttributes.Class)
+            let bIds = bType.DefineField("caseIds", typeof<Dictionary<Type, int>>, FieldAttributes.Private)
+            let bTargets = bType.DefineField("targets", typeof<obj[]>, FieldAttributes.Private)
+
+            let bMeth = bType.DefineMethod("Invoke", MethodAttributes.Public ||| MethodAttributes.Virtual, typeof<obj>, [|typeof<obj[]>|])
+            let il = bMeth.GetILGenerator()
+            let id = il.DeclareLocal(typeof<int>)
+            let arg = il.DeclareLocal(typeof<obj>)
+            let argType = il.DeclareLocal(typeof<Type>)
+            let arr = il.DeclareLocal(typeof<Type[]>)
+
+            let caseLabels = Array.init cases.Length (fun i -> il.DefineLabel())
+            let notFoundLabel = il.DefineLabel()
+
+            // load the id-dictionary
+            il.Emit(OpCodes.Ldarg_0)
+            il.Emit(OpCodes.Ldfld, bIds)
+
+            // get the argument-type
+            il.Emit(OpCodes.Ldarg_1)
+            il.Emit(OpCodes.Ldc_I4_0)
+            il.Emit(OpCodes.Ldelem_Ref)
+            il.Emit(OpCodes.Dup)
+            il.Emit(OpCodes.Stloc, arg)
+
+            il.EmitCall(OpCodes.Callvirt, typeof<obj>.GetMethod "GetType", null)
+            il.Emit(OpCodes.Dup)
+            il.Emit(OpCodes.Stloc, argType)
+            
+            // Type hashing using a perfect-match table
+            (*
+            let min = 0n
+            let table = [||]
+            let bTable : FieldBuilder = failwith ""
+            
+            il.Emit(OpCodes.Ldfld, bTable)
+
+            il.EmitCall(OpCodes.Call, typeof<Type>.GetProperty("TypeHandle").GetMethod, null)
+            il.EmitCall(OpCodes.Call, typeof<RuntimeTypeHandle>.GetProperty("Value").GetMethod, null)
+            
+            il.Emit(OpCodes.Ldc_I8, int64 min)
+            il.Emit(OpCodes.Sub)
+
+            il.Emit(OpCodes.Ldc_I8, table)
+            il.Emit(OpCodes.Rem)
+            
+            il.Emit(OpCodes.Ldelem, typeof<int>)
+            *)
+
+
+            // load &id
+            il.Emit(OpCodes.Ldloca, id)
+
+            // call dict.TryGetValue(argType, &id)
+            il.EmitCall(OpCodes.Call, typeof<Dictionary<Type, int>>.GetMethod("TryGetValue"), null)
+            il.Emit(OpCodes.Brfalse_S, notFoundLabel)
+
+            // switch(id)
+            il.Emit(OpCodes.Ldloc, id)
+            il.Emit(OpCodes.Switch, caseLabels)
+            il.Emit(OpCodes.Br_S, notFoundLabel)
+
+
+            for ci in 0..all.Count-1 do
+                let (_,target,meth) = all.[ci]
+
+                il.MarkLabel(caseLabels.[ci])
+
+                // perform the actual call
+                if not meth.IsStatic then
+                    il.Emit(OpCodes.Ldarg_0)
+                    il.Emit(OpCodes.Ldfld, bTargets)
+                    il.Emit(OpCodes.Ldc_I4, ci)
+                    il.Emit(OpCodes.Ldelem, meth.DeclaringType)
+                      
+                let at = meth.GetParameters().[0].ParameterType
+                il.Emit(OpCodes.Ldloc, arg)
+                il.Emit(OpCodes.Unbox_Any, at)
+
+                il.EmitCall(OpCodes.Call, meth, null)
+                if meth.ReturnType = typeof<System.Void> then
+                    il.Emit(OpCodes.Ldnull)
+                elif meth.ReturnType.IsValueType then
+                    il.Emit(OpCodes.Box, meth.ReturnType)
+                else
+                    il.Emit(OpCodes.Unbox_Any, typeof<obj>)
+
+                il.Emit(OpCodes.Ret)
+
+
+            il.MarkLabel(notFoundLabel)
+
+
+            il.Emit(OpCodes.Ldc_I4, argCount)
+            il.Emit(OpCodes.Newarr, typeof<Type>)
+
+            il.Emit(OpCodes.Dup)
+            il.Emit(OpCodes.Ldc_I4_0)
+            il.Emit(OpCodes.Ldloc, argType)
+            il.Emit(OpCodes.Stelem_Ref)
+
+
+            il.Emit(OpCodes.Newobj, typeof<UnknownException>.GetConstructor [|typeof<Type[]>|])
+            il.Emit(OpCodes.Throw)
+            il.Emit(OpCodes.Ret)
+
+
+            let bCtor = bType.DefineConstructor(MethodAttributes.Public, CallingConventions.Standard, [|typeof<Dictionary<Type, int>>; typeof<obj[]>|])
+            let il = bCtor.GetILGenerator()
+            il.Emit(OpCodes.Ldarg_0)
+            il.Emit(OpCodes.Call, typeof<obj>.GetConstructor [||])
+            
+            il.Emit(OpCodes.Ldarg_0)
+            il.Emit(OpCodes.Ldarg_1)
+            il.Emit(OpCodes.Stfld, bIds)
+            
+            
+            il.Emit(OpCodes.Ldarg_0)
+            il.Emit(OpCodes.Ldarg_2)
+            il.Emit(OpCodes.Stfld, bTargets)
+            il.Emit(OpCodes.Ret)
+
+            bType.AddInterfaceImplementation(typeof<IRuntimeMethod>)
+            bType.DefineMethodOverride(bMeth, typeof<IRuntimeMethod>.GetMethod "Invoke")
+
+            let t = bType.CreateType()
+
+            let ctor = t.GetConstructor [|typeof<Dictionary<Type, int>>; typeof<obj[]> |]
+            let targets = all |> Seq.map (fun (_,t,_) -> t) |> Seq.toArray
+            ctor.Invoke([|caseIds :> obj; targets :> obj|]) |> unbox<IRuntimeMethod>        
+
+        
+        let buildTable() =
+            if argCount <> 1 then failwith "not implemented"
+
+            let methods = all |> Seq.mapi (fun i (t,tar,m) -> t.[0],(tar, m, i)) |> Dictionary.ofSeq
+            let cases = all |> Seq.map (fun (t,_,_) -> t.[0]) |> Seq.toArray
+
+            let bType = bMod.DefineType(Guid.NewGuid().ToString(), TypeAttributes.Public ||| TypeAttributes.Class)
+            let bTargets = bType.DefineField("targets", typeof<obj[]>, FieldAttributes.Private)
+
+            let bMeth = bType.DefineMethod("Invoke", MethodAttributes.Public ||| MethodAttributes.Virtual, typeof<obj>, [|typeof<obj[]>|])
+            let il = bMeth.GetILGenerator()
+            //let id = il.DeclareLocal(typeof<int>)
+            let arg = il.DeclareLocal(typeof<obj>)
+            let argType = il.DeclareLocal(typeof<Type>)
+            //let arr = il.DeclareLocal(typeof<Type[]>)
+
+            //let caseLabels = Array.init cases.Length (fun i -> il.DefineLabel())
+            let notFoundLabel = il.DefineLabel()
+
+            let (tMin, typeTable) = createTable cases
+
+            let caseLabels = 
+                typeTable |> Array.map (fun t ->
+                    il.DefineLabel()
+                )
+
+
+            // get the argument-type
+            il.Emit(OpCodes.Ldarg_1)
+            il.Emit(OpCodes.Ldc_I4_0)
+            il.Emit(OpCodes.Ldelem_Ref)
+            il.Emit(OpCodes.Dup)
+            il.Emit(OpCodes.Stloc, arg)
+
+            il.EmitCall(OpCodes.Callvirt, typeof<obj>.GetMethod "GetType", null)
+            il.Emit(OpCodes.Dup)
+            il.Emit(OpCodes.Stloc, argType)
+            
+
+            // Type hashing using a perfect-match table
+            il.EmitCall(OpCodes.Call, typeof<Type>.GetProperty("TypeHandle").GetMethod, null)
+            il.EmitCall(OpCodes.Call, typeof<RuntimeTypeHandle>.GetProperty("Value").GetMethod, null)
+            
+
+            il.Emit(OpCodes.Pop)
+            il.Emit(OpCodes.Ldc_I4, 0)
+
+            if sizeof<nativeint> = 8 then il.Emit(OpCodes.Conv_I8)
+            else il.Emit(OpCodes.Conv_I4)
+             
+            if sizeof<nativeint> = 8 then il.Emit(OpCodes.Ldc_I8, int64 tMin)
+            else il.Emit(OpCodes.Ldc_I4, int32 tMin)
+            il.Emit(OpCodes.Sub)
+
+            if sizeof<nativeint> = 8 then il.Emit(OpCodes.Ldc_I8, int64 caseLabels.Length)
+            else il.Emit(OpCodes.Ldc_I4, caseLabels.Length)
+            il.Emit(OpCodes.Rem)
+
+            // switch(id)
+            il.Emit(OpCodes.Conv_I4)
+            il.Emit(OpCodes.Switch, caseLabels)
+            il.Emit(OpCodes.Br_S, notFoundLabel)
+
+
+            for ci in 0..typeTable.Length-1 do
+                let t = typeTable.[ci]
+                if not (isNull t) then
+                    let (target,meth,targetIndex) = methods.[t]
+
+                    il.MarkLabel(caseLabels.[ci])
+
+                    // perform the actual call
+                    if not meth.IsStatic then
+                        il.Emit(OpCodes.Ldarg_0)
+                        il.Emit(OpCodes.Ldfld, bTargets)
+                        il.Emit(OpCodes.Ldc_I4, targetIndex)
+                        il.Emit(OpCodes.Ldelem, meth.DeclaringType)
+                      
+                    let at = meth.GetParameters().[0].ParameterType
+                    il.Emit(OpCodes.Ldloc, arg)
+                    il.Emit(OpCodes.Unbox_Any, at)
+
+                    il.EmitCall(OpCodes.Call, meth, null)
+                    if meth.ReturnType = typeof<System.Void> then
+                        il.Emit(OpCodes.Ldnull)
+                    elif meth.ReturnType.IsValueType then
+                        il.Emit(OpCodes.Box, meth.ReturnType)
+                    else
+                        il.Emit(OpCodes.Unbox_Any, typeof<obj>)
+
+                    il.Emit(OpCodes.Ret)
+
+                else
+                    il.MarkLabel(caseLabels.[ci])
+                    il.Emit(OpCodes.Br_S, notFoundLabel)
+
+            il.MarkLabel(notFoundLabel)
+
+
+            il.Emit(OpCodes.Ldc_I4, argCount)
+            il.Emit(OpCodes.Newarr, typeof<Type>)
+
+            il.Emit(OpCodes.Dup)
+            il.Emit(OpCodes.Ldc_I4_0)
+            il.Emit(OpCodes.Ldloc, argType)
+            il.Emit(OpCodes.Stelem_Ref)
+
+
+            il.Emit(OpCodes.Newobj, typeof<UnknownException>.GetConstructor [|typeof<Type[]>|])
+            il.Emit(OpCodes.Throw)
+            il.Emit(OpCodes.Ret)
+
+
+            let bCtor = bType.DefineConstructor(MethodAttributes.Public, CallingConventions.Standard, [|typeof<obj[]>|])
+            let il = bCtor.GetILGenerator()
+            il.Emit(OpCodes.Ldarg_0)
+            il.Emit(OpCodes.Call, typeof<obj>.GetConstructor [||])
+            
+            il.Emit(OpCodes.Ldarg_0)
+            il.Emit(OpCodes.Ldarg_1)
+            il.Emit(OpCodes.Stfld, bTargets)
+            il.Emit(OpCodes.Ret)
+
+            bType.AddInterfaceImplementation(typeof<IRuntimeMethod>)
+            bType.DefineMethodOverride(bMeth, typeof<IRuntimeMethod>.GetMethod "Invoke")
+
+            let t = bType.CreateType()
+
+            let ctor = t.GetConstructor [|typeof<obj[]> |]
+            let targets = all |> Seq.map (fun (_,t,_) -> t) |> Seq.toArray
+            ctor.Invoke([|targets :> obj|]) |> unbox<IRuntimeMethod>       
+
+
         let rebuild(newArgTypes : Type[]) =
             created := true
             let meth = f newArgTypes
             match meth with
                 | Some (target, meth) ->
                     all.Add(newArgTypes, target, meth)
-
-                    let bType = bMod.DefineType(Guid.NewGuid().ToString())
-                    let bMeth = bType.DefineMethod("Invoke", MethodAttributes.Public ||| MethodAttributes.Virtual, typeof<obj>, [|typeof<obj[]>|])
-                    let il = bMeth.GetILGenerator()
-
-                    let bTargets = bType.DefineField("targets", typeof<obj[]>, FieldAttributes.Private)
-
-                    let typeVars = Array.init argCount (fun i -> il.DeclareLocal(typeof<Type>))
-                    let arr = il.DeclareLocal(typeof<Type[]>)
-
-                    for i in 0..argCount-1 do
-                        il.Emit(OpCodes.Ldarg_1)
-                        il.Emit(OpCodes.Ldc_I4, i)
-                        il.Emit(OpCodes.Ldelem_Ref)
-                        il.EmitCall(OpCodes.Callvirt, typeof<obj>.GetMethod "GetType", null)
-                        il.Emit(OpCodes.Stloc, typeVars.[i])
-
-                    for ai in 0..all.Count-1 do
-                        let (t, target, meth) = all.[ai]
-                        let paramters = meth.GetParameters()
-
-                        let fLabel = il.DefineLabel()
-
-                        for i in 0..argCount-1 do
-                            let ti = t.[i]
-                            il.Emit(OpCodes.Ldloc, typeVars.[i])
-                            il.Emit(OpCodes.Ldtoken, ti)
-                            il.Emit(OpCodes.Bne_Un, fLabel)
-
-                        // load the targets[ai]
-                        if not meth.IsStatic then
-                            il.Emit(OpCodes.Ldarg_0)
-                            il.Emit(OpCodes.Ldfld, bTargets)
-                            il.Emit(OpCodes.Ldc_I4, ai)
-                            il.Emit(OpCodes.Ldelem_Ref)
-
-                        
-                        for i in 0..argCount-1 do
-                            let at = paramters.[i].ParameterType
-                            il.Emit(OpCodes.Ldarg_1)
-                            il.Emit(OpCodes.Ldc_I4, i)
-                            il.Emit(OpCodes.Ldelem_Ref)
-                            il.Emit(OpCodes.Unbox_Any, at)
-
-                        il.EmitCall(OpCodes.Call, meth, null)
-                        if meth.ReturnType = typeof<System.Void> then
-                            il.Emit(OpCodes.Ldnull)
-                        elif meth.ReturnType.IsValueType then
-                            il.Emit(OpCodes.Box, meth.ReturnType)
-                        else
-                            il.Emit(OpCodes.Unbox_Any, typeof<obj>)
-
-                        il.Emit(OpCodes.Ret)
-
-                        il.MarkLabel(fLabel)
-
-
-                    il.Emit(OpCodes.Ldc_I4, argCount)
-                    il.Emit(OpCodes.Newarr, typeof<Type>)
-                    il.Emit(OpCodes.Stloc, arr)
-
-                    for i in 0..argCount-1 do
-                        il.Emit(OpCodes.Ldloc, arr)
-                        il.Emit(OpCodes.Ldc_I4, i)
-                        il.Emit(OpCodes.Ldloc, typeVars.[i])
-                        il.Emit(OpCodes.Stelem_Ref)
-
-            
-                    il.Emit(OpCodes.Ldloc, arr)
-                    il.Emit(OpCodes.Newobj, typeof<UnknownException>.GetConstructor [|typeof<Type[]>|])
-                    il.Emit(OpCodes.Throw)
-                    il.Emit(OpCodes.Ret)
-
-
-                    let bCtor = bType.DefineConstructor(MethodAttributes.Public, CallingConventions.Standard, [|typeof<obj[]>|])
-                    let il = bCtor.GetILGenerator()
-                    il.Emit(OpCodes.Ldarg_0)
-                    il.Emit(OpCodes.Call, typeof<obj>.GetConstructor [||])
-                    il.Emit(OpCodes.Ldarg_0)
-                    il.Emit(OpCodes.Ldarg_1)
-                    il.Emit(OpCodes.Stfld, bTargets)
-                    il.Emit(OpCodes.Ret)
-
-                    bType.AddInterfaceImplementation(typeof<IRuntimeMethod>)
-                    bType.DefineMethodOverride(bMeth, typeof<IRuntimeMethod>.GetMethod "Invoke")
-
-                    let t = bType.CreateType()
-
-                    let ctor = t.GetConstructor [|typeof<IRuntimeMethod[]> |]
-                    let targets = all |> Seq.map (fun (_,t,_) -> t) |> Seq.toArray
-                    ctor.Invoke([|targets :> obj|]) |> unbox<IRuntimeMethod>
+                    if all.Count > 1 then buildTable()
+                    else build()
                 | _ ->
                     raise <| UnsupportedTypesException(newArgTypes)
 
@@ -379,18 +694,15 @@ type Multimethod(parameterCount : int, initial : seq<MethodInfo * obj>)  =
 
 
     member x.TryInvoke(args : obj[], [<Out>] result : byref<obj>) : bool =
-        if args.Length <> parameterCount then
+        try
+            let res = methodCache args
+            result <- res
+            true
+
+        with _ ->
             false
-        else
-            try
-                let res = methodCache args
-                result <- res
-                true
 
-            with :? RuntimeMethodBuilder.UnsupportedTypesException ->
-                false
-
-    member x.Invoke(args : obj[]) =
+    member x.InvokeSafe(args : obj[]) =
         if args.Length <> parameterCount then
             raise <| MultimethodException
         else
@@ -398,6 +710,9 @@ type Multimethod(parameterCount : int, initial : seq<MethodInfo * obj>)  =
                 methodCache args
             with :? RuntimeMethodBuilder.UnsupportedTypesException ->
                 raise <| MultimethodException
+
+    member x.Invoke(args : obj[]) =
+        methodCache args
 
     new(parameterCount : int) = 
         Multimethod(parameterCount, Seq.empty)
@@ -414,9 +729,10 @@ module MultimethodTest =
 
     type A(v : int) = 
         member x.V = v
+        member x.Sepp() = v + v
         interface IA<float32> with
             member x.V = v
-            member x.Sepp() = v
+            member x.Sepp() = x.Sepp()
 
     type B(a : int) =
         inherit A(a)
@@ -454,41 +770,63 @@ module MultimethodTest =
 //                | (true, res) -> printfn "value(%A) = %A" o res
 //                | _ -> () 
 
-        let ours() =
+        let ours(iter : int) =
+
+            let args = [|B 10 :> obj|]
+            let sw = Stopwatch()
+            let mutable res = Unchecked.defaultof<obj>
+            for i in 0..1000 do
+                m.TryInvoke(args, &res) |> ignore
+
             let args = [|D 10 :> obj|]
             let sw = Stopwatch()
-            let mutable iter = 0
             let mutable res = Unchecked.defaultof<obj>
-
             for i in 0..1000 do
                 m.TryInvoke(args, &res) |> ignore
 
             sw.Start()
-            while sw.Elapsed.TotalMilliseconds < 1000.0 do 
+            for i in 1..iter do
                 m.TryInvoke(args, &res) |> ignore
-                iter <- iter + 1
             sw.Stop()
-            printfn "ours: %.3fns" (1000000.0 * sw.Elapsed.TotalMilliseconds / float iter)
+            let t = (1000000.0 * sw.Elapsed.TotalMilliseconds / float iter)
+            printfn "ours: %.3fns" t
+            t
 
-        let sepp() =
+        let sepp(iter : int) =
+            let s = Sepp()
+            let args = D 10 :> IA<float32>
+            let sw = Stopwatch()
+
+            for i in 0..1000 do
+                args.Sepp() |> ignore
+
+            sw.Start()
+            for i in 1..iter do
+                args.Sepp() |> ignore
+            sw.Stop()
+            let t = (1000000.0 * sw.Elapsed.TotalMilliseconds / float iter)
+            printfn "sepp: %.3fns" t
+            t
+
+        let nop() =
             let s = Sepp()
             let args = D 10 :> IA<float32>
             let sw = Stopwatch()
             let mutable iter = 0
             let mutable res = Unchecked.defaultof<obj>
 
-            for i in 0..1000 do
-                args.Sepp() |> ignore
-
-
+            let mutable total = 0
             sw.Start()
             while sw.Elapsed.TotalMilliseconds < 1000.0 do 
-                args.Sepp() |> ignore
                 iter <- iter + 1
+                total <- total + 1
             sw.Stop()
-            printfn "sepp: %.3fns" (1000000.0 * sw.Elapsed.TotalMilliseconds / float iter)
+            let t = (1000000.0 * sw.Elapsed.TotalMilliseconds / float iter)
+            printfn "nop:  %.3fns" t
+            iter
 
-
-        sepp()
-        ours()
+        let iter = nop()
+        let tsepp = sepp(4 * iter)
+        let tours = ours(4 * iter)
+        printfn "factor: %.2f" (tours / tsepp)
 
