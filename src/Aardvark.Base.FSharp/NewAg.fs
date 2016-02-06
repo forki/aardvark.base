@@ -13,22 +13,22 @@ module NewAg =
     let private synFunctions = Dictionary<string, Multimethod>()
     let private rootFunctions = Dictionary<string, Multimethod>()
 
-    type private NewableDict<'a, 'b>() =
-        let dict = Dict<'a, 'b>()
-        member x.Dict = dict
+    module private AttachedValues =
+        type private NewableDict<'a, 'b>() =
+            let dict = Dict<'a, 'b>()
+            member x.Dict = dict
+
+        let private attachedValues = System.Runtime.CompilerServices.ConditionalWeakTable<obj, NewableDict<string, obj>>()
 
 
-    let private attachedValues = System.Runtime.CompilerServices.ConditionalWeakTable<obj, NewableDict<string, obj>>()
+        let attachValue (name : string) (node : obj) (value : obj) =
+            let dict = attachedValues.GetOrCreateValue(node)
+            dict.Dict.[name] <- value
 
-
-    let private attachValue (name : string) (node : obj) (value : obj) =
-        let dict = attachedValues.GetOrCreateValue(node)
-        dict.Dict.[name] <- value
-
-    let private tryGetAttachedValue (name : string) (node : obj) =
-        match attachedValues.TryGetValue node with
-            | (true, d) -> d.Dict |> Dict.tryFind name
-            | _ -> None
+        let tryGetAttachedValue (name : string) (node : obj) =
+            match attachedValues.TryGetValue node with
+                | (true, d) -> d.Dict |> Dict.tryFind name
+                | _ -> None
 
 
     type Semantic() =
@@ -123,7 +123,6 @@ module NewAg =
         let inline creator<'a> : obj -> 'a = CreatorImpl<'a>.Instance
             
         let inline delay (value : obj) : 'a = creator<'a> value
-
 
     module private RootFunctions =
         open System.Reflection.Emit
@@ -284,7 +283,7 @@ module NewAg =
         if isNull scope.sourceNode then
             None
         else
-            match tryGetAttachedValue name scope.sourceNode with
+            match AttachedValues.tryGetAttachedValue name scope.sourceNode with
                 | Some v -> Some v
                 | None ->
                     tryFindAttachedValue scope.parent name
@@ -298,7 +297,7 @@ module NewAg =
             | (true, v) -> v
             | _ ->
                 if isNull scope.parent.sourceNode then
-                    match tryGetAttachedValue name scope.sourceNode with
+                    match AttachedValues.tryGetAttachedValue name scope.sourceNode with
                         | Some v -> Some v 
                         | None ->
                             match rootFunctions.TryGetValue(name) with
@@ -321,7 +320,7 @@ module NewAg =
                 else
                     state.Scope <- scope.parent
                     let res =
-                        match tryGetAttachedValue name scope.sourceNode with
+                        match AttachedValues.tryGetAttachedValue name scope.sourceNode with
                             | Some v -> Some v 
                             | None ->
                                 match mm.TryInvoke([|scope.parent.sourceNode|]) with
@@ -401,7 +400,7 @@ module NewAg =
     let (?<-) (n : obj) (name : string) (value : 'a) =
         let s = getCurrentScope()
         if isNull s.sourceNode then
-            attachValue name n value
+            AttachedValues.attachValue name n value
         else
             tempStore.Value.[(unpack n, name)] <- value
         
@@ -460,6 +459,12 @@ module NewAg =
                 match tryGet name x with
                     | Some v -> Success (v |> unbox<'a>)
                     | None -> sprintf "attribute %A not found" name |> Error
+
+
+
+
+
+
 module NewAgTest =
     open NewAg
     open System.Diagnostics
@@ -523,6 +528,7 @@ module NewAgTest =
             | :? Nil<int> -> 0
             | :? Cons<int> as c -> c.Head + directSum c.Tail
             | _ -> 0
+
 
     let run() =
         Aardvark.Init()

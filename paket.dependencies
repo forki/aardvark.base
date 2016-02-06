@@ -7,7 +7,6 @@ nuget Rx-Core                      ~> 2.2.5
 nuget Rx-PlatformServices          ~> 2.2.5
 
 nuget FSharp.Compiler.Service      ~> 0.0.90
-nuget Mono.Reflection			   ~> 1.0.0
 nuget System.Collections.Immutable ~> 1.1.36
 
 nuget NUnit.Console                ~> 3.0.1

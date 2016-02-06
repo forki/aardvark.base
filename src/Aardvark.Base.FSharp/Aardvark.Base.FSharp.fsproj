@@ -90,8 +90,12 @@
     <Compile Include="NewAg.fs" />
     <Compile Include="Control.fs" />
     <None Include="paket.references" />
+    <None Include="TraversalBuilder.fsx" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Mono.Reflection">
+      <HintPath>..\..\libs\Mono.Reflection.dll</HintPath>
+    </Reference>
     <Reference Include="mscorlib" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -143,13 +147,6 @@
       </ItemGroup>
     </When>
   </Choose>
-  <ItemGroup>
-    <Reference Include="Mono.Reflection">
-      <HintPath>..\..\packages\Mono.Reflection\lib\Mono.Reflection.dll</HintPath>
-      <Private>True</Private>
-      <Paket>True</Paket>
-    </Reference>
-  </ItemGroup>
   <Choose>
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And ($(TargetFrameworkVersion) == 'v4.0' Or $(TargetFrameworkVersion) == 'v4.5' Or $(TargetFrameworkVersion) == 'v4.5.1' Or $(TargetFrameworkVersion) == 'v4.5.2' Or $(TargetFrameworkVersion) == 'v4.5.3' Or $(TargetFrameworkVersion) == 'v4.6' Or $(TargetFrameworkVersion) == 'v4.6.1')">
       <ItemGroup>
