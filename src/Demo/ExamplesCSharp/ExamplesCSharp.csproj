@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -36,7 +36,6 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FSharp.Core, Version=4.3.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -45,6 +44,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="FSharp.Core" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />
@@ -56,20 +56,28 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Aardvark.Base.FSharp\Aardvark.Base.FSharp.fsproj">
-      <Project>{692a3617-719b-4ea2-abc1-407ae20094ae}</Project>
+      <Project>{692A3617-719B-4EA2-ABC1-407AE20094AE}</Project>
       <Name>Aardvark.Base.FSharp</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Aardvark.Base.Incremental\Aardvark.Base.Incremental.fsproj">
-      <Project>{9623ae28-1f72-46e9-a3a7-85fc1a321a73}</Project>
+      <Project>{9623AE28-1F72-46E9-A3A7-85FC1A321A73}</Project>
       <Name>Aardvark.Base.Incremental</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Aardvark.Base.TypeProviders\Aardvark.Base.TypeProviders.fsproj">
-      <Project>{8bfea4ef-bf0a-4c1a-b7ac-cbdd930306fd}</Project>
+      <Project>{8BFEA4EF-BF0A-4C1A-B7AC-CBDD930306FD}</Project>
       <Name>Aardvark.Base.TypeProviders</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Aardvark.Base\Aardvark.Base.csproj">
-      <Project>{377da721-c821-45f6-b803-9c8724c7b37f}</Project>
+      <Project>{377DA721-C821-45F6-B803-9C8724C7B37F}</Project>
       <Name>Aardvark.Base</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Tests\Aardvark.Base.Runtime.Tests\Aardvark.Base.Runtime.Tests.fsproj">
+      <Project>{CE9B55FF-2D3E-4E13-BA0A-69FD82F0B29B}</Project>
+      <Name>Aardvark.Base.Runtime.Tests</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Tests\Aardvark.Base.FSharp.Tests\Aardvark.Base.FSharp.Tests.fsproj">
+      <Project>{1B4BEB6E-96A1-4B86-9AC5-F9F5824382AE}</Project>
+      <Name>Aardvark.Base.FSharp.Tests</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

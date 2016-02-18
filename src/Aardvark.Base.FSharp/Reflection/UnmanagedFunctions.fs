@@ -69,7 +69,7 @@ module UnmanagedFunctions =
             let delegateType = DelegateBuilder.buildDelegate (args |> List.toArray) ret
             let d = Marshal.GetDelegateForFunctionPointer(executableMemory, delegateType)
 
-            let invoke = delegateType.GetMethod("Invoke")
+            let invoke = d.GetType().GetMethod("Invoke")
             let f = FunctionReflection.buildFunction d invoke
 
             pointers.TryAdd(f :> obj, executableMemory) |> ignore

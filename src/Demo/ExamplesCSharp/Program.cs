@@ -32,6 +32,9 @@ namespace ExamplesCSharp
     {
         static void Main(string[] args)
         {
+			Console.WriteLine ("{0}", IntPtr.Size);
+
+			Aardvark.Base.FSharp.Tests.FragmentTests.run ();
             Aardvark.Base.Incremental.GitTest.run();
             Environment.Exit(0);
 

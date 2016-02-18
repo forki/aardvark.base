@@ -17,12 +17,19 @@ module ExecutableMemory =
             | Linux | Mac  -> 
                 let pageSize = Dl.Imports.getpagesize()
                 let s = nativeint size
-                let mutable mem = 0n
+
+                let mem = Dl.Imports.mmap(0n,s,int Dl.Protection.ReadWriteExecute, 0x0001 ||| 0x1000, -1,0);
+
+                if mem = -1n || mem = 0n then
+                    failwith "could not allocate executable memory"
+
+
+                (*let mutable mem = 0n
                 let r = Dl.Imports.posix_memalign(&&mem, nativeint pageSize, s)
                 if r<>0 then failwith "could not alloc aligned memory"
 
                 let stat = Dl.Imports.mprotect(mem, s, Dl.Protection.ReadWriteExecute)
-                if stat <> 0 then failwith "mprotect failed"
+                if stat <> 0 then failwith "mprotect failed"*)
 
                 mem
 
@@ -31,7 +38,8 @@ module ExecutableMemory =
             | Windows -> 
                 Kernel32.Imports.VirtualFree(ptr, UIntPtr (uint32 size), Kernel32.FreeType.Decommit) |> ignore
             | Linux | Mac ->
-                Dl.Imports.free(ptr)
+                Dl.Imports.munmap(ptr,nativeint size) |> ignore
+                //Dl.Imports.free(ptr)
 
 
     let init (data : byte[]) =

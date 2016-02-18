@@ -11,13 +11,14 @@ open System.Collections.Generic
 
 module FragmentTests =
 
-    type MyDelegate = delegate of int * int * int * int * int -> unit
+    type MyDelegate = delegate of int -> unit
 
     let calls = List<obj[]>()
 
-    let func(a : int) (b : int) (c : int) (d : int) (e : int) =
-        calls.Add([|a :> obj; b; c; d; e|])
-        sprintf "{ a = %d; b = %d; c = %d; d = %d; e = %d }" a b c d e |> Console.WriteLine
+    let func(a : int) =
+        printfn "asdasdasdas"
+        //calls.Add([|a :> obj; b; c; d; e|])
+        //sprintf "{ a = %d; b = %d; c = %d; d = %d; e = %d }" a b c d e |> Console.WriteLine
 
     let myfun = MyDelegate func
     let myfunPtr = Marshal.GetFunctionPointerForDelegate(myfun)
@@ -30,33 +31,49 @@ module FragmentTests =
         let prolog = manager |> CodeFragment.prolog maxArgs 
         let epilog = manager |> CodeFragment.epilog maxArgs 
 
+
+
         let frag = 
-            manager |> CodeFragment.ofCalls [
-                myfunPtr, [|1 :> obj; 2 :> obj; 3 :> obj; 4 :> obj; 5 :> obj|]
-                myfunPtr, [|4 :> obj; 3 :> obj; 2 :> obj; 1 :> obj; 0 :> obj|]
-            ]
+
+            manager |> CodeFragment.ofCalls [myfunPtr, [||]]
+                //myfunPtr, [|1 :> obj|]
+                //myfunPtr, [|4 :> obj; 3 :> obj; 2 :> obj; 1 :> obj; 0 :> obj|]
+                //]
+
+        frag.Memory.UInt8Array |> Array.map (sprintf "0x%x") |> String.concat ", " |> printfn "{ %s }"
 
             
         prolog.WriteNextPointer frag.Offset |> ignore
         frag.WriteNextPointer epilog.Offset |> ignore
 
+        //prolog.WriteNextPointer epilog.Offset |> ignore
 
         frag.ReadNextPointer() |> should equal epilog.Offset
         prolog.ReadNextPointer() |> should equal frag.Offset
 
-        Console.WriteLine("Code:")
-        let instructions = frag.Calls
-        for (ptr, args) in instructions do
-            Console.WriteLine("  {0}({1})", sprintf "%A" ptr, sprintf "%A" args)
+        //Console.WriteLine("Code:")
+        //let instructions = frag.Calls
+        //frag.Memory.UInt8Array |> Array.iter (printfn "%x")
+        //for (ptr, args) in instructions do
+        //    Console.WriteLine("  {0}({1})", sprintf "%A" ptr, sprintf "%A" args)
 
- 
+        let run1 = UnmanagedFunctions.wrap myfunPtr
+        run1(1)
+
+
         let run = CodeFragment.wrap prolog
         run()
 
-        calls |> Seq.toList 
-              |> should equal [
-                [|1 :> obj; 2 :> obj; 3 :> obj; 4 :> obj; 5 :> obj|]
-                [|4 :> obj; 3 :> obj; 2 :> obj; 1 :> obj; 0 :> obj|]
-              ]
+
+
+        myfun.Invoke(1)
+
+        //calls |> Seq.toList 
+        //      |> should equal [
+        //        [|1 :> obj; 2 :> obj; 3 :> obj; 4 :> obj; 5 :> obj|]
+        //        [|4 :> obj; 3 :> obj; 2 :> obj; 1 :> obj; 0 :> obj|]
+        //      ]
 
         ()
+
+    let run() = ``[Fragment] execution working``()

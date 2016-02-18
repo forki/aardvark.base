@@ -674,7 +674,9 @@ module ASM =
                         | Mac -> AMD64.linux
 
                 fun (data : byte[]) ->
-                    data |> AMD64.Disassembler.disassemble |> AMD64.Decompiler.decompile cc
+                    let r = data |> AMD64.Disassembler.disassemble 
+                    printfn "%A" r
+                    r |> AMD64.Decompiler.decompile cc
 
 
             | _ -> failwithf "no disassembler for: %A / %A" os.Platform cpu      

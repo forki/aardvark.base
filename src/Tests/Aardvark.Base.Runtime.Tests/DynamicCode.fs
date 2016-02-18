@@ -270,6 +270,9 @@ module DynamicCodeTests =
         prog.Run() |> should equal []
         ()
 
+    let run() = 
+        ``[DynamicCode] add/remove/clear``()
+
     [<Test>]
     let ``[DynamicCode] changes``() =
 

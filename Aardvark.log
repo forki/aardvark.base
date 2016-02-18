@@ -1,0 +1,35 @@
+ 0: master: 2
+ 0: a10: 11
+ 0: b5: 6
+ 0: a10: 11
+ 0: b5: 6
+ 0: merge: 15
+ 0: WARNING: merge conflict
+ 0: WARNING:     conflicting assignments: {b = 5} vs {b = 10}
+ 0: conflict: 20
+ 0: 959fabc1-8098-4ce1-8c24-c23f54e3d9dd
+ 0:   message: sync
+ 0:   author:  josef
+ 0:   date:    2/18/2016 3:52:27 PM
+ 0:   changes:
+ 0:     b = 10
+ 0: 0bdd119f-5b5c-4772-bd5c-7dd2fc91e754
+ 0:   message: a = 10
+ 0:   author:  josef
+ 0:   date:    2/18/2016 3:52:27 PM
+ 0:   changes:
+ 0:     a = 10
+ 0: master: 2
+ 0: merge: 15
+ 0: 646ebc19-320f-49a8-90e1-7c58a0afb117
+ 0:   message: Merge branch a10 into merge
+ 0:   author:  josef
+ 0:   date:    2/18/2016 3:52:27 PM
+ 0:   changes:
+ 0:     a = 10
+ 0: 26b38fda-5e04-48c6-bf62-1f089f736e2a
+ 0:   message: b = 5
+ 0:   author:  josef
+ 0:   date:    2/18/2016 3:52:27 PM
+ 0:   changes:
+ 0:     b = 5

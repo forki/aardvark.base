@@ -194,6 +194,13 @@ module private Dl =
         [<DllImport("libc", SetLastError=true)>]
         extern int getpagesize()
 
+        //void * mmap(void *addr, size_t len, int prot, int flags, int fd, off_t offset);
+        [<DllImport("libc", SetLastError=false)>]
+        extern nativeint mmap(nativeint addr, nativeint size, int prot, int flags, int fd, int offset)
+
+        [<DllImport("libc", SetLastError=true)>]
+        extern int munmap(nativeint ptr, nativeint size)
+
         [<DllImport("libc", SetLastError=true)>]
         extern int posix_memalign(nativeint* ptr, nativeint p, nativeint size)
 
