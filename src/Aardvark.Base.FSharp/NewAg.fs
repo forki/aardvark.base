@@ -8,7 +8,7 @@ open System.Threading
 open Microsoft.FSharp.Reflection
 
 
-module NewAg =
+module Ag =
     let private inhFunctions = Dictionary<string, Multimethod>()
     let private synFunctions = Dictionary<string, Multimethod>()
     let private rootFunctions = Dictionary<string, Multimethod>()
@@ -461,7 +461,7 @@ module NewAg =
                     | Some v -> Success (v |> unbox<'a>)
                     | None -> sprintf "attribute %A not found" name |> Error
 module NewAgTest =
-    open NewAg
+    open Ag
     open System.Diagnostics
 
     type INode = interface end
@@ -596,7 +596,7 @@ module NewAgTest =
         let v : int = t?Value()
         printfn "%A" v
 
-        NewAg.tryGet "Sepp" v |> printfn "Sepp = %A"
+        Ag.tryGet "Sepp" v |> printfn "Sepp = %A"
 
 
 

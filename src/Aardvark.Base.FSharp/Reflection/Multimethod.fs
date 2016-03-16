@@ -343,6 +343,7 @@ module RuntimeMethodBuilder =
                 // load the args into args.[i]
                 il.Emit(OpCodes.Ldarg_1)
                 il.Emit(OpCodes.Ldc_I4, i)
+                il.EmitWriteLine("loading arg")
                 il.Emit(OpCodes.Ldelem, typeof<obj>)
                 il.Emit(OpCodes.Stloc, args.[i])
 
@@ -359,13 +360,15 @@ module RuntimeMethodBuilder =
                 let table = Array.zeroCreate size
                 let mutable success = true
                 
+                let mutable ti = 0
                 for (t,tar,meth) in all do
                     let e = int (t.[0].TypeHandle.Value - minId) % table.Length
                     match table.[e] with
                         | None -> 
-                            table.[e] <- Some (t, tar, meth)
+                            table.[e] <- Some (t, ti, meth)
                         | _ ->
                             success <- false
+                    ti <- ti + 1
 
                 if success then
                     table
@@ -395,7 +398,7 @@ module RuntimeMethodBuilder =
 
             for ai in 0..table.Length-1 do
                 match table.[ai] with
-                    | Some (t, target, meth) -> 
+                    | Some (t, targetIndex, meth) -> 
                         let paramters = meth.GetParameters()
 
                         il.MarkLabel(labels.[ai])
@@ -410,9 +413,11 @@ module RuntimeMethodBuilder =
 
                         // load the target (if any)
                         if not meth.IsStatic then
+                            
+                            il.EmitWriteLine("loading target")
                             il.Emit(OpCodes.Ldarg_0)
                             il.Emit(OpCodes.Ldfld, bTargets)
-                            il.Emit(OpCodes.Ldc_I4, ai)
+                            il.Emit(OpCodes.Ldc_I4, targetIndex)
                             il.Emit(OpCodes.Ldelem_Ref)
 
                         
@@ -449,6 +454,7 @@ module RuntimeMethodBuilder =
                         il.Emit(OpCodes.Br, notFound)
 
             il.MarkLabel(notFound)
+            il.EmitWriteLine("unknown type")
             il.Emit(OpCodes.Ldc_I4, argCount)
             il.Emit(OpCodes.Newarr, typeof<Type>)
             il.Emit(OpCodes.Stloc, arr)
@@ -459,12 +465,16 @@ module RuntimeMethodBuilder =
 
                 il.Emit(OpCodes.Ldloc, args.[i])
                 il.EmitCall(OpCodes.Callvirt, typeof<obj>.GetMethod "GetType", null)
-
+                
+                il.EmitWriteLine("storing type")
                 il.Emit(OpCodes.Stelem_Ref)
 
             
             let rebuild = typeof<MultimethodImpl>.GetMethod("Rebuild", BindingFlags.NonPublic ||| BindingFlags.Instance ||| BindingFlags.Public)
             let invoke = typeof<MultimethodImpl>.GetMethod("Invoke")
+
+            il.EmitWriteLine("rebuilding")
+
             il.Emit(OpCodes.Ldarg_0)
             il.Emit(OpCodes.Ldfld, bSelf)
             il.Emit(OpCodes.Dup)
@@ -509,7 +519,7 @@ module RuntimeMethodBuilder =
             match meth with
                 | Some (target, meth) ->
                     all.Add(newArgTypes, target, meth)
-                    if argCount < 0 then
+                    if argCount < 2 then
                         current := buildTable(self)
                     else
                         current := buildMatch(self)
