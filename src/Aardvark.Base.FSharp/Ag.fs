@@ -26,30 +26,31 @@ module Ag =
     [<ReferenceEquality>]
     type Scope = { parent       : Option<Scope>
                    source       : obj
-                   children     : WeakTable<obj, Scope>
+                   //children     : WeakTable<obj, Scope>
                    cache        : Dictionary<string, Option<obj>>
                    mutable path         : Option<string> } with
 
 
         member x.GetChildScope(child : obj) =
-            lock x (fun () ->
-                        match x.children.TryGetValue child with
-                            | (true,c) -> c
-                            | _ -> let c = { parent = Some(x); source = child; children = newCWT(); cache = Dictionary(); path = None}
-                                   #if DEBUGSCOPES
-                                   allScopes.Add (System.WeakReference<obj>(x :> obj)) |> ignore
-                                   #endif
-                                   x.children.Add(child, c)
-                                   c
-                    )
+            { parent = Some x; source = child; cache = Dictionary(); path = None }
+//            lock x (fun () ->
+//                        match x.children.TryGetValue child with
+//                            | (true,c) -> c
+//                            | _ -> let c = { parent = Some(x); source = child; children = newCWT(); cache = Dictionary(); path = None}
+//                                   #if DEBUGSCOPES
+//                                   allScopes.Add (System.WeakReference<obj>(x :> obj)) |> ignore
+//                                   #endif
+//                                   x.children.Add(child, c)
+//                                   c
+//                    )
 
-
-        member x.TryGetChildScope(child : obj) =
-            lock x (fun () ->
-                        match x.children.TryGetValue child with
-                            | (true,c) -> Some c
-                            | _ -> None
-                    )
+//
+//        member x.TryGetChildScope(child : obj) =
+//            lock x (fun () ->
+//                        match x.children.TryGetValue child with
+//                            | (true,c) -> Some c
+//                            | _ -> None
+//                    )
 
         member x.TryFindCacheValue (name : string) =
             if enableCacheWrites then
@@ -89,9 +90,9 @@ module Ag =
     //capturing the current scope. 
     type Captured = Scope
 
-    let emptyScope = { parent = None; source = null; children = newCWT(); cache = null; path = Some "Root"}
+    let emptyScope = { parent = None; source = null; cache = null; path = Some "Root"}
     
-    let mutable private rootScope = new ThreadLocal<Scope>(fun () -> { parent = None; source = null; children = newCWT(); cache = null; path = Some "Root" })
+    let mutable private rootScope = new ThreadLocal<Scope>(fun () -> { parent = None; source = null; cache = null; path = Some "Root" })
 
     let mutable currentScope = new ThreadLocal<Scope>(fun () -> rootScope.Value)
 
@@ -105,12 +106,12 @@ module Ag =
                                                                 | (true,v) -> Some v
                                                                 | _ -> match valueStore.Value.TryGetValue((anyObject, name)) with
                                                                         | (true, v) -> Some v
-                                                                        | _ -> 
-                                                                            match rootScope.Value.TryGetChildScope(node) with
-                                                                                | Some s -> match s.TryFindCacheValue name with
-                                                                                                | Some v -> v
-                                                                                                | _ -> None
-                                                                                | None -> None
+                                                                        | _ -> None
+//                                                                            match rootScope.Value.TryGetChildScope(node) with
+//                                                                                | Some s -> match s.TryFindCacheValue name with
+//                                                                                                | Some v -> v
+//                                                                                                | _ -> None
+//                                                                                | None -> None
     let private clearValueStore() = valueStore.Value.Clear()
     
     type System.Object with
@@ -124,13 +125,13 @@ module Ag =
         AgHelpers.reIninitializeAg<Semantic>()
         rootScope.Dispose()
         currentScope.Dispose()
-        rootScope <- new ThreadLocal<Scope>(fun () -> { parent = None; source = null; children = newCWT(); cache = null; path = Some "Root" })
+        rootScope <- new ThreadLocal<Scope>(fun () -> { parent = None; source = null; cache = null; path = Some "Root" })
         currentScope <- new ThreadLocal<Scope>(fun () -> rootScope.Value)
 
     let clearCaches () =    
         rootScope.Dispose()
         currentScope.Dispose()
-        rootScope <- new ThreadLocal<Scope>(fun () -> { parent = None; source = null; children = newCWT(); cache = null; path = Some "Root" })
+        rootScope <- new ThreadLocal<Scope>(fun () -> { parent = None; source = null; cache = null; path = Some "Root" })
         currentScope <- new ThreadLocal<Scope>(fun () -> rootScope.Value)
         System.GC.Collect()
         System.GC.WaitForPendingFinalizers()
@@ -230,26 +231,28 @@ module Ag =
     //depend on inherited attributes (most likely) they also need their scope.
     let private tryGetSynAttributeScope (scope : Scope) (name : string) =
         if logging then Log.start "tryGetSynAttributeScope %s on scope: %A" name scope.Path
-        match scope.TryFindCacheValue name with
-            //if the current scope contains a cache-value for <name> we may simply return it
-            | Some v -> if logging then Log.stop "cache found."
-                        v
 
-            //otherwise there needs to be a semantic-function creating the attribute value
-            | _ -> let sourceNode = scope.source
-                   let sourceType = sourceNode.GetType()
-                   match tryFindSemanticFunction(sourceType, name) with
-                        //if there is a semantic-function we run it and add a cache entry
-                        | Some(sf) -> let result = useScope scope (fun () -> if logging then Log.start "invoking sf: %A" sf
-                                                                             let r = sf.Fun sourceNode
-                                                                             if logging then Log.stop ()
-                                                                             r)
-                                      if logging then Log.stop ()
-                                      scope.AddCache name (Some result)
+        let sourceNode = scope.source
+        let sourceType = sourceNode.GetType()
+        match tryFindSemanticFunction(sourceType, name) with
+            //if there is a semantic-function we run it and add a cache entry
+            | Some(sf) -> 
+                let result = 
+                    useScope scope (fun () -> 
+                        if logging then Log.start "invoking sf: %A" sf
+                        let r = sf.Fun sourceNode
+                        if logging then Log.stop ()
+                        r
+                    )
+                if logging then Log.stop ()
+                //scope.AddCache name (Some result)
 
-                        //otherwise the synthesized attribute cannot be calculated
-                        | None -> if logging then Log.stop "not found."
-                                  None
+                Some result
+
+            //otherwise the synthesized attribute cannot be calculated
+            | None -> 
+                if logging then Log.stop "not found."
+                None
 
 
     //when not given a scope we need to use the currentScope
@@ -261,14 +264,14 @@ module Ag =
                 | None -> None
         match node with
             | :? Scope as scope -> tryGetInhAttributeScope node scope name
-            | _ -> 
-                match rootScope.Value.TryGetChildScope node with
-                 | Some s -> 
-                    match s.cache.TryGetValue name with
-                        | (true, v) -> v
-                        | _ ->
-                            up ()
-                 | None -> up ()
+            | _ -> up ()
+//                match rootScope.Value.TryGetChildScope node with
+//                 | Some s -> 
+//                    match s.cache.TryGetValue name with
+//                        | (true, v) -> v
+//                        | _ ->
+//                            up ()
+//                 | None -> up ()
 
     let tryGetSynAttribute (o : obj) (name : string) =
         match o with
