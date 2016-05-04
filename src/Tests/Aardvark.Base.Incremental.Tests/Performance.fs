@@ -13,7 +13,7 @@ module SimplePerfTests =
 
     [<Test>]
     let ``[Mod Performance] deep bind``() =
-        
+        TestSetup.init()
         let mods = List.init 500 (fun i -> Mod.init i)
 
         let rec flatten l =
@@ -43,7 +43,7 @@ module SimplePerfTests =
 
     [<Test>]
     let ``[Mod Performance] deep bind with fixed levels``() =
-        
+        TestSetup.init()
         let mods = List.init 500 (fun i -> Mod.init i)
 
         let rec flatten level l =
@@ -76,7 +76,7 @@ module SimplePerfTests =
 
     [<Test>]
     let ``[Mod Performance] flat sum``() =
-        
+        TestSetup.init()
         let mods = List.init 500 (fun i -> Mod.init i)
 
         let sum = 
@@ -101,6 +101,7 @@ module SimplePerfTests =
 
     [<Test>]
     let ``[ASet] value dependent nop change``() =
+        TestSetup.init()
         let vt = Mod.init V3d.Zero
         let iter = 100
 

@@ -109,34 +109,59 @@ type VolatileCollectionStrong<'a>() =
             set.Remove value
 
 
+type AdaptiveLockState =
+    class
+        val mutable public Readers : int
+        val mutable public Writers : int
+
+        new() = { Readers = 0; Writers = 0 }
+    end
+
 type AdaptiveLock() =
     let rw = new ReaderWriterLockSlim()
-    let readCount = new ThreadLocal<ref<int>>(fun () -> ref 0)
+    let state = new ThreadLocal<AdaptiveLockState>(fun () -> AdaptiveLockState())
 
-          
     member x.EnterRead() =
-        let cnt = readCount.Value
-        if !cnt = 0 && not rw.IsWriteLockHeld then rw.EnterReadLock()
-        cnt := !cnt + 1
+        let state = state.Value
 
+        match state.Writers, state.Readers with
+            | 0, 0 -> rw.EnterReadLock()
+            | _ -> ()
+
+        state.Readers <- state.Readers + 1
+            
     member x.ExitRead() =
-        let cnt = readCount.Value
-        if !cnt = 1 && not rw.IsWriteLockHeld then rw.ExitReadLock()
-        cnt := !cnt - 1
+        let state = state.Value
+        state.Readers <- state.Readers - 1
+
+        match state.Writers, state.Readers with
+            | 0, 0 -> rw.ExitReadLock()
+            | _ -> ()
+
 
     member x.EnterWrite() =
-        let cnt = readCount.Value
-        if !cnt <> 0 then
-            rw.ExitReadLock()
-        // AN DIESER STELLE DANN DORT
-        rw.EnterWriteLock()
+        let state = state.Value
+
+        match state.Writers, state.Readers with
+            | 0, 0 -> rw.EnterWriteLock()
+            | 0, n -> rw.ExitReadLock(); rw.EnterWriteLock()
+            | _ -> ()
+
+        state.Writers <- state.Writers + 1
 
     member x.ExitWrite() =
-        let cnt = readCount.Value
-        rw.ExitWriteLock()
-        if !cnt <> 0 then
-            rw.EnterReadLock()
+        let state = state.Value
+        state.Writers <- state.Writers - 1
 
+        match state.Writers, state.Readers with
+            | 0, 0 -> rw.ExitWriteLock()
+            | 0, n -> rw.ExitWriteLock(); rw.EnterReadLock()
+            | _ -> ()
+
+
+
+    member x.IsReadLockHeld = rw.IsReadLockHeld
+    member x.IsWriteLockHeld = rw.IsWriteLockHeld
 
 /// <summary>
 /// IAdaptiveObject represents the core interface for all
@@ -203,6 +228,12 @@ type IAdaptiveObject =
 
 module Locking =
 
+//    let inline enterUpdate (t : IAdaptiveObject) = 
+//        t.Lock.EnterUpdate()
+//
+//    let inline exitUpdate (t : IAdaptiveObject) = 
+//        t.Lock.ExitUpdate()
+
     let inline enterRead (t : IAdaptiveObject) = 
         t.Lock.EnterRead()
        
@@ -211,18 +242,25 @@ module Locking =
 
     let inline enterWrite (t : IAdaptiveObject) = 
         t.Lock.EnterWrite()
+        Monitor.Enter t
        
     let inline exitWrite (t : IAdaptiveObject) = 
+        Monitor.Exit t
         t.Lock.ExitWrite()
 
     let inline read (target: IAdaptiveObject) f =
         enterRead target
-        try f () finally exitRead target
+        try f () 
+        finally exitRead target
 
     let inline write (target: IAdaptiveObject) f =
         enterWrite target
-        try f () finally exitWrite target
+        try f () 
+        finally exitWrite target
 
+
+    let inline hasRead (target: IAdaptiveObject) f =
+        target.Lock.IsReadLockHeld
 
 [<AutoOpen>]
 module CrazyLocking =
@@ -249,12 +287,16 @@ module AdaptiveSystemState =
     let private locks = new ThreadLocal<ref<list<AdaptiveLock>>>(fun () -> ref [])
 
     let addLock (l : AdaptiveLock) =
+        assert (l.IsReadLockHeld)
         let r = locks.Value
         r := l::!r
 
     let exitLocks () =
         let r = locks.Value
-        for l in !r do l.ExitRead()
+        for l in !r do 
+            assert (l.IsReadLockHeld)
+            l.ExitRead()
+
         r := []  
     //let currentEvaluationPath = new ThreadLocal<Stack<IAdaptiveObject>>(fun _ -> Stack(100))
 
@@ -512,23 +554,29 @@ type AdaptiveObject =
             let depth = AdaptiveSystemState.curerntEvaluationDepth.Value
             let top = isNull caller && !depth = 0 && not Transaction.HasRunning
 
-
-            let mutable res = Unchecked.defaultof<_>
             Locking.enterRead this
+            let mutable res = Unchecked.defaultof<_>
             depth := !depth + 1
+            let mutable monitorEntered = false
 
             try
                 match otherwise with
                     | Some v when not this.OutOfDate -> 
                         res <- v
+
                     | _ ->
+                        Monitor.Enter this
+                        monitorEntered <- true
                         // this evaluation is performed optimistically
                         // meaning that the "top-level" object needs to be allowed to
                         // pull at least one value on every path.
                         // This property must therefore be maintained for every
                         // path in the entire system.
+
+       
                         let r = f()
                         this.OutOfDate <- false
+              
 
                         // if the object's level just got greater than or equal to
                         // the level of the running transaction (if any)
@@ -547,15 +595,15 @@ type AdaptiveObject =
                         res <- r
 
 
+
                 if not (isNull caller) then
-                    this.Outputs.Add caller |> ignore
+                    goodLock123 this.Outputs (fun () -> this.Outputs.Add caller |> ignore)
                     caller.Level <- max caller.Level (this.Level + 1)
-
-
+      
             finally
                 depth := !depth - 1
+                if monitorEntered then Monitor.Exit this
                 AdaptiveSystemState.addLock this.Lock
-                //Locking.exitRead this
 
             if top then 
                 AdaptiveSystemState.exitLocks()

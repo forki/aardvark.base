@@ -150,14 +150,14 @@ module ASetReaders =
             GC.SuppressFinalize x
 
         member x.SubscribeOnEvaluate (cb : Change<'a> -> unit) =
-            goodLock123 callbacks (fun () ->
+            goodLock123 x (fun () ->
                 if isNull callbacks then
                     callbacks <- HashSet()
 
                 if callbacks.Add cb then
                     { new IDisposable with 
                         member __.Dispose() = 
-                            goodLock123 callbacks (fun () ->
+                            goodLock123 x (fun () ->
                                 callbacks.Remove cb |> ignore 
                                 if callbacks.Count = 0 then
                                     callbacks <- null
@@ -975,14 +975,14 @@ module ASetReaders =
             GC.SuppressFinalize x
 
         member x.SubscribeOnEvaluate (cb : Change<'a> -> unit) =
-            goodLock123 callbacks (fun () ->
+            goodLock123 x (fun () ->
                 if isNull callbacks then
                     callbacks <- HashSet()
 
                 if callbacks.Add cb then
                     { new IDisposable with 
                         member __.Dispose() = 
-                            goodLock123 callbacks (fun () ->
+                            goodLock123 x (fun () ->
                                 callbacks.Remove cb |> ignore 
                                 if callbacks.Count = 0 then
                                     callbacks <- null
@@ -1017,14 +1017,14 @@ module ASetReaders =
         let mutable initial = true
 
         member x.SubscribeOnEvaluate(cb : list<Delta<'a>> -> unit) =
-            goodLock123 callbacks (fun () ->
+            goodLock123 x (fun () ->
                 if isNull callbacks then
                     callbacks <- HashSet()
 
                 if callbacks.Add cb then
                     { new IDisposable with 
                         member __.Dispose() = 
-                            goodLock123 callbacks (fun () ->
+                            goodLock123 x (fun () ->
                                 callbacks.Remove cb |> ignore 
                                 if callbacks.Count = 0 then
                                     callbacks <- null

@@ -14,7 +14,7 @@ module SizeOfAdaptiveObjects =
 
     [<Test>]
     let ``[MemoryOverhead] memory test`` () =
-
+        TestSetup.init()
         //total e9206773e69bfe38e737c434d5496c9d56332160: 
         //total: 
         //5346872L
@@ -62,7 +62,7 @@ module SizeOfAdaptiveObjects =
 
     [<Test>]
     let ``[MemoryOverhead] adaptiveObject`` () =
-
+        TestSetup.init()
         let xs = Array.zeroCreate 100000
         let mem = System.GC.GetTotalMemory(true)
 
@@ -88,7 +88,7 @@ module SizeOfAdaptiveObjects =
 
     [<Test>]
     let ``[MemoryOverhead] ReaderSize`` () =
-
+        TestSetup.init()
         let xs = Array.zeroCreate 100000
         let mem = System.GC.GetTotalMemory(true)
 

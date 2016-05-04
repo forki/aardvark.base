@@ -21,7 +21,7 @@ module ``performance tests`` =
 
     [<Test>]
     let ``[ASet] collect performance``() =
-        
+        TestSetup.init()
         let input = CSet.ofList []
 
         let step (s : aset<'a>) =
@@ -73,7 +73,7 @@ module ``performance tests`` =
 
     [<Test>]
     let ``[ASet] map performance``() =
-        
+        TestSetup.init()
         let input = CSet.ofList []
 
         let step (s : aset<'a>) =
@@ -125,7 +125,7 @@ module ``performance tests`` =
 
     [<Test>]
     let ``[Mod] bind performance``() =
-        
+        TestSetup.init()
         let input = Mod.init 0
 
         let step (s : IMod<'a>) =
@@ -175,7 +175,7 @@ module ``performance tests`` =
 
     [<Test>]
     let ``[Mod] map performance``() =
-        
+        TestSetup.init()
         let input = Mod.init 0
 
         let step (s : IMod<'a>) =

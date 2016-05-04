@@ -31,6 +31,7 @@ module ``collect tests`` =
 
     [<Test>]
     let ``[ASet] duplicate handling in collect``() =
+        TestSetup.init()
         let i0 = CSetCheck.ofList [1;2;3]
         let i1 = CSetCheck.ofList [3;4;5]
         let s = CSetCheck.ofList [i0 :> aset_check<_>]
@@ -92,6 +93,7 @@ module ``collect tests`` =
 
     [<Test>]
     let ``[ASet] move test``() =
+        TestSetup.init()
         let c0 = CSetCheck.ofList [1]
         let c1 = CSetCheck.ofList [2]
 
@@ -119,6 +121,7 @@ module OtherASetTests =
 
     [<Test>]
     let ``[ASet] tree flatten test``() =
+        TestSetup.init()
         let rec flatten (t : Tree<'a>) =
             match t with
                 | Node children -> children |> ASetCheck.collect (flatten)
@@ -173,7 +176,7 @@ module OtherASetTests =
 
     [<Test>]
     let ``[ASet] callback test``() =
-
+        TestSetup.init()
         let deltas = DeltaList<int>()
 
         let set = cset [1;2;3;4]
@@ -218,7 +221,7 @@ module OtherASetTests =
 
     [<Test>]
     let ``[ASet] callback changing other list``() =
-        
+        TestSetup.init()
         let set = cset [1;2]
 
         let derived = set |> ASet.map (fun a -> 1 + a)
@@ -244,7 +247,7 @@ module OtherASetTests =
 
     [<Test>]
     let ``[ASet] toMod triggering even with equal set referece``() =
-        
+        TestSetup.init()
         let s = CSet.empty
 
         let triggerCount = ref 0
@@ -284,7 +287,7 @@ module OtherASetTests =
 
     [<Test>]
     let ``[ASet] concurrency collect test``() =
-
+        TestSetup.init()
         let l = obj()
         let set = CSet.empty
         let derived = set |> ASet.collect id
@@ -332,7 +335,7 @@ module OtherASetTests =
 
     [<Test>]
     let ``[ASet] concurrency multi reader test``() =
-
+        TestSetup.init()
         let l = obj()
         let set = CSet.empty
         let derived = set |> ASet.collect id
@@ -389,6 +392,7 @@ module OtherASetTests =
 
     [<Test>]
     let ``[ASet] memory leak test`` () =
+        TestSetup.init()
         let mutable independenSource = Mod.init 10
         let cnt = ref 0
         let f () =
@@ -413,7 +417,7 @@ module OtherASetTests =
 
     [<Test>]
     let ``[ASet] concurrency buffered reader test``() =
-
+        TestSetup.init()
         let l = obj()
         let set = CSet.empty
 
@@ -463,7 +467,7 @@ module OtherASetTests =
 
     [<Test>]
     let ``[ASet] concurrency overkill test``() =
-
+        TestSetup.init()
         let l = obj()
         let set = CSet.empty
 
@@ -516,7 +520,7 @@ module OtherASetTests =
 
     [<Test>]
     let ``[ASet] stacked deltas test`` () =
-
+        TestSetup.init()
         let set = CSet.empty
 
         let derived = set |> ASet.collect id |> ASet.map id |> ASet.choose Some |> ASet.collect ASet.single |> ASet.collect ASet.single
@@ -558,7 +562,7 @@ module OtherASetTests =
 
     [<Test>]
     let ``[ASet] concurrent readers``() =
-
+        TestSetup.init()
         let l = obj()
         let set = CSet.empty
         let derived = set |> ASet.collect id
@@ -617,7 +621,7 @@ module OtherASetTests =
 
     [<Test>]
     let ``[CSet] concurrent reader-reset``() =
-        
+        TestSetup.init()
         let set = CSet.ofList [1..100]
 
         let r = (set :> aset<_>).GetReader()
@@ -636,7 +640,7 @@ module OtherASetTests =
 
     [<Test>]
     let ``[CSet] delta elimination``() =
-        
+        TestSetup.init()
         let set = CSet.empty
         let r = (set :> aset<_>).GetReader()
 
@@ -657,7 +661,7 @@ module OtherASetTests =
 
     [<Test>]
     let ``[ASet] reader disposal``() =
-        
+        TestSetup.init()      
         let input = CSet.ofList [1;2]
         let level0 = input |> ASet.map id |> ASet.choose Some |> ASet.collect ASet.single
 
@@ -691,6 +695,7 @@ module OtherASetTests =
 
     [<Test>]
     let ``[ASet] finalizers working``() =
+        TestSetup.init()
         let input = CSet.ofList [1]
 
         let getDerivedReader(input : aset<'a>) =
@@ -719,6 +724,7 @@ module OtherASetTests =
 
     [<Test>]
     let ``[ASet] reader creation after pull without change``() =
+        TestSetup.init()
         let input = CSet.ofList [1;2]
 
         let derived = input |> ASet.map id
@@ -740,6 +746,7 @@ module OtherASetTests =
 
     [<Test>]
     let ``[ASet] reader creation after pull with change``() =
+        TestSetup.init()
         let input = CSet.ofList [1;2]
 
         let derived = input |> ASet.map id
@@ -761,6 +768,7 @@ module OtherASetTests =
 
     [<Test>]
     let ``[ASet] reader creation after pull dispose original``() =
+        TestSetup.init()
         let input = CSet.ofList [1;2]
 
         let derived = input |> ASet.map id
@@ -784,6 +792,7 @@ module OtherASetTests =
 
     [<Test>]
     let ``[ASet] reader creation after pull dispose new one``() =
+        TestSetup.init()
         let input = CSet.ofList [1;2]
 
         let derived = input |> ASet.map id
@@ -805,6 +814,7 @@ module OtherASetTests =
 
     [<Test>]
     let ``[ASet] reader modification/creation/disposal/pull``() =
+        TestSetup.init()
         let input = CSet.empty
         let derived = input |> ASet.map id
 
@@ -901,6 +911,7 @@ module OtherASetTests =
 
     [<Test>]
     let ``[ASet] registerCallback holds no gc root``() =
+        TestSetup.init()
         let called, inputSet, d = GCHelper.``create, registerCallback and return and make sure that the stack frame dies`` ()
 
         let cnt = 100
@@ -915,6 +926,7 @@ module OtherASetTests =
 
     [<Test>]
     let ``[ASet] registerCallbackKeepDisposable holds gc root``() =
+        TestSetup.init()
         let called, inputSet = GCHelper.``create, registerCallbackAndKeepDisposable and return and make sure that the stack frame dies`` ()
 
         let cnt = 100
@@ -927,6 +939,7 @@ module OtherASetTests =
 
     [<Test>]
     let ``[ASet] markingCallback holds gc root``() =
+        TestSetup.init()
         let called, inputSet, reader = GCHelper.``create, register marking and return and make sure that the stack frame dies`` ()
 
         let cnt = 100
@@ -945,7 +958,7 @@ module OtherASetTests =
 
     [<Test>]
     let ``[ASet] Mod.async in asets is a memory leak?``() =
-        
+        TestSetup.init()        
         let mutable t = Task.Factory.StartNew(fun () -> 
             System.Threading.Thread.Sleep 10
             1
@@ -974,7 +987,7 @@ module OtherASetTests =
 
     [<Test>]
     let ``[ASet] ToMod is a memory leak due to inputs``() =
-
+        TestSetup.init()
         // situation: all is leaky. If i remove input tracking
         // leaks get less but still in the end pendinging delta processing
         // holds on to things. 
@@ -1008,7 +1021,7 @@ module OtherASetTests =
 
     [<Test>]
     let ``[ASet] async registerCallback``() =
-        
+        TestSetup.init()
         let inputSet = CSet.ofSeq [0; 1; 2; 3]
         let adaptive = inputSet |> ASet.map ((*)2)
 
@@ -1045,7 +1058,7 @@ module OtherASetTests =
 
     [<Test>]
     let ``[ASet] Mod.async supports zombie mods`` () =
-        
+        TestSetup.init()       
         let AwaitTaskVoid : (Task -> Async<unit>) =
             Async.AwaitIAsyncResult >> Async.Ignore
 
@@ -1082,7 +1095,7 @@ module OtherASetTests =
 
     [<Test>]
     let ``[ASet] task bindings``() =
-        
+        TestSetup.init()  
         let start = new ManualResetEventSlim()
         let rand = Random()
         let tasks =
@@ -1210,7 +1223,7 @@ module ASetPerformance =
 
     [<Test>]
     let ``[ASet Performance] map``() =
-        
+        TestSetup.init()
         for s in 1000..1000..10000 do
             System.GC.Collect()
             System.GC.WaitForFullGCApproach() |> ignore
@@ -1251,7 +1264,7 @@ module ASetPerformance =
 
     [<Test>]
     let ``[ASet Performance] collect``() =
-        
+        TestSetup.init()
         for s in 1000..1000..10000 do
             System.GC.Collect()
             System.GC.WaitForFullGCApproach() |> ignore
@@ -1295,7 +1308,7 @@ module ConcurrentDeltaQueueTests =
 
     [<Test>]
     let ``[ASet ConcurrentDeltaQueue] concurrent delta queue test``() =
-
+        TestSetup.init()
         let set = CSet.empty
 
         let queue = new ConcurrentDeltaQueue<int64>()

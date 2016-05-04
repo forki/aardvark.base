@@ -109,6 +109,7 @@ module AgTests =
 
     [<Test>]
     let ``[Ag] AnyObjectTest``() =
+        TestSetup.init()
 
         Ag.initialize()
 
@@ -215,6 +216,7 @@ module AgTests =
 
     [<Test>]
     let ``[Ag] Leaky leaky test``() =
+        TestSetup.init()
 
         Ag.initialize()
 
@@ -249,7 +251,7 @@ module AgTests =
 
     [<Test>]
     let ``[Ag] Leaky leaky test 2``() =
-
+        TestSetup.init()
         Ag.initialize()
 
         let xs = CSet.ofList [ for i in 0 .. 10 do yield LLeaf i :> IL ]

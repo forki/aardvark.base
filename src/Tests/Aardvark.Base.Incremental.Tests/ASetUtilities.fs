@@ -86,6 +86,8 @@ module ASetCheck =
 
 [<AutoOpen>]
 module FsUnitExtensions =
+
+        
     open NUnit.Framework
     open NUnit.Framework.Constraints
     open System.Text
@@ -134,5 +136,4 @@ module FsUnitExtensions =
 
     let setEqual<'a> a = SetEqualConstraint<'a>(a)
     let deltaListEqual<'a> a = DeltaListEqualConstraint<'a>(a)
-
 

@@ -1,5 +1,9 @@
 ﻿namespace Aardvark.Base.Incremental.Tests
 
+module TestSetup =
+    let init() =
+        Aardvark.Base.Report.LogFileName <- System.IO.Path.GetTempFileName()
+
 open System.Collections.Generic
 open Aardvark.Base.Incremental
            

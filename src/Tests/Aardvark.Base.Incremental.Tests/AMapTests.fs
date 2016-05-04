@@ -23,6 +23,7 @@ module ``simple cmap tests`` =
 
     [<Test>]
     let ``[CMap] cmap add remove``() =
+        TestSetup.init()
         let l = CMap.empty
 
         transact (fun () -> 
@@ -48,6 +49,7 @@ module ``simple cmap tests`` =
         
     [<Test>]
     let ``[AMap] test duplicates``() =
+        TestSetup.init()
         let l = CMap.ofList [1,2]
         let r = CMap.ofList [1,3]
         let comp = AMap.union' [l;r]
@@ -84,6 +86,7 @@ module ``simple cmap tests`` =
 
     [<Test>]
     let ``[CMap] test clear``() =
+        TestSetup.init()
         let l = CMap.ofList [1,2]
         let r = l |> AMap.map (fun k v -> v * 2)
 

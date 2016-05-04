@@ -23,6 +23,7 @@ module ``Basic Mod Tests`` =
     
     [<Test>]
     let ``[Mod] basic map test``() =
+        TestSetup.init()
         let cell = Mod.init 1
 
         let derived = cell |> Mod.map (fun a -> 2 * a)
@@ -39,6 +40,7 @@ module ``Basic Mod Tests`` =
 
     [<Test>]
     let ``[Mod] constant map test``() =
+        TestSetup.init()
         let cell = Mod.constant 1
 
         let derived = cell |> Mod.map (fun a -> 2 * a)
@@ -49,6 +51,7 @@ module ``Basic Mod Tests`` =
 
     [<Test>]
     let ``[Mod] basic map2 test``() =
+        TestSetup.init()
         let cell1 = Mod.init 1
         let cell2 = Mod.init 1
 
@@ -81,6 +84,7 @@ module ``Basic Mod Tests`` =
 
     [<Test>]
     let ``[Mod] constant map2 test``() =
+        TestSetup.init()
         let c1 = Mod.constant 1
         let c2 = Mod.constant 1
         let m1 = Mod.init 1
@@ -116,6 +120,7 @@ module ``Basic Mod Tests`` =
 
     [<Test>]
     let ``[Mod] basic bind test``() =
+        TestSetup.init()
         let cell1 = Mod.init true
         let cell2 = Mod.init 2
         let cell3 = Mod.init 3
@@ -152,6 +157,7 @@ module ``Basic Mod Tests`` =
 
     [<Test>]
     let ``[Mod] level changing bind``() =
+        TestSetup.init()
         let ex = ExecutionTracker()
         let a = ModRef 1 
         let a0 = a :> IMod<_>
@@ -196,6 +202,7 @@ module ``Basic Mod Tests`` =
 
     [<Test>]
     let ``[Mod] bind in bind``() =
+        TestSetup.init()
         let a = Mod.init false
         let b = Mod.init 10
         let c =
@@ -221,7 +228,7 @@ module ``Basic Mod Tests`` =
 
     [<Test>]
     let ``[Mod] mod concurrency test``() =
-        
+        TestSetup.init()
         let pulledValues = List<int>()
 
         let input = Mod.init 1
@@ -253,7 +260,7 @@ module ``Basic Mod Tests`` =
 
     [<Test>]
     let ``[Mod] fan out, different eval strategy``() =
-
+        TestSetup.init()
         let input = Mod.init 10
 
         let middle = input |> Mod.map id
@@ -272,7 +279,7 @@ module ``Basic Mod Tests`` =
 
     [<Test>]
     let ``[Mod] mod concurrency test super crazy callbacks``() =
-        
+        TestSetup.init()
         let pulledValues = List<int>()
 
         let input = Mod.init 1
@@ -335,7 +342,7 @@ module ``Basic Mod Tests`` =
 
     [<Test>]
     let ``[Mod] DefaultingModRef can be set`` () =
-
+        TestSetup.init()
         let source = Mod.init 10
         let x = Mod.initDefault source
 
@@ -359,7 +366,7 @@ module ``Basic Mod Tests`` =
 
     [<Test>]
     let ``[Mod] bind bind`` () =
-
+        TestSetup.init()
         let otherInner = Mod.init 3
         let inner = Mod.init 10
         let x = Mod.init inner
@@ -398,7 +405,7 @@ module ``Basic Mod Tests`` =
 
     [<Test>]
     let ``[Mod] deep hierarchy test`` () =
-
+        TestSetup.init()
         let root = Mod.init (Trafo3d.Translation(1.0, 2.0, 3.0))
 
         let rec buildTree (m, l, c) =
@@ -439,7 +446,7 @@ module ``Basic Mod Tests`` =
         
     [<Test>]
     let ``[Mod] mapN test``() =
-        
+        TestSetup.init()
         let mods = Array.init 10 (fun i -> Mod.init i)
 
         let sum = mods |> Mod.mapN Seq.sum
@@ -454,6 +461,7 @@ module ``Basic Mod Tests`` =
 
     [<Test>]
     let ``[Mod] toObservable test``() =
+        TestSetup.init()
         let m = Mod.init 10
         let mutable exec = 0
         let cnt() =
@@ -494,7 +502,7 @@ module ``Basic Mod Tests`` =
     open System.Reactive.Linq
     [<Test>]
     let ``[Mod] observable builder``() =
-        
+        TestSetup.init()
         let down = Mod.init false
         let pos = Mod.init V2i.Zero
 
@@ -561,6 +569,7 @@ module ``Basic Mod Tests`` =
 
     [<Test>]
     let ``[Mod] consistent concurrency test``() =
+        TestSetup.init()
         let i = Mod.init 10
 
         let a = i |> Mod.map id |> Mod.map id 
@@ -598,6 +607,7 @@ module ``Basic Mod Tests`` =
         open Aardvark.Base.Incremental.Validation
         [<Test>]
         let ``[Mod] DotSerialization`` () =
+            TestSetup.init()
             let x = Mod.init 10
             let y = Mod.init 20
             let z = Mod.map2 ((+)) x y
@@ -605,6 +615,7 @@ module ``Basic Mod Tests`` =
 
         [<Test>]
         let ``[Mod] DgmlSerialization`` () =
+            TestSetup.init()
             let x = Mod.init 10
             let y = Mod.init 20
             let z = Mod.map2 ((+)) x y

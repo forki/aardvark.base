@@ -23,6 +23,7 @@ module ``simple list tests`` =
 
     [<Test>]
     let ``[AList] clist add / remove``() =
+        TestSetup.init()
         let l = clist [1;2;3]
 
         let d = l |> AList.map (fun a -> 2 * a)
@@ -57,6 +58,7 @@ module ``simple list tests`` =
 
     [<Test>]
     let ``[AList] collect``() =
+        TestSetup.init()
         let l0 = clist []
         let l1 = clist []
         let l2 = clist []
@@ -87,6 +89,7 @@ module ``simple list tests`` =
 
     [<Test>]
     let ``[AList] alist collect outer reomve``() =
+        TestSetup.init()
         let l0 = AList.ofList [ 1; 2 ]
         let l1 = AList.ofList [ 3; 4 ]
         let l2 = AList.ofList []
@@ -121,6 +124,7 @@ module ``simple list tests`` =
 
     [<Test>]
     let ``[AList] alist order``() =
+        TestSetup.init()
         let l0 = clist []
         let l1 = clist []
         let l2 = clist []
@@ -154,6 +158,7 @@ module ``simple list tests`` =
 
     [<Test>]
     let ``[AList] ordered set test``() =
+        TestSetup.init()
         let s = corderedset [1;2;3]
         let d = s |> AList.map (fun a -> 2 * a)
 
@@ -168,6 +173,7 @@ module ``simple list tests`` =
 
     [<Test>]
     let ``[AList] choose reader time-density``() =
+        TestSetup.init()
         let l = corderedset []
 
         let validateTimeDensity(r : IListReader<'a>) =
@@ -216,6 +222,7 @@ module ``simple list tests`` =
 
     [<Test>]
     let ``[AList] callback survive test``() =
+        TestSetup.init()
         let subscribe cb (l : alist<'a>) =
             let s = l |> AList.unsafeRegisterCallbackNoGcRoot cb
             // s is ignored here (going out of scope)
@@ -248,6 +255,7 @@ module ``simple list tests`` =
 
     [<Test>]
     let ``[AList] clist indexing test``() =
+        TestSetup.init()
         let c = CList.ofList [1;2;3;4]
         
         // stupid obfuscated identity
@@ -314,6 +322,7 @@ module ``simple list tests`` =
 
     [<Test>]
     let ``[AList] set sorting``() =
+        TestSetup.init()
         let s = CSet.ofList [4;3;2;1]
 
         let l = s |> ASet.sort
@@ -340,7 +349,7 @@ module ``simple list tests`` =
 
     [<Test>]
     let ``[AList] alist construction of aset``() =
-
+        TestSetup.init()
         let set = CSet.ofList [ 1; 2; 3 ]
 
         let list = AList.ofASet set
@@ -360,7 +369,7 @@ module ``simple list tests`` =
 
     [<Test>]
     let ``[AList] alist construction of aset with selection``() =
-
+        TestSetup.init()
         let set = CSet.ofList [ 1; 2; 3 ]
         
         let list =
@@ -379,7 +388,7 @@ module ``simple list tests`` =
 
     [<Test>]
     let ``[AList] ASet -> sortWith -> AList``() =
-
+        TestSetup.init()
         let input = CSet.ofList [ 1..10 ]
 
         let set = input |> ASet.map id
@@ -406,6 +415,7 @@ module ``simple list tests`` =
 
     [<Test>]
     let ``[AList] toASet test``() =
+        TestSetup.init()
         let list = CList.empty
 
         let lm = AList.toMod list
@@ -497,7 +507,7 @@ module ``simple list tests`` =
 
     [<Test>]
     let ``[CList] concurrent reader-reset``() =
-        
+        TestSetup.init()
         let list = CList.ofList [1..10]
 
         let r = (list :> alist<_>).GetReader()
@@ -516,7 +526,7 @@ module ``simple list tests`` =
 
     [<Test>]
     let ``[COrderedSet] concurrent reader-reset``() =
-        
+        TestSetup.init()
         let set = COrderedSet.ofList [1..10]
 
         let r = (set :> alist<_>).GetReader()
@@ -535,7 +545,7 @@ module ``simple list tests`` =
 
     [<Test>]
     let ``[COrderedSet] add remove clear test``() =
-        
+        TestSetup.init()
         let objects = [Object; Object; Object; Object; Object; Object; Object; Object; Object; Object;]
         let set = COrderedSet.empty
         
@@ -590,6 +600,7 @@ module ``simple list tests`` =
 
     [<Test>]
     let ``[AList] memory leak``() =
+        TestSetup.init()
         let list = CList.empty<Leak>;
         let list2 = list |> AList.map (fun x -> (x.Value) * 2)
         let cnt = ref 0

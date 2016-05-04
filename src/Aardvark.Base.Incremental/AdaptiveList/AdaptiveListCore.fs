@@ -104,11 +104,11 @@ module AListReaders =
 
 
         member x.SubscribeOnEvaluate (cb : Change<ISortKey * 'a> -> unit) =
-            goodLock123 callbacks (fun () ->
+            goodLock123 x (fun () ->
                 if callbacks.Add cb then
                     { new IDisposable with 
                         member __.Dispose() = 
-                            goodLock123 callbacks (fun () ->
+                            goodLock123 x (fun () ->
                                 callbacks.Remove cb |> ignore 
                             )
                     }
