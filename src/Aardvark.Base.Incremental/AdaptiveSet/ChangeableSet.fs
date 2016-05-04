@@ -17,49 +17,49 @@ type cset<'a>(initial : seq<'a>) =
     let readers = WeakSet<EmitReader<'a>>()
 
     let emit (deltas : Option<Change<'a>>) =
-        lock readers (fun () ->
+        goodLock123 readers (fun () ->
             for r in readers do 
                 r.Emit(content, deltas)
         )
 
     interface aset<'a> with
-        member x.ReaderCount = lock readers (fun () -> readers.Count)
+        member x.ReaderCount = goodLock123 readers (fun () -> readers.Count)
         member x.IsConstant = false
 
         member x.Copy = x :> aset<_>
 
         member x.GetReader() =
-            lock readers (fun () ->
-                let r = new EmitReader<'a>(content, fun r -> lock readers (fun () -> readers.Remove r |> ignore))
+            goodLock123 readers (fun () ->
+                let r = new EmitReader<'a>(content, fun r -> goodLock123 readers (fun () -> readers.Remove r |> ignore))
                 r.Emit(content, None)
                 readers.Add r |> ignore
                 r :> _
             )
 
-    member x.Readers = lock readers (fun () -> readers |> Seq.toList :> seq<_>)
+    member x.Readers = goodLock123 readers (fun () -> readers |> Seq.toList :> seq<_>)
 
     /// Gets the number of elements contained in the cset.
-    member x.Count = lock content (fun () ->  content.Count)
+    member x.Count = goodLock123 content (fun () ->  content.Count)
 
     /// Determines whether a cset contains a specified element by using the default equality comparer.
-    member x.Contains v = lock content (fun () -> content.Contains v)
+    member x.Contains v = goodLock123 content (fun () -> content.Contains v)
 
 
     /// Modifies the current set so that it contains all elements that are present in either the current set or the specified collection.
     member x.UnionWith(s : seq<'a>) =
-        let res =  lock content (fun () ->  s |> Seq.filter content.Add |> Seq.map Add |> Seq.toList)
+        let res =  goodLock123 content (fun () ->  s |> Seq.filter content.Add |> Seq.map Add |> Seq.toList)
         emit (Some res)
 
     /// Removes all elements in the specified collection from the current set.
     member x.ExceptWith(s : seq<'a>) =
-        let res =  lock content (fun () -> s |> Seq.filter content.Remove |> Seq.map Rem |> Seq.toList)
+        let res =  goodLock123 content (fun () -> s |> Seq.filter content.Remove |> Seq.map Rem |> Seq.toList)
         emit (Some res)
 
     /// Modifies the current set so that it contains only elements that are also in a specified collection.
     member x.IntersectWith(s : seq<'a>) =
         let s = HashSet(s)
         let res = 
-            lock content (fun () -> 
+            goodLock123 content (fun () -> 
                 content 
                     |> Seq.toList
                     |> List.filter (not << s.Contains) 
@@ -72,7 +72,7 @@ type cset<'a>(initial : seq<'a>) =
     member x.SymmetricExceptWith(s : seq<'a>) =
         let s = HashSet(s)
         let res = 
-            lock content (fun () -> 
+            goodLock123 content (fun () -> 
                 let removed = 
                     content 
                         |> Seq.toList
@@ -91,7 +91,7 @@ type cset<'a>(initial : seq<'a>) =
 
     /// Removes all items from the set.
     member x.Clear() =
-        let res = lock content (fun () -> 
+        let res = goodLock123 content (fun () -> 
             let res = content |> Seq.map Rem |> Seq.toList
             content.Clear()
             res
@@ -101,7 +101,7 @@ type cset<'a>(initial : seq<'a>) =
 
     /// Adds an element to the current set and returns a value to indicate if the element was successfully added.
     member x.Add v =
-        if lock content (fun () -> content.Add v) then 
+        if goodLock123 content (fun () -> content.Add v) then 
             emit (Some [Add v])
             true
         else
@@ -109,7 +109,7 @@ type cset<'a>(initial : seq<'a>) =
 
     /// Removes an element from the current set and returns a value to indicate if the element was successfully removed.
     member x.Remove v =
-        if lock content (fun () -> content.Remove v) then 
+        if goodLock123 content (fun () -> content.Remove v) then 
             emit (Some [Rem v])
             true
         else
@@ -117,7 +117,7 @@ type cset<'a>(initial : seq<'a>) =
 
     member x.ApplyDeltas (deltas : Change<'a>) =
         let deltas = 
-            lock content (fun () -> 
+            goodLock123 content (fun () -> 
                 deltas |> List.choose (fun d ->
                     match d with
                         | Add v when content.Add v -> Some (Add v)
@@ -138,20 +138,20 @@ type cset<'a>(initial : seq<'a>) =
         member x.Add(item: 'a): unit = x.Add item |> ignore
         member x.Clear(): unit = x.Clear()
         member x.Contains(item: 'a): bool = x.Contains item
-        member x.CopyTo(array: 'a [], arrayIndex: int): unit = lock content (fun () -> content.CopyTo(array, arrayIndex))
+        member x.CopyTo(array: 'a [], arrayIndex: int): unit = goodLock123 content (fun () -> content.CopyTo(array, arrayIndex))
         member x.Count: int = x.Count
         member x.ExceptWith(other: IEnumerable<'a>): unit = x.ExceptWith other
         member x.GetEnumerator(): IEnumerator = content.GetEnumerator() :> IEnumerator
         member x.GetEnumerator(): IEnumerator<'a> = content.GetEnumerator() :> IEnumerator<'a>
         member x.IntersectWith(other: IEnumerable<'a>): unit = x.IntersectWith other
-        member x.IsProperSubsetOf(other: IEnumerable<'a>): bool = lock content (fun () -> content.IsProperSubsetOf other)
-        member x.IsProperSupersetOf(other: IEnumerable<'a>): bool = lock content (fun () -> content.IsProperSupersetOf other)
+        member x.IsProperSubsetOf(other: IEnumerable<'a>): bool = goodLock123 content (fun () -> content.IsProperSubsetOf other)
+        member x.IsProperSupersetOf(other: IEnumerable<'a>): bool = goodLock123 content (fun () -> content.IsProperSupersetOf other)
         member x.IsReadOnly: bool = false
-        member x.IsSubsetOf(other: IEnumerable<'a>): bool = lock content (fun () -> content.IsSubsetOf other)
-        member x.IsSupersetOf(other: IEnumerable<'a>): bool = lock content (fun () -> content.IsSupersetOf other)
-        member x.Overlaps(other: IEnumerable<'a>): bool = lock content (fun () -> content.Overlaps other)
+        member x.IsSubsetOf(other: IEnumerable<'a>): bool = goodLock123 content (fun () -> content.IsSubsetOf other)
+        member x.IsSupersetOf(other: IEnumerable<'a>): bool = goodLock123 content (fun () -> content.IsSupersetOf other)
+        member x.Overlaps(other: IEnumerable<'a>): bool = goodLock123 content (fun () -> content.Overlaps other)
         member x.Remove(item: 'a): bool = x.Remove item
-        member x.SetEquals(other: IEnumerable<'a>): bool = lock content (fun () -> content.SetEquals other)
+        member x.SetEquals(other: IEnumerable<'a>): bool = goodLock123 content (fun () -> content.SetEquals other)
         member x.SymmetricExceptWith(other: IEnumerable<'a>): unit = x.SymmetricExceptWith other
         member x.UnionWith(other: IEnumerable<'a>): unit = x.UnionWith other
 
@@ -193,11 +193,11 @@ module CSet =
 
     /// Gets a list containing all elements from the cset.
     let toList (set : cset<'a>) =
-        lock set (fun () -> set |> Seq.toList)
+        goodLock123 set (fun () -> set |> Seq.toList)
 
     /// Gets an array containing all elements from the cset.
     let toArray (set : cset<'a>) =
-        lock set (fun () -> set |> Seq.toArray)
+        goodLock123 set (fun () -> set |> Seq.toArray)
 
     /// Modifies the set so that it contains all elements that are present in either the current set or the specified collection.
     let unionWith (elems : seq<'a>) (set : cset<'a>) =

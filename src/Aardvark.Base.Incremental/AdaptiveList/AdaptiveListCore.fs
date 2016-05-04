@@ -104,11 +104,11 @@ module AListReaders =
 
 
         member x.SubscribeOnEvaluate (cb : Change<ISortKey * 'a> -> unit) =
-            lock x (fun () ->
+            goodLock123 callbacks (fun () ->
                 if callbacks.Add cb then
                     { new IDisposable with 
                         member __.Dispose() = 
-                            lock x (fun () ->
+                            goodLock123 callbacks (fun () ->
                                 callbacks.Remove cb |> ignore 
                             )
                     }
@@ -388,7 +388,7 @@ module AListReaders =
         let mutable reset : Option<TimeList<'a>> = None
 
         member x.Emit (c : TimeList<'a>, d : Option<list<Delta<ISortKey * 'a>>>) =
-            lock x (fun () ->
+            Locking.write x (fun () ->
                 match reset with
                     | Some r ->
                         reset <- Some c
@@ -428,7 +428,7 @@ module AListReaders =
             let content = x.Content
             match reset with
                 | Some c ->
-                    lock lockObj (fun () ->
+                    goodLock123 lockObj (fun () ->
                         //Interlocked.Increment(&resetCount) |> ignore
                         reset <- None
                         let add = c.All |> Seq.filter (not << content.Contains) |> Seq.map Add
@@ -449,7 +449,7 @@ module AListReaders =
         let mutable reset = Some inputReader.Content
 
         let emit (d : list<Delta<ISortKey * 'a>>) =
-            lock this (fun () ->
+            Locking.write this (fun () ->
 //                if reset.IsNone then
 //                    let N = inputReader.Content.Count
 //                    let M = this.Content.Count
@@ -493,7 +493,7 @@ module AListReaders =
         override x.Order = inputReader.RootTime
 
         override x.GetDelta(caller) =
-            lock inputReader (fun () ->
+            Locking.read inputReader (fun () ->
                 x.EvaluateIfNeeded caller [] (fun () ->
                     let deltas = x.ComputeDelta()
                     let finalDeltas = deltas |> apply x.Content

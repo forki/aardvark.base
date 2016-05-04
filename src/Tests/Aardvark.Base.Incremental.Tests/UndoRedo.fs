@@ -31,11 +31,11 @@ type UndoRedoScope() =
     let dirty = HashSet<ISnapshotThingy>()
 
     member x.Changed(o : ISnapshotThingy) =
-        lock dirty (fun () -> dirty.Add o |> ignore)
+        goodLock123 dirty (fun () -> dirty.Add o |> ignore)
 
     member x.Snapshot() =
         let dirty =
-            lock dirty (fun () ->
+            goodLock123 dirty (fun () ->
                 let res = dirty.ToArray()
                 dirty.Clear()
                 res |> Array.toList

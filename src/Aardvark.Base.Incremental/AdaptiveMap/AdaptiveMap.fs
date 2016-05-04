@@ -19,18 +19,18 @@ type cmap<'k, 'v when 'k : equality>(initial : seq<'k * 'v>) =
     let set = cset :> aset<_>
     let content = Dict.ofSeq initial
 
-    member x.Count = lock content (fun () -> content.Count)
+    member x.Count = goodLock123 content (fun () -> content.Count)
 
-    member x.ContainsKey key = lock content (fun () -> content.ContainsKey key)
+    member x.ContainsKey key = goodLock123 content (fun () -> content.ContainsKey key)
 
     member x.Add(k,v) =
-        lock content (fun () -> 
+        goodLock123 content (fun () -> 
             content.Add(k,v)
             CSet.add (k,v) cset |> ignore
         )
 
     member x.Remove(k) =
-        lock content (fun () -> 
+        goodLock123 content (fun () -> 
             match content.TryRemove k with
                 | (true, v) ->
                     CSet.remove (k,v) cset
@@ -40,7 +40,7 @@ type cmap<'k, 'v when 'k : equality>(initial : seq<'k * 'v>) =
 
     member x.TryRemove(k : 'k, [<Out>] res : byref<'v>) =
         let w,r = 
-            lock content (fun () -> 
+            goodLock123 content (fun () -> 
                 match content.TryRemove k with
                     | (true, v) ->
                         CSet.remove (k,v) cset, v
@@ -51,9 +51,9 @@ type cmap<'k, 'v when 'k : equality>(initial : seq<'k * 'v>) =
         w
 
     member x.Item
-        with get k = lock content (fun () -> content.[k])
+        with get k = goodLock123 content (fun () -> content.[k])
         and set k v =
-            lock content (fun () -> 
+            goodLock123 content (fun () -> 
                 match content.TryGetValue k with
                     | (true, old) ->
                         CSet.applyDeltas [Add (k,v); Rem (k,old)] cset
@@ -64,17 +64,17 @@ type cmap<'k, 'v when 'k : equality>(initial : seq<'k * 'v>) =
             )
 
     member x.Clear() =
-        lock content (fun () -> 
+        goodLock123 content (fun () -> 
             content.Clear()
             CSet.clear cset
         )
 
-    member x.Keys = lock content (fun () -> content.Keys)
-    member x.Values = lock content (fun () -> content.Values)
+    member x.Keys = goodLock123 content (fun () -> content.Keys)
+    member x.Values = goodLock123 content (fun () -> content.Values)
 
     member x.TryGetValue(k : 'k, [<Out>] v : byref<'v>) =
         let (w,value) =
-            lock content (fun () -> 
+            goodLock123 content (fun () -> 
                 content.TryGetValue(k)
             )
         v <- value

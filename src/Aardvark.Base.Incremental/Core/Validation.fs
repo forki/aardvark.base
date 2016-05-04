@@ -34,13 +34,13 @@ module private ValidationModule =
             if depth < 0 then 
                 ()
             else
-                lock x (fun () ->
+                Locking.read x (fun () ->
                     if seen.Contains x.Id then ()
                     else
                         seen.Add x.Id |> ignore
                         stream.WriteLine(sprintf "\t%d [label=\"id=%d, level=%d\"];" x.Id x.Id x.Level)
                         try
-                            x.Inputs |> Seq.iter Monitor.Enter
+                            x.Inputs |> Seq.iter Locking.enterRead
 
                             for i in x.Inputs do
                                 stream.WriteLine(sprintf "\t%d -> %d;" x.Id i.Id)
@@ -49,7 +49,7 @@ module private ValidationModule =
                                 x.Inputs |> Seq.iter (dumpTreeDot' stream seen (depth - 1)) 
   
                         finally
-                            x.Inputs |> Seq.iter Monitor.Exit
+                            x.Inputs |> Seq.iter Locking.exitRead
                 )
     
         let dumpTreeDot (fileName : string) (depth : int) (x : IAdaptiveObject) =
@@ -63,13 +63,13 @@ module private ValidationModule =
             if depth < 0 then 
                 ()
             else
-                lock x (fun () ->
+                Locking.read x (fun () ->
                     if seen.Contains x.Id then ()
                     else
                         seen.Add x.Id |> ignore
                         nodes.AppendLine(sprintf "\t\t<Node Id=\"%d\" Label=\"Id=%d, level=%d\"/>" x.Id x.Id x.Level) |> ignore
                         try
-                            x.Inputs |> Seq.iter Monitor.Enter
+                            x.Inputs |> Seq.iter Locking.enterRead
 
                             for i in x.Inputs do
                                 links.AppendLine(sprintf "\t\t<Link Source=\"%d\" Target=\"%d\"/>" x.Id i.Id) |> ignore
@@ -78,7 +78,7 @@ module private ValidationModule =
                                 x.Inputs |> Seq.iter (dumpDgml' nodes links seen (depth - 1)) 
   
                         finally
-                            x.Inputs |> Seq.iter Monitor.Exit
+                            x.Inputs |> Seq.iter Locking.exitRead
                 )
 
         let private properties = """
@@ -111,9 +111,9 @@ module private ValidationModule =
             if depth < 0 then 
                 "..."
             else
-                lock x (fun () ->
+                Locking.read x (fun () ->
                     try
-                        x.Inputs |> Seq.iter Monitor.Enter
+                        x.Inputs |> Seq.iter Locking.enterRead
 
                         if not (Seq.isEmpty x.Inputs) then
                             let inputStr = x.Inputs |> Seq.map (dumpTree (depth - 1)) |> String.concat "\r\n"|> String.indent 2
@@ -122,7 +122,7 @@ module private ValidationModule =
                             sprintf "%s {\r\n    id = %d\r\n    level = %d\r\n    outOfDate = %A\r\n}" (x.GetType().PrettyName) x.Id x.Level x.OutOfDate
 
                     finally
-                        x.Inputs |> Seq.iter Monitor.Exit
+                        x.Inputs |> Seq.iter Locking.exitRead
                 )
 
     let dump (level : int) (x : IAdaptiveObject) =
@@ -133,9 +133,9 @@ module private ValidationModule =
         file
 
     let rec validate (x : IAdaptiveObject) =
-        lock x (fun () ->
+        Locking.read x (fun () ->
             try
-                x.Inputs |> Seq.iter Monitor.Enter
+                x.Inputs |> Seq.iter Locking.enterRead
 
                 // validate OutOfDate stuff
                 if not x.OutOfDate then
@@ -187,7 +187,7 @@ module private ValidationModule =
                 
 
             finally
-                x.Inputs |> Seq.iter Monitor.Exit
+                x.Inputs |> Seq.iter Locking.exitRead
         )
 
         x.Inputs |> Seq.iter validate

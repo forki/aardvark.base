@@ -370,18 +370,18 @@ module internal GenericProgram =
             match o with
                 | :? Fragment<'i, 'a, 'instruction, 'fragment> as o ->
                     if not o.IsDisposed then
-                        lock dirtyLock (fun () -> dirtySet.Add o |> ignore)
+                        goodLock123 dirtyLock (fun () -> dirtySet.Add o |> ignore)
                 | _ ->
                     ()
 
         
         member x.Run (v : 'i) =
-            lock x (fun () ->        
+            goodLock123 x (fun () ->        
                 handler.run v
             )
 
         member x.Disassemble() =
-            lock x (fun () ->        
+            goodLock123 x (fun () ->        
                 let code = List()
                 let mutable current = prolog
                 while current <> epilog do
@@ -429,7 +429,7 @@ module internal GenericProgram =
 
                 // get all fragments whose inner code-representation changed. 
                 let dirtySet = 
-                    lock dirtyLock (fun () ->
+                    goodLock123 dirtyLock (fun () ->
                         let set = dirtySet
                         dirtySet <- HashSet()
                         set

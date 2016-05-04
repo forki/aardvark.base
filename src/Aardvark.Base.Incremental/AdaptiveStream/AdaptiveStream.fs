@@ -27,7 +27,7 @@ module AStream =
                     r
 
         member x.GetReader() =
-            lock l (fun () ->
+            goodLock123 l (fun () ->
                 let r = getReader()
 
                 let remove ri =

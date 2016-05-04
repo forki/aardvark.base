@@ -5,6 +5,7 @@ open System.Threading
 open System.Diagnostics
 open Aardvark.Base
 
+
 [<CustomComparison; CustomEquality>]
 type TimeDiff =
     struct

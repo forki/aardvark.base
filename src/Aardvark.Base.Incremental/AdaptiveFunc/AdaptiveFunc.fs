@@ -108,12 +108,12 @@ module AFun =
         let ti = AdaptiveObject.Time
         [f :> IAdaptiveObject; input :> _] 
             |> Mod.mapCustom (fun s -> 
-                lock ti (fun () -> ti.Outputs.Remove input |> ignore)
+                goodLock123 ti.Outputs (fun () -> ti.Outputs.Remove input |> ignore)
                 let v = input.GetValue s
                 let res = f.Evaluate(s, v)
                 if inputChanged res then
                     input.UnsafeCache <- res
-                    lock ti (fun () -> ti.Outputs.Add input |> ignore)
+                    goodLock123 ti.Outputs (fun () -> ti.Outputs.Add input |> ignore)
 
                 res
                )
@@ -307,11 +307,11 @@ module ``Controller Builder`` =
             let ti = AdaptiveObject.Time
             let mf =
                 res |> Mod.map (fun (newState, v) ->
-                    lock ti (fun () -> ti.Outputs.Remove state |> ignore)
+                    goodLock123 ti.Outputs (fun () -> ti.Outputs.Remove state |> ignore)
 
                     if newState.pulled <> newState.prev then
                         state.UnsafeCache <-  { prev = newState.pulled; pulled = Map.empty }
-                        lock ti (fun () -> ti.Outputs.Add state |> ignore)
+                        goodLock123 ti.Outputs (fun () -> ti.Outputs.Add state |> ignore)
 
                     v
                 )

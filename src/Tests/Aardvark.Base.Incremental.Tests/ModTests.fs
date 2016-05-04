@@ -235,7 +235,7 @@ module ``Basic Mod Tests`` =
                 trigger.Wait()
                 let v = derived |> Mod.force
 
-                lock pulledValues (fun () -> pulledValues.Add v)
+                goodLock123 pulledValues (fun () -> pulledValues.Add v)
 
                 sem.Release() |> ignore
             ) |> ignore
@@ -558,6 +558,37 @@ module ``Basic Mod Tests`` =
 
         ()
 
+
+    [<Test>]
+    let ``[Mod] consistent concurrency test``() =
+        let i = Mod.init 10
+
+        let a = i |> Mod.map id |> Mod.map id 
+        let b = i |> Mod.map (fun a -> -a)
+
+        let apb = Mod.map2 (+) a b
+
+        let r = System.Random()
+        let changer = 
+            async {
+                do! Async.SwitchToNewThread()
+                while true do
+                    //do! Async.Sleep 0
+                    transact (fun () -> Mod.change i (r.Next()))
+            }
+
+
+
+        for i in 0 .. 20 do 
+            Async.Start changer
+
+        let sw = System.Diagnostics.Stopwatch()
+        let mutable iterations = 0
+        sw.Start()
+        while sw.Elapsed.TotalSeconds < 10.0 do
+            let r = Mod.force apb
+            if r <> 0 then failwithf "hate :%d" iterations
+            iterations <- iterations + 1
 
 
 

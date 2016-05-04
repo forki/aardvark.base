@@ -7,6 +7,7 @@ open System.Collections.Concurrent
 open System.Threading
 open System.Linq
 
+
 [<AllowNullLiteral>]
 type IWeakable<'a when 'a : not struct> =
     abstract member Weak : WeakReference<'a>
@@ -107,6 +108,36 @@ type VolatileCollectionStrong<'a>() =
         else
             set.Remove value
 
+
+type AdaptiveLock() =
+    let rw = new ReaderWriterLockSlim()
+    let readCount = new ThreadLocal<ref<int>>(fun () -> ref 0)
+
+          
+    member x.EnterRead() =
+        let cnt = readCount.Value
+        if !cnt = 0 && not rw.IsWriteLockHeld then rw.EnterReadLock()
+        cnt := !cnt + 1
+
+    member x.ExitRead() =
+        let cnt = readCount.Value
+        if !cnt = 1 && not rw.IsWriteLockHeld then rw.ExitReadLock()
+        cnt := !cnt - 1
+
+    member x.EnterWrite() =
+        let cnt = readCount.Value
+        if !cnt <> 0 then
+            rw.ExitReadLock()
+        // AN DIESER STELLE DANN DORT
+        rw.EnterWriteLock()
+
+    member x.ExitWrite() =
+        let cnt = readCount.Value
+        rw.ExitWriteLock()
+        if !cnt <> 0 then
+            rw.EnterReadLock()
+
+
 /// <summary>
 /// IAdaptiveObject represents the core interface for all
 /// adaptive objects and contains everything necessary for
@@ -166,8 +197,45 @@ type IAdaptiveObject =
     /// </summary>
     abstract member Outputs : VolatileCollection<IAdaptiveObject>
 
+    abstract member Lock : AdaptiveLock
 
     abstract member InputChanged : IAdaptiveObject -> unit
+
+module Locking =
+
+    let inline enterRead (t : IAdaptiveObject) = 
+        t.Lock.EnterRead()
+       
+    let inline exitRead (t : IAdaptiveObject) = 
+        t.Lock.ExitRead()
+
+    let inline enterWrite (t : IAdaptiveObject) = 
+        t.Lock.EnterWrite()
+       
+    let inline exitWrite (t : IAdaptiveObject) = 
+        t.Lock.ExitWrite()
+
+    let inline read (target: IAdaptiveObject) f =
+        enterRead target
+        try f () finally exitRead target
+
+    let inline write (target: IAdaptiveObject) f =
+        enterWrite target
+        try f () finally exitWrite target
+
+
+[<AutoOpen>]
+module CrazyLocking =
+
+    let goodLock123 o f = lock o f
+
+    let lock (i : IAdaptiveObject) (f : int) = 
+        Unchecked.defaultof<_>
+
+
+
+
+
 
 /// <summary>
 /// LevelChangedException is internally used by the system
@@ -177,6 +245,17 @@ exception LevelChangedException of changedObject : IAdaptiveObject * newLevel : 
 
 module AdaptiveSystemState =
     let curerntEvaluationDepth = new ThreadLocal<ref<int>>(fun _ -> ref 0)
+    
+    let private locks = new ThreadLocal<ref<list<AdaptiveLock>>>(fun () -> ref [])
+
+    let addLock (l : AdaptiveLock) =
+        let r = locks.Value
+        r := l::!r
+
+    let exitLocks () =
+        let r = locks.Value
+        for l in !r do l.ExitRead()
+        r := []  
     //let currentEvaluationPath = new ThreadLocal<Stack<IAdaptiveObject>>(fun _ -> Stack(100))
 
 type TrackAllThreadLocal<'a>(creator : unit -> 'a) =
@@ -320,7 +399,7 @@ type Transaction() =
                 // for this object we must acquire a lock here.
                 // Note that the transaction will at most hold one
                 // lock at a time.
-                Monitor.Enter e
+                Locking.enterWrite e
                 try
                     // if the element is already outOfDate we
                     // do not traverse the graph further.
@@ -373,7 +452,7 @@ type Transaction() =
                                 outputCount := 0
                 
                 finally 
-                    Monitor.Exit e
+                    Locking.exitWrite e
 
                 // finally we enqueue all returned outputs
                 for i in 0..!outputCount - 1 do
@@ -421,10 +500,12 @@ type AdaptiveObject =
         val mutable public Level : int 
         val mutable public Outputs : VolatileCollection<IAdaptiveObject>
         val mutable public WeakThis : WeakReference<IAdaptiveObject>
+        val mutable public Lock : AdaptiveLock
 
         new() =
             { Id = newId(); OutOfDate = true; 
-              Level = 0; Outputs = VolatileCollection<IAdaptiveObject>(); WeakThis = null }
+              Level = 0; Outputs = VolatileCollection<IAdaptiveObject>(); WeakThis = null;
+              Lock = AdaptiveLock() }
 
     
         member inline this.evaluate (caller : IAdaptiveObject) (otherwise : Option<'a>) (f : unit -> 'a) =
@@ -433,7 +514,7 @@ type AdaptiveObject =
 
 
             let mutable res = Unchecked.defaultof<_>
-            Monitor.Enter this
+            Locking.enterRead this
             depth := !depth + 1
 
             try
@@ -473,15 +554,17 @@ type AdaptiveObject =
 
             finally
                 depth := !depth - 1
-                Monitor.Exit this
+                AdaptiveSystemState.addLock this.Lock
+                //Locking.exitRead this
 
             if top then 
+                AdaptiveSystemState.exitLocks()
                 let time = AdaptiveObject.Time
-                Monitor.Enter time
+                Monitor.Enter time.Outputs
                 if not time.Outputs.IsEmpty then
                     let mutable outputCount = 0
                     let outputs = time.Outputs.Consume(&outputCount)
-                    Monitor.Exit time
+                    Monitor.Exit time.Outputs
 
                     let t = Transaction()
                     for i in 0..outputCount-1 do
@@ -489,7 +572,7 @@ type AdaptiveObject =
                         t.Enqueue(o)
                     t.Commit()
                 else
-                    Monitor.Exit time
+                    Monitor.Exit time.Outputs
 
             res
 
@@ -562,7 +645,7 @@ type AdaptiveObject =
                 x.Mark ()
 
             member x.InputChanged ip = x.InputChanged ip
-            
+            member x.Lock = x.Lock
     end
 
 
@@ -579,6 +662,7 @@ type AdaptiveObject =
 type ConstantObject() =
 
     let mutable weakThis : WeakReference<IAdaptiveObject> = null
+    let lock = AdaptiveLock()
 
     interface IWeakable<IAdaptiveObject> with
         member x.Weak =
@@ -605,7 +689,7 @@ type ConstantObject() =
         member x.Inputs = Seq.empty
         member x.Outputs = VolatileCollection()
         member x.InputChanged ip = ()
-
+        member x.Lock = lock
 
 
 
@@ -663,7 +747,7 @@ module Marking =
             match getCurrentTransaction() with
                 | Some t -> t.Enqueue(x, cause)
                 | None -> 
-                    lock x (fun () -> 
+                    Locking.read x (fun () -> // TODO: dragons here?
                         if x.OutOfDate then ()
                         elif x.Outputs.IsEmpty then x.OutOfDate <- true
                         else failwith "cannot mark object without transaction"
@@ -685,7 +769,7 @@ module Marking =
         /// utility for removing an output from the object
         /// </summary>
         member x.RemoveOutput (m : IAdaptiveObject) =
-            lock x (fun () -> x.Outputs.Remove m |> ignore)
+            Locking.write x (fun () -> x.Outputs.Remove m |> ignore)
 
 [<AutoOpen>]
 module CallbackExtensions =
@@ -700,9 +784,11 @@ module CallbackExtensions =
         let mutable scope = Ag.getContext()
         let mutable inner = inner
         let mutable weakThis = null
-        do lock inner (fun () -> inner.Outputs.Add this |> ignore)
+        let lock = AdaptiveLock()
 
-        do lock undyingMarkingCallbacks (fun () -> undyingMarkingCallbacks.GetOrCreateValue(inner).Add this |> ignore )
+        do goodLock123 inner.Outputs (fun () -> inner.Outputs.Add this |> ignore)
+
+        do goodLock123 undyingMarkingCallbacks (fun () -> undyingMarkingCallbacks.GetOrCreateValue(inner).Add this |> ignore )
 
         member x.Mark() =
             Ag.useScope scope (fun () ->
@@ -736,10 +822,11 @@ module CallbackExtensions =
             member x.Inputs = Seq.singleton inner
             member x.Outputs = VolatileCollection()
             member x.InputChanged ip = ()
+            member x.Lock = lock
 
         member x.Dispose() =
             if Interlocked.Exchange(&live, 0) = 1 then
-                lock undyingMarkingCallbacks (fun () -> 
+                goodLock123 undyingMarkingCallbacks (fun () -> 
                     match undyingMarkingCallbacks.TryGetValue(inner) with
                         | (true,v) -> 
                             v.Remove x |> ignore
@@ -766,10 +853,10 @@ module CallbackExtensions =
                     try
                         f ()
                     finally 
-                        lock x (fun () -> x.Outputs.Add self |> ignore)
+                        goodLock123 x.Outputs (fun () -> x.Outputs.Add self |> ignore)
                 )
 
-            lock x (fun () -> x.Outputs.Add res |> ignore)
+            goodLock123 x.Outputs (fun () -> x.Outputs.Add res |> ignore)
 
             res :> IDisposable //{ new IDisposable with member __.Dispose() = live := false; x.MarkingCallbacks.Remove !self |> ignore}
  
@@ -785,12 +872,12 @@ module CallbackExtensions =
                         f ()
                         self.Dispose()
                     with :? LevelChangedException as ex ->
-                        lock x (fun () -> x.Outputs.Add self |> ignore)
+                        goodLock123 x.Outputs (fun () -> x.Outputs.Add self |> ignore)
                         raise ex
 
                 )
 
-            lock x (fun () -> x.Outputs.Add res |> ignore)
+            goodLock123 x.Outputs (fun () -> x.Outputs.Add res |> ignore)
 
             res :> IDisposable //{ new IDisposable with member __.Dispose() = live := false; x.MarkingCallbacks.Remove !self |> ignore}
  
@@ -801,7 +888,7 @@ module CallbackExtensions =
                     try
                         f self
                     finally 
-                        lock x (fun () -> x.Outputs.Add self |> ignore)
+                        goodLock123 x.Outputs (fun () -> x.Outputs.Add self |> ignore)
                 )
 
             res.Mark() |> ignore
@@ -865,7 +952,7 @@ type AdaptiveDecorator(o : IAdaptiveObject) =
         member x.Mark () = o.Mark()
 
         member x.InputChanged ip = o.InputChanged ip
-
+        member x.Lock = o.Lock
  
 type VolatileDirtySet<'a, 'b when 'a :> IAdaptiveObject and 'a : equality and 'a : not struct>(eval : 'a -> 'b) =
     let mutable set : PersistentHashSet<'a> = PersistentHashSet.empty
@@ -874,7 +961,7 @@ type VolatileDirtySet<'a, 'b when 'a :> IAdaptiveObject and 'a : equality and 'a
         let local = Interlocked.Exchange(&set, PersistentHashSet.empty) 
         try
             local |> PersistentHashSet.toList
-                    |> List.filter (fun o -> lock o (fun () -> o.OutOfDate))
+                    |> List.filter (fun o -> Locking.read o (fun () -> o.OutOfDate))
                     |> List.map (fun o -> eval o)
 
         with :? LevelChangedException as l ->
@@ -882,7 +969,7 @@ type VolatileDirtySet<'a, 'b when 'a :> IAdaptiveObject and 'a : equality and 'a
             raise l
 
     member x.Push(i : 'a) =
-        lock i (fun () ->
+        Locking.read i (fun () ->
             if i.OutOfDate then
                 Interlocked.Change(&set, PersistentHashSet.add i) |> ignore
         )
@@ -901,16 +988,16 @@ type MutableVolatileDirtySet<'a, 'b when 'a :> IAdaptiveObject and 'a : equality
     let set = HashSet<'a>()
 
     member x.Evaluate() =
-        lock lockObj (fun () ->
+        goodLock123 lockObj (fun () ->
             let res = set |> Seq.toList
             set.Clear()
-            res |> List.filter (fun o -> lock o (fun () -> o.OutOfDate))
+            res |> List.filter (fun o -> Locking.read o (fun () -> o.OutOfDate))
                 |> List.map (fun o -> eval o)
         )
 
     member x.Push(i : 'a) =
-        lock lockObj (fun () ->
-            lock i (fun () ->
+        goodLock123 lockObj (fun () ->
+            Locking.read i (fun () ->
                 if i.OutOfDate then
                     set.Add i |> ignore
             )
@@ -920,12 +1007,12 @@ type MutableVolatileDirtySet<'a, 'b when 'a :> IAdaptiveObject and 'a : equality
         x.Push(i)
 
     member x.Remove(i : 'a) =
-        lock lockObj (fun () ->
+        goodLock123 lockObj (fun () ->
             set.Remove i |> ignore
         )
  
     member x.Clear() =
-        lock lockObj (fun () ->
+        goodLock123 lockObj (fun () ->
             set.Clear()
         )
 
@@ -935,11 +1022,11 @@ type VolatileTaggedDirtySet<'a, 'b, 't when 'a :> IAdaptiveObject and 'a : equal
     let tagDict = Dictionary<'a, HashSet<'t>>()
 
     member x.Evaluate() =
-        lock tagDict (fun () ->
+        goodLock123 tagDict (fun () ->
             let local = Interlocked.Exchange(&set, PersistentHashSet.empty) 
             try
                 local |> PersistentHashSet.toList
-                      |> List.filter (fun o -> lock o (fun () -> o.OutOfDate))
+                      |> List.filter (fun o -> Locking.read o (fun () -> o.OutOfDate))
                       |> List.map (fun o ->
                             match tagDict.TryGetValue o with
                                 | (true, tags) -> o, Seq.toList tags
@@ -953,15 +1040,15 @@ type VolatileTaggedDirtySet<'a, 'b, 't when 'a :> IAdaptiveObject and 'a : equal
         )
 
     member x.Push(i : 'a) =
-        lock tagDict (fun () ->
-            lock i (fun () ->
+        goodLock123 tagDict (fun () ->
+            Locking.read i (fun () ->
                 if i.OutOfDate && tagDict.ContainsKey i then
                     Interlocked.Change(&set, PersistentHashSet.add i) |> ignore
             )
         )
 
     member x.Add(tag : 't, i : 'a) =
-        lock tagDict (fun () ->
+        goodLock123 tagDict (fun () ->
             match tagDict.TryGetValue i with
                 | (true, set) -> 
                     set.Add tag |> ignore
@@ -973,7 +1060,7 @@ type VolatileTaggedDirtySet<'a, 'b, 't when 'a :> IAdaptiveObject and 'a : equal
         )
 
     member x.Remove(tag : 't, i : 'a) =
-        lock tagDict (fun () ->
+        goodLock123 tagDict (fun () ->
             match tagDict.TryGetValue i with
                 | (true, tags) -> 
                     if tags.Remove tag then
@@ -990,7 +1077,7 @@ type VolatileTaggedDirtySet<'a, 'b, 't when 'a :> IAdaptiveObject and 'a : equal
         )
 
     member x.Clear() =
-        lock tagDict (fun () ->
+        goodLock123 tagDict (fun () ->
             tagDict.Clear()
             Interlocked.Exchange(&set, PersistentHashSet.empty) |> ignore
         )
@@ -1000,11 +1087,11 @@ type MutableVolatileTaggedDirtySet<'a, 'b, 't when 'a :> IAdaptiveObject and 'a 
     let tagDict = Dictionary<'a, HashSet<'t>>()
 
     member x.Evaluate() =
-        lock tagDict (fun () ->
+        goodLock123 tagDict (fun () ->
             try
                 let result = 
                     set |> Seq.toList
-                        |> List.filter (fun o -> lock o (fun () -> o.OutOfDate))
+                        |> List.filter (fun o -> Locking.read o (fun () -> o.OutOfDate))
                         |> List.choose (fun o ->
                               match tagDict.TryGetValue o with
                                   | (true, tags) -> Some(o, Seq.toList tags)
@@ -1020,15 +1107,15 @@ type MutableVolatileTaggedDirtySet<'a, 'b, 't when 'a :> IAdaptiveObject and 'a 
         )
 
     member x.Push(i : 'a) =
-        lock tagDict (fun () ->
-            lock i (fun () ->
+        goodLock123 tagDict (fun () ->
+            Locking.read i (fun () ->
                 if i.OutOfDate && tagDict.ContainsKey i then
                     set.Add i |> ignore
             )
         )
 
     member x.Add(tag : 't, i : 'a) =
-        lock tagDict (fun () ->
+        goodLock123 tagDict (fun () ->
             match tagDict.TryGetValue i with
                 | (true, set) -> 
                     set.Add tag |> ignore
@@ -1040,7 +1127,7 @@ type MutableVolatileTaggedDirtySet<'a, 'b, 't when 'a :> IAdaptiveObject and 'a 
         )
 
     member x.Remove(tag : 't, i : 'a) =
-        lock tagDict (fun () ->
+        goodLock123 tagDict (fun () ->
             match tagDict.TryGetValue i with
                 | (true, tags) -> 
                     if tags.Remove tag then
@@ -1057,7 +1144,7 @@ type MutableVolatileTaggedDirtySet<'a, 'b, 't when 'a :> IAdaptiveObject and 'a 
         )
 
     member x.Clear() =
-        lock tagDict (fun () ->
+        goodLock123 tagDict (fun () ->
             tagDict.Clear()
             set.Clear()
         )

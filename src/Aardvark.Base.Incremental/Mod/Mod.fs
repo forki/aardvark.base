@@ -72,9 +72,11 @@ type ModRef<'a>(value : 'a) =
     member x.Value
         with get() = value
         and set v =
-            if tracker v || not <| Object.Equals(v, value) then
-                value <- v
-                x.MarkOutdated()
+            Locking.write x (fun () ->
+                if tracker v || not <| Object.Equals(v, value) then
+                    value <- v
+                    x.MarkOutdated()
+            )
 
     member x.GetValue(caller : IAdaptiveObject) =
         x.EvaluateAlways caller (fun () ->
@@ -359,7 +361,7 @@ module Mod =
         member x.GetValue(caller : IAdaptiveObject) =
             let ti = AdaptiveObject.Time
             x.EvaluateAlways caller (fun () ->
-                lock ti (fun () -> ti.Outputs.Add x |> ignore)
+                goodLock123 ti.Outputs (fun () -> ti.Outputs.Add x |> ignore)
                 DateTime.Now
             )
 
@@ -602,13 +604,13 @@ module Mod =
 
             interface IObservable<'a> with
                 member x.Subscribe(obs : IObserver<'a>) =
-                    lock x (fun () ->
+                    goodLock123 callbacks (fun () ->
                         if callbacks.Add obs then
                             obs.OnNext (x.GetValue null)
                         
                             { new IDisposable with 
                                 member y.Dispose() = 
-                                    lock x (fun () ->
+                                    goodLock123 callbacks (fun () ->
                                         callbacks.Remove obs |> ignore
                                     )
                             }

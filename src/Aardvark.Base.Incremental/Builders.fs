@@ -121,7 +121,7 @@ module ``Observable extensions`` =
                     { new IObserver<'a> with
                         member x.OnNext(v) = 
                             r.UnsafeCache <- Some v
-                            let mark = lock r (fun () -> not r.OutOfDate)
+                            let mark = Locking.read r (fun () -> not r.OutOfDate)
                             if mark then
                                 transact(fun () -> r.MarkOutdated())
                         member x.OnCompleted() =

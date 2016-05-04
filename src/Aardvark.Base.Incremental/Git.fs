@@ -169,6 +169,7 @@ module Change =
 type pmod<'a> private(name : string, defaultValue : Option<'a>) =
     let mutable defaultValue = defaultValue
     let r = lazy ( ModRef<'a>(defaultValue.Value) )
+    let lock = AdaptiveLock()
 
     interface IRef with
         member x.Name = name
@@ -203,7 +204,7 @@ type pmod<'a> private(name : string, defaultValue : Option<'a>) =
             r.Value.Mark ()
 
         member x.InputChanged ip = r.Value.InputChanged ip
-
+        member x.Lock = lock
 
     interface IMod with
         member x.IsConstant = false

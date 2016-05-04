@@ -34,18 +34,18 @@ module Obs =
                 if emitFirstValue then
                     obs.OnNext v
 
-                lock subscriptions (fun () -> subscriptions.Add obs |> ignore )
+                goodLock123 subscriptions (fun () -> subscriptions.Add obs |> ignore )
                 { new IDisposable with 
                     member x.Dispose() =
                         Interlocked.Decrement &subscriptionCount |> ignore
-                        lock subscriptions (fun () -> subscriptions.Remove obs |> ignore)
+                        goodLock123 subscriptions (fun () -> subscriptions.Remove obs |> ignore)
                 }
 
         override x.Mark() =
             base.Mark() |> ignore
             if subscriptionCount > 0 then
                 let v = x.GetValue null
-                let all = lock subscriptions (fun s -> subscriptions.ToArray())
+                let all = goodLock123 subscriptions (fun s -> subscriptions.ToArray())
                 for s in all do s.OnNext v
 
             true
@@ -67,11 +67,11 @@ module Obs =
                 // force the evaluation (in order to see subsequent markings)
                 let v = x.GetValue null
 
-                lock subscriptions (fun () -> subscriptions.Add obs |> ignore )
+                goodLock123 subscriptions (fun () -> subscriptions.Add obs |> ignore )
                 { new IDisposable with 
                     member x.Dispose() =
                         Interlocked.Decrement &subscriptionCount |> ignore
-                        lock subscriptions (fun () -> subscriptions.Remove obs |> ignore)
+                        goodLock123 subscriptions (fun () -> subscriptions.Remove obs |> ignore)
                 }
 
         override x.Mark() =
@@ -79,7 +79,7 @@ module Obs =
             if subscriptionCount > 0 then
                 let v = x.GetValue null
                 let all = 
-                    lock subscriptions (fun s -> 
+                    goodLock123 subscriptions (fun s -> 
                         let arr = subscriptions.ToArray()
                         subscriptions.Clear()
                         arr
@@ -101,7 +101,7 @@ module Obs =
 
         let push v =
             value <- v
-            let outdated = lock this (fun () -> this.OutOfDate)
+            let outdated = Locking.read this (fun () -> this.OutOfDate)
             if not outdated then transact (fun () -> this.MarkOutdated())
 
         let subscription = obs.Subscribe push
@@ -131,7 +131,7 @@ module Obs =
 
         let push v =
             value <- Some v
-            let outdated = lock this (fun () -> this.OutOfDate)
+            let outdated = Locking.read this (fun () -> this.OutOfDate)
             if not outdated then transact (fun () -> this.MarkOutdated())
 
         let subscription = obs.Subscribe push
@@ -160,14 +160,14 @@ module Obs =
         let store = List<Delta<'a>>()
 
         let push (d : Delta<'a>) =
-            lock store (fun () -> store.Add d)
-            let outdated = lock this (fun () -> this.OutOfDate)
+            goodLock123 store (fun () -> store.Add d)
+            let outdated = Locking.read this (fun () -> this.OutOfDate)
             if not outdated then transact (fun () -> this.MarkOutdated())
 
         let sub = obs.Subscribe(fun d -> push d)
 
         let consume() =
-            lock store (fun () ->
+            goodLock123 store (fun () ->
                 let l = store |> Seq.toList
                 store.Clear()
                 l

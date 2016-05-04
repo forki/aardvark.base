@@ -19,14 +19,14 @@ type clist<'a>(initial : seq<'a>) =
     let readers = WeakSet<EmitReader<'a>>()
 
     let submitDeltas (a, deltas : Change<ISortKey * 'a>) =
-        lock readers (fun () ->
+        goodLock123 readers (fun () ->
             for r in readers do 
                 r.Emit(content, Some deltas)
         )
         a
 
     let submit () =
-        lock readers (fun () ->
+        goodLock123 readers (fun () ->
             for r in readers do 
                 r.Emit(content, None)
         )
@@ -98,8 +98,8 @@ type clist<'a>(initial : seq<'a>) =
 
     interface alist<'a> with
         member x.GetReader() =
-            lock readers (fun () ->
-                let r = new EmitReader<'a>(content, order, fun r -> lock readers (fun () -> readers.Remove r |> ignore))
+            goodLock123 readers (fun () ->
+                let r = new EmitReader<'a>(content, order, fun r -> goodLock123 readers (fun () -> readers.Remove r |> ignore))
                 r.Emit (content, None)
                 readers.Add r |> ignore
                 r :> _
@@ -108,7 +108,7 @@ type clist<'a>(initial : seq<'a>) =
     /// gets a unique key associated with the element at the given index which will
     /// not be changed when inserting/removing other elements. [runtime: O(log N)]
     member x.TryGetKey (index : int, [<Out>] key : byref<clistkey>) = 
-        match lock content (fun () -> tryAt index) with
+        match goodLock123 content (fun () -> tryAt index) with
             | Some t ->
                 key <- clistkey t
                 true
@@ -117,22 +117,22 @@ type clist<'a>(initial : seq<'a>) =
 
     /// gets or sets the element associated with the given unique key [runtime: O(1)]
     member x.Item
-        with get (k : clistkey) = lock content (fun () -> content.[k.SortKey])
+        with get (k : clistkey) = goodLock123 content (fun () -> content.[k.SortKey])
         and set (k : clistkey) (value : 'a) =
-            lock content (fun () ->  set k.SortKey value) |> submitDeltas |> ignore
+            goodLock123 content (fun () ->  set k.SortKey value) |> submitDeltas |> ignore
  
 
     /// gets or sets the element at the given index [runtime: O(log N)]
     member x.Item
         with get (index : int) =
-            lock content (fun () ->
+            goodLock123 content (fun () ->
                 match tryAt index with
                     | Some t -> x.[clistkey t]
                     | None -> raise <| IndexOutOfRangeException()
             )
         and set (index : int) (value : 'a) =
             let res = 
-                lock content (fun () ->
+                goodLock123 content (fun () ->
                     match tryAt index with
                         | Some t -> set t value
                         | None -> raise <| IndexOutOfRangeException()
@@ -142,7 +142,7 @@ type clist<'a>(initial : seq<'a>) =
     /// inserts the given element at the given index [runtime: O(log N)]
     member x.Insert(index : int, value : 'a) =
         let res = 
-            lock content (fun () ->
+            goodLock123 content (fun () ->
                 if index = content.Count then // check if insert is requested at tail
                     insertAfter order.Root.Prev value
                 else
@@ -155,7 +155,7 @@ type clist<'a>(initial : seq<'a>) =
     /// inserts a sequence of elements at the given index [runtime O(m * log N)]
     member x.InsertRange(index : int, s : seq<'a>) =
         let res = 
-            lock content (fun () ->
+            goodLock123 content (fun () ->
                 match tryAt index with
                     | Some k -> insertRange k.Prev s
                     | _ -> raise <| IndexOutOfRangeException()
@@ -165,7 +165,7 @@ type clist<'a>(initial : seq<'a>) =
     /// removes the element at the given index [runtime: O(log N)]
     member x.RemoveAt(index : int) =
         let res = 
-            lock content (fun () ->
+            goodLock123 content (fun () ->
                 match tryAt index with
                     | Some t -> remove t
                     | None ->raise <| IndexOutOfRangeException()
@@ -175,7 +175,7 @@ type clist<'a>(initial : seq<'a>) =
     /// removes the given range of indices 
     member x.RemoveRange (start : int, count : int) =
         let res = 
-            lock content (fun () ->
+            goodLock123 content (fun () ->
                 if start >= 0 && count >= 0 && start + count <= x.Count then
                     match tryAt start with
                         | Some k -> removeRange k count
@@ -185,32 +185,32 @@ type clist<'a>(initial : seq<'a>) =
             )
         res |> submitDeltas
 
-    member x.Count = lock content (fun () -> content.Count)
+    member x.Count = goodLock123 content (fun () -> content.Count)
 
     member x.Remove(key : clistkey) =
-        let res = lock content (fun () -> remove key.SortKey)
+        let res = goodLock123 content (fun () -> remove key.SortKey)
         res |> submitDeltas
 
     member x.InsertAfter(key : clistkey, value : 'a) : clistkey =
-        let res = lock content (fun () -> insertAfter key.SortKey value)
+        let res = goodLock123 content (fun () -> insertAfter key.SortKey value)
         clistkey(res |> submitDeltas)
 
     member x.InsertBefore(key : clistkey, value : 'a) : clistkey =
-        let res = lock content (fun () -> insertAfter key.SortKey.Prev value)
+        let res = goodLock123 content (fun () -> insertAfter key.SortKey.Prev value)
         clistkey(res |> submitDeltas)
 
 
     member x.Add(value : 'a) =
-        let res = lock content (fun () -> insertAfter order.Root.Prev value)
+        let res = goodLock123 content (fun () -> insertAfter order.Root.Prev value)
         clistkey(res |> submitDeltas)
 
     member x.AddRange(s : seq<'a>) =
-        let res = lock content (fun () -> insertRange order.Root.Prev s)
+        let res = goodLock123 content (fun () -> insertRange order.Root.Prev s)
         res |> submitDeltas
 
     member x.Clear() =
         let change = 
-            lock content (fun () -> 
+            goodLock123 content (fun () -> 
                 if content.Count > 0 then
                     content.Clear();
                     order.Clear();
@@ -222,7 +222,7 @@ type clist<'a>(initial : seq<'a>) =
             submit()
 
     member x.Find(item : 'a) =
-        lock content (fun () ->
+        goodLock123 content (fun () ->
             let t = content.All |> Seq.tryPick (fun (t,v) -> if Object.Equals(v,item) then Some t else None)
             match t with
                 | Some t -> clistkey (unbox t)
@@ -230,14 +230,14 @@ type clist<'a>(initial : seq<'a>) =
         )
 
     member x.IndexOf (item : 'a) =
-        lock content (fun () ->
+        goodLock123 content (fun () ->
             match x.Find item with
                 | null -> -1
                 | k -> order.TryGetIndex k.SortKey
         )
 
     member x.CopyTo(arr : 'a[], index : int) =
-        lock content (fun () ->
+        goodLock123 content (fun () ->
             let mutable i = index
             for v in toSeq() do
                 arr.[i] <- v
@@ -263,9 +263,9 @@ type clist<'a>(initial : seq<'a>) =
         member x.Clear() = x.Clear()
         member x.Count = x.Count
         member x.IsReadOnly = false
-        member x.Contains(item) = lock content (fun () -> content.All |> Seq.exists(fun (_,i) -> System.Object.Equals(i, item)))
+        member x.Contains(item) = goodLock123 content (fun () -> content.All |> Seq.exists(fun (_,i) -> System.Object.Equals(i, item)))
         member x.CopyTo(arr, index) = x.CopyTo(arr, index)
-        member x.Remove(item) = lock content (fun () -> match x.Find item with | null -> false | key -> x.Remove key; true)
+        member x.Remove(item) = goodLock123 content (fun () -> match x.Find item with | null -> false | key -> x.Remove key; true)
 
     new() = clist Seq.empty
 
@@ -279,12 +279,12 @@ type corderedset<'a>(initial : seq<'a>) =
     let times = Dict.empty<'a, SimpleOrder.SortKey>
 
     let submitDeltas (v, listDeltas, setDeltas) =
-        lock listReaders (fun () ->
+        goodLock123 listReaders (fun () ->
             for r in listReaders do 
                 r.Emit(content, Some listDeltas)
         )
 
-        lock setReaders (fun () ->
+        goodLock123 setReaders (fun () ->
             for r in setReaders do 
                 r.Emit(set, Some setDeltas)
         )
@@ -292,12 +292,12 @@ type corderedset<'a>(initial : seq<'a>) =
         v
 
     let submit() =
-        lock listReaders (fun () ->
+        goodLock123 listReaders (fun () ->
             for r in listReaders do 
                 r.Emit(content, None)
         )
 
-        lock setReaders (fun () ->
+        goodLock123 setReaders (fun () ->
             for r in setReaders do 
                 r.Emit(set, None)
         )
@@ -414,36 +414,36 @@ type corderedset<'a>(initial : seq<'a>) =
 
     interface alist<'a> with
         member x.GetReader() =
-            lock listReaders (fun () ->
-                let r = new EmitReader<'a>(content, order, fun r -> lock listReaders (fun () -> listReaders.Remove r |> ignore))
+            goodLock123 listReaders (fun () ->
+                let r = new EmitReader<'a>(content, order, fun r -> goodLock123 listReaders (fun () -> listReaders.Remove r |> ignore))
                 r.Emit (content, None)
                 listReaders.Add r |> ignore
                 r :> _
             )
 
     interface aset<'a> with
-        member x.ReaderCount = lock setReaders (fun () -> setReaders.Count)
+        member x.ReaderCount = goodLock123 setReaders (fun () -> setReaders.Count)
         member x.IsConstant = false
 
         member x.Copy = x :> aset<_> 
 
         member x.GetReader() =
-            lock setReaders (fun () ->
-                let r = new ASetReaders.EmitReader<'a>(content, fun r -> lock setReaders (fun () -> setReaders.Remove r |> ignore))
+            goodLock123 setReaders (fun () ->
+                let r = new ASetReaders.EmitReader<'a>(content, fun r -> goodLock123 setReaders (fun () -> setReaders.Remove r |> ignore))
                 r.Emit(set, None)
                 setReaders.Add r |> ignore
                 r :> _
             )
 
-    member x.Count = lock content (fun () -> content.Count)
+    member x.Count = goodLock123 content (fun () -> content.Count)
 
     member x.Remove(item : 'a) =
-        let res = lock content (fun () -> remove item)
+        let res = goodLock123 content (fun () -> remove item)
         res |> submitDeltas
 
     member x.InsertAfter(prev : 'a, value : 'a) =
         let res = 
-            lock content (fun () -> 
+            goodLock123 content (fun () -> 
                 match tryGetTime prev with
                     | Some t -> 
                         insertAfter t value
@@ -454,7 +454,7 @@ type corderedset<'a>(initial : seq<'a>) =
 
     member x.InsertBefore(next : 'a, value : 'a) =
         let res = 
-            lock content (fun () -> 
+            goodLock123 content (fun () -> 
                 match tryGetTime next with
                     | Some t -> 
                         insertAfter t.Prev value
@@ -493,15 +493,15 @@ type corderedset<'a>(initial : seq<'a>) =
 
 
     member x.Add(value : 'a) =
-        let res = lock content (fun () -> insertAfter order.Root.Prev value)
+        let res = goodLock123 content (fun () -> insertAfter order.Root.Prev value)
         res |> submitDeltas
 
     member x.UnionWith(values : seq<'a>) =
-        let res = lock content (fun () -> insertRangeAfter order.Root.Prev values)
+        let res = goodLock123 content (fun () -> insertRangeAfter order.Root.Prev values)
         res |> submitDeltas
 
     member x.ExceptWith(values : seq<'a>) =
-        let res = lock content (fun () -> removeRange values)     
+        let res = goodLock123 content (fun () -> removeRange values)     
         res |> submitDeltas
 
     member x.IntersectWith(values : seq<'a>) : unit =
@@ -512,7 +512,7 @@ type corderedset<'a>(initial : seq<'a>) =
 
 
     member x.CopyTo(arr : 'a[], index : int) =
-        lock content (fun () ->
+        goodLock123 content (fun () ->
             let mutable i = index
             let mutable t = order.Root.Next
 
@@ -526,18 +526,18 @@ type corderedset<'a>(initial : seq<'a>) =
         )
 
     member x.Clear() =
-        if lock content (fun () -> clear()) then
+        if goodLock123 content (fun () -> clear()) then
             submit()
 
     member x.Contains item =
-        lock content (fun () -> set.Contains item)
+        goodLock123 content (fun () -> set.Contains item)
 
-    member x.IsProperSubsetOf(other: IEnumerable<'a>): bool = lock content (fun () -> set.IsProperSubsetOf other)
-    member x.IsProperSupersetOf(other: IEnumerable<'a>): bool = lock content (fun () -> set.IsProperSupersetOf other)
-    member x.IsSubsetOf(other: IEnumerable<'a>): bool = lock content (fun () -> set.IsSubsetOf other)
-    member x.IsSupersetOf(other: IEnumerable<'a>): bool = lock content (fun () -> set.IsSupersetOf other)
-    member x.Overlaps(other: IEnumerable<'a>): bool = lock content (fun () -> set.Overlaps other)
-    member x.SetEquals(other: IEnumerable<'a>): bool = lock content (fun () -> set.SetEquals other)
+    member x.IsProperSubsetOf(other: IEnumerable<'a>): bool = goodLock123 content (fun () -> set.IsProperSubsetOf other)
+    member x.IsProperSupersetOf(other: IEnumerable<'a>): bool = goodLock123 content (fun () -> set.IsProperSupersetOf other)
+    member x.IsSubsetOf(other: IEnumerable<'a>): bool = goodLock123 content (fun () -> set.IsSubsetOf other)
+    member x.IsSupersetOf(other: IEnumerable<'a>): bool = goodLock123 content (fun () -> set.IsSupersetOf other)
+    member x.Overlaps(other: IEnumerable<'a>): bool = goodLock123 content (fun () -> set.Overlaps other)
+    member x.SetEquals(other: IEnumerable<'a>): bool = goodLock123 content (fun () -> set.SetEquals other)
 
     interface System.Collections.IEnumerable with
         member x.GetEnumerator() =
@@ -665,8 +665,8 @@ module COrderedSet =
     let ofArray (s : 'a[]) = corderedset s
 
     let toSeq (s : corderedset<'a>) = s :> seq<_>
-    let toList (s : corderedset<'a>) = lock s (fun () -> s |> Seq.toList)
-    let toArray (s : corderedset<'a>) = lock s (fun () -> s |> Seq.toArray)
+    let toList (s : corderedset<'a>) = goodLock123 s (fun () -> s |> Seq.toList)
+    let toArray (s : corderedset<'a>) = goodLock123 s (fun () -> s |> Seq.toArray)
 
     let count (s : corderedset<'a>) = s.Count
 

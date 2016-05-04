@@ -150,14 +150,14 @@ module ASetReaders =
             GC.SuppressFinalize x
 
         member x.SubscribeOnEvaluate (cb : Change<'a> -> unit) =
-            lock x (fun () ->
+            goodLock123 callbacks (fun () ->
                 if isNull callbacks then
                     callbacks <- HashSet()
 
                 if callbacks.Add cb then
                     { new IDisposable with 
                         member __.Dispose() = 
-                            lock x (fun () ->
+                            goodLock123 callbacks (fun () ->
                                 callbacks.Remove cb |> ignore 
                                 if callbacks.Count = 0 then
                                     callbacks <- null
@@ -410,7 +410,7 @@ module ASetReaders =
         let dirty = List<IMod<'b>>()
 
         member private x.EvalMod (m : IMod<'b>) =
-            lock m (fun () ->
+            Locking.read m (fun () ->
                 if m.OutOfDate then
                     let n = m.GetValue x
                     match oldValues.TryGetValue m with
@@ -431,7 +431,7 @@ module ASetReaders =
         override x.InputChanged(o : IAdaptiveObject) =
             match o with
                 | :? IMod<'b> as o ->
-                    lock dirty (fun () -> dirty.Add o)
+                    goodLock123 dirty (fun () -> dirty.Add o)
                 | _ -> ()
 
         override x.Inputs = Seq.singleton (source :> IAdaptiveObject)
@@ -460,7 +460,7 @@ module ASetReaders =
                     )  
 
             let dirty = 
-                lock dirty (fun () ->
+                goodLock123 dirty (fun () ->
                     let arr = dirty |> CSharpList.toList
                     dirty.Clear()
                     arr
@@ -686,7 +686,7 @@ module ASetReaders =
         override x.Inputs : seq<IAdaptiveObject> = Seq.empty
 
         member x.Emit (c : ISet<'a>, d : Option<list<Delta<'a>>>) =
-            lock x (fun () ->
+            Locking.write x (fun () ->
                 match reset with
                     | Some r ->
                         reset <- Some c
@@ -724,7 +724,7 @@ module ASetReaders =
             let content = x.Content
             match reset with
                 | Some c ->
-                    lock lockObj (fun () ->
+                    goodLock123 lockObj (fun () ->
                         //Interlocked.Increment(&resetCount) |> ignore
                         reset <- None
                         compareSets content c
@@ -748,7 +748,7 @@ module ASetReaders =
         let onlyReader = EventSourceSlim true
 
         member x.ContainingSetDied() =
-            lock lockObj (fun () ->
+            goodLock123 lockObj (fun () ->
                 containgSetDied.Emit ()
                 //newReader <- noNewReader
                 
@@ -757,12 +757,12 @@ module ASetReaders =
         member x.OnlyReader = onlyReader :> IEvent<bool>
 
         member x.ReferenceCount = 
-            lock lockObj (fun () -> refCount)
+            goodLock123 lockObj (fun () -> refCount)
 
         member x.ContainingSetDiedEvent = containgSetDied :> IEvent<_>
 
         member x.GetReference() =
-            lock lockObj (fun () ->
+            goodLock123 lockObj (fun () ->
                 let reader = 
                     match reader with
                         | None ->
@@ -778,7 +778,7 @@ module ASetReaders =
             )
 
         member x.RemoveReference() =
-            lock lockObj (fun () ->
+            goodLock123 lockObj (fun () ->
                 refCount <- refCount - 1
 
                 if refCount = 1 then onlyReader.Emit(true)
@@ -811,7 +811,7 @@ module ASetReaders =
         let mutable callbacks       : HashSet<Change<'a> -> unit>   = null
 
         let emit (d : list<Delta<'a>>) =
-            lock this (fun () ->
+            Locking.write this (fun () ->
 //                if reset.IsNone then
 //                    let N = inputReader.Content.Count
 //                    let M = this.Content.Count
@@ -862,8 +862,8 @@ module ASetReaders =
             
 
         member x.SetPassThru(active : bool, copyContent : bool) =
-            lock inputReader (fun () ->
-                lock this (fun () ->
+            Locking.read inputReader (fun () ->
+                Locking.write this (fun () ->
                     if active <> passThru then
                         passThru <- active
                         if passThru then
@@ -902,7 +902,7 @@ module ASetReaders =
         override x.Inputs = Seq.singleton (inputReader :> IAdaptiveObject)
 
         member x.Content = 
-            lock x (fun () ->
+            Locking.read x (fun () ->
                 if passThru then
                     inputReader.Content
                 else
@@ -935,7 +935,7 @@ module ASetReaders =
                         Telemetry.timed ApplyDeltaProbe (fun () -> res |> apply content)
 
         member x.GetDelta(caller) =
-            lock inputReader (fun () ->
+            Locking.read inputReader (fun () ->
                 x.EvaluateIfNeeded caller [] (fun () ->
                     Telemetry.timed ReaderEvaluateProbe (fun () ->
                         let deltas = Telemetry.timed ReaderComputeProbe x.ComputeDelta
@@ -975,14 +975,14 @@ module ASetReaders =
             GC.SuppressFinalize x
 
         member x.SubscribeOnEvaluate (cb : Change<'a> -> unit) =
-            lock x (fun () ->
+            goodLock123 callbacks (fun () ->
                 if isNull callbacks then
                     callbacks <- HashSet()
 
                 if callbacks.Add cb then
                     { new IDisposable with 
                         member __.Dispose() = 
-                            lock x (fun () ->
+                            goodLock123 callbacks (fun () ->
                                 callbacks.Remove cb |> ignore 
                                 if callbacks.Count = 0 then
                                     callbacks <- null
@@ -1017,14 +1017,14 @@ module ASetReaders =
         let mutable initial = true
 
         member x.SubscribeOnEvaluate(cb : list<Delta<'a>> -> unit) =
-            lock x (fun () ->
+            goodLock123 callbacks (fun () ->
                 if isNull callbacks then
                     callbacks <- HashSet()
 
                 if callbacks.Add cb then
                     { new IDisposable with 
                         member __.Dispose() = 
-                            lock x (fun () ->
+                            goodLock123 callbacks (fun () ->
                                 callbacks.Remove cb |> ignore 
                                 if callbacks.Count = 0 then
                                     callbacks <- null
@@ -1035,7 +1035,7 @@ module ASetReaders =
             )
         member x.GetDelta(caller : IAdaptiveObject) =
             Telemetry.timed OneShotReaderEvaluateProbe (fun () ->
-                lock x (fun () ->
+                Locking.read x (fun () ->
                     if initial then
                         initial <- false
                         let deltas = toDeltaList content

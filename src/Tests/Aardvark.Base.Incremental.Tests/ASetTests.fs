@@ -310,7 +310,7 @@ module OtherASetTests =
             let s = ASet.single n
             Task.Factory.StartNew(fun () ->
                 transact (fun () ->
-                    lock l (fun () ->
+                    goodLock123 l (fun () ->
                         set.Add(s) |> ignore
                     )
                 )
@@ -364,7 +364,7 @@ module OtherASetTests =
             let s = ASet.single n
             Task.Factory.StartNew(fun () ->
                 transact (fun () ->
-                    lock l (fun () ->
+                    goodLock123 l (fun () ->
                         set.Add(s) |> ignore
                     )
                 )
@@ -440,7 +440,7 @@ module OtherASetTests =
             let s = ASet.single n
             Task.Factory.StartNew(fun () ->
                 transact (fun () ->
-                    lock l (fun () ->
+                    goodLock123 l (fun () ->
                         set.Add(s) |> ignore
                     )
                 )
@@ -492,7 +492,7 @@ module OtherASetTests =
             let s = CSet.ofList [n]
             Task.Factory.StartNew(fun () ->
                 transact (fun () ->
-                    lock l (fun () ->
+                    goodLock123 l (fun () ->
                         set.Add(s) |> ignore
                     )
                 )
@@ -596,7 +596,7 @@ module OtherASetTests =
             if n % 2 = 0 then
                 let s = ASet.single n
                 transact (fun () ->
-                    lock l (fun () ->
+                    goodLock123 l (fun () ->
                         set.Add(s) |> ignore
                         set.Add(ASet.single (n+1)) |> ignore
                     )

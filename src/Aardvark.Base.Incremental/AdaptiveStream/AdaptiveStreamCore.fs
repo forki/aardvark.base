@@ -156,11 +156,11 @@ module AStreamReaders =
             GC.SuppressFinalize x
 
         member x.SubscribeOnEvaluate (cb : EventHistory<'a> -> unit) =
-            lock x (fun () ->
+            goodLock123 callbacks (fun () ->
                 if callbacks.Add cb then
                     { new IDisposable with 
                         member __.Dispose() = 
-                            lock x (fun () ->
+                            goodLock123 callbacks (fun () ->
                                 callbacks.Remove cb |> ignore 
                             )
                     }
@@ -309,7 +309,7 @@ module AStreamReaders =
         let mutable deltas = EventHistory.empty
 
         let emit (d : EventHistory<'a>) =
-            lock this (fun () ->
+            Locking.write this (fun () ->
 //                if reset.IsNone then
 //                    let N = inputReader.Content.Count
 //                    let M = this.Content.Count
@@ -346,7 +346,7 @@ module AStreamReaders =
         let subscription = inputReader.SubscribeOnEvaluate emit
 
         override x.GetHistory(caller) =
-            lock inputReader (fun () ->
+            Locking.read inputReader (fun () ->
                 x.EvaluateIfNeeded caller EventHistory.empty (fun () ->
                     let deltas = x.ComputeHistory()
 
