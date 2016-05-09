@@ -167,7 +167,8 @@ type IAdaptiveObject =
     abstract member Outputs : VolatileCollection<IAdaptiveObject>
 
 
-    abstract member InputChanged : IAdaptiveObject -> unit
+    abstract member InputChanged : obj * IAdaptiveObject -> unit
+    abstract member AllInputsProcessed : obj -> unit
 
 /// <summary>
 /// LevelChangedException is internally used by the system
@@ -231,6 +232,8 @@ type Transaction() =
     let contained = HashSet<IAdaptiveObject>()
     let mutable current : IAdaptiveObject = null
     let mutable currentLevel = 0
+
+
 
     let getAndClear (set : ICollection<'a>) =
         let mutable content = []
@@ -322,9 +325,12 @@ type Transaction() =
                 // lock at a time.
                 Monitor.Enter e
                 try
+                    
+
                     // if the element is already outOfDate we
                     // do not traverse the graph further.
                     if e.OutOfDate then
+                        e.AllInputsProcessed(x)
                         outputCount := 0
 
                     else
@@ -337,10 +343,12 @@ type Transaction() =
                         if currentLevel <> e.Level then
                             q.Enqueue e
                             outputCount := 0
+                            e.AllInputsProcessed(x)
                         else
                             if causes.TryRemove(e, &myCauses.contents) then
-                                !myCauses |> Seq.iter e.InputChanged
+                                !myCauses |> Seq.iter (fun v -> e.InputChanged(x,v))
 
+                            e.AllInputsProcessed(x)
                             // however if the level is consistent we may proceed
                             // by marking the object as outOfDate
                             e.OutOfDate <- true
@@ -378,7 +386,7 @@ type Transaction() =
                 // finally we enqueue all returned outputs
                 for i in 0..!outputCount - 1 do
                     let o = outputs.[i]
-                    o.InputChanged e
+                    o.InputChanged(x, e)
                     x.Enqueue o
 
                 contained.Remove e |> ignore
@@ -521,8 +529,11 @@ type AdaptiveObject =
         abstract member Mark : unit -> bool
         default x.Mark () = true
     
-        abstract member InputChanged : IAdaptiveObject -> unit
-        default x.InputChanged ip = ()
+        abstract member InputChanged : Transaction * IAdaptiveObject -> unit
+        default x.InputChanged(t,ip) = ()
+
+        abstract member AllInputsProcessed : Transaction -> unit
+        default x.AllInputsProcessed t = ()
 
         abstract member Inputs : seq<IAdaptiveObject>
         [<System.ComponentModel.Browsable(false)>]
@@ -561,7 +572,8 @@ type AdaptiveObject =
             member x.Mark () =
                 x.Mark ()
 
-            member x.InputChanged ip = x.InputChanged ip
+            member x.InputChanged(t,ip) = x.InputChanged(unbox t, ip)
+            member x.AllInputsProcessed(t) = x.AllInputsProcessed(unbox t)
             
     end
 
@@ -604,7 +616,8 @@ type ConstantObject() =
 
         member x.Inputs = Seq.empty
         member x.Outputs = VolatileCollection()
-        member x.InputChanged ip = ()
+        member x.InputChanged(_,_) = ()
+        member x.AllInputsProcessed(_) = ()
 
 
 
@@ -735,7 +748,8 @@ module CallbackExtensions =
 
             member x.Inputs = Seq.singleton inner
             member x.Outputs = VolatileCollection()
-            member x.InputChanged ip = ()
+            member x.InputChanged(_,_) = ()
+            member x.AllInputsProcessed(_) = ()
 
         member x.Dispose() =
             if Interlocked.Exchange(&live, 0) = 1 then
@@ -864,7 +878,8 @@ type AdaptiveDecorator(o : IAdaptiveObject) =
 
         member x.Mark () = o.Mark()
 
-        member x.InputChanged ip = o.InputChanged ip
+        member x.InputChanged(t,ip) = o.InputChanged(t,ip)
+        member x.AllInputsProcessed(t) = o.AllInputsProcessed(t)
 
  
 type VolatileDirtySet<'a, 'b when 'a :> IAdaptiveObject and 'a : equality and 'a : not struct>(eval : 'a -> 'b) =

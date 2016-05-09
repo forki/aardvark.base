@@ -202,7 +202,8 @@ type pmod<'a> private(name : string, defaultValue : Option<'a>) =
         member x.Mark () =
             r.Value.Mark ()
 
-        member x.InputChanged ip = r.Value.InputChanged ip
+        member x.InputChanged(t, ip) = r.Value.InputChanged(unbox t, ip)
+        member x.AllInputsProcessed(t) = r.Value.AllInputsProcessed(unbox t)
 
 
     interface IMod with
