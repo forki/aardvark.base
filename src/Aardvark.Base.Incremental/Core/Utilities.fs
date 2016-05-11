@@ -248,6 +248,7 @@ type AdaptiveLocksadasd() =
 
 
 type AdaptiveLock() =
+    [<VolatileField>]
     let mutable readerCount = 0
 
     member x.EnterRead(o : obj) = 
@@ -258,12 +259,19 @@ type AdaptiveLock() =
         Monitor.Exit o
 
     member x.ExitRead() = 
-        Interlocked.Decrement(&readerCount) |> ignore 
+        if Interlocked.Decrement(&readerCount) < 0 then
+            Log.error "hello you are a bad guy" 
+            readerCount <- 0
 
     member x.EnterWrite(o : obj) = 
         let rec enter(level : int) =
+            let mutable retries = 0
             while Volatile.Read(&readerCount) > 0 do
                 Thread.Sleep(0)
+                if retries > 10000 then
+                    Log.error "deadlock detechted. why you are doint this??"
+                    readerCount <- 0
+                retries <- retries + 1
 
             Monitor.Enter o
             if readerCount > 0 then

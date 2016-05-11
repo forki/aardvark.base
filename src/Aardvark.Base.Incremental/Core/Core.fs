@@ -463,7 +463,7 @@ type AdaptiveObject =
               Lock = new AdaptiveLock() }
 
     
-        member inline this.evaluate (caller : IAdaptiveObject) (otherwise : Option<'a>) (f : unit -> 'a) =
+        member this.evaluate (caller : IAdaptiveObject) (otherwise : Option<'a>) (f : unit -> 'a) =
             let depth = AdaptiveSystemState.curerntEvaluationDepth.Value
             let top = isNull caller && !depth = 0 && not Transaction.HasRunning
 
@@ -562,7 +562,7 @@ type AdaptiveObject =
         /// the given default value is returned.
         /// Note that this function takes care of appropriate locking
         /// </summary>
-        member inline x.EvaluateIfNeeded (caller : IAdaptiveObject) (otherwise : 'a) (f : unit -> 'a) =
+        member x.EvaluateIfNeeded (caller : IAdaptiveObject) (otherwise : 'a) (f : unit -> 'a) =
             x.evaluate caller (Some otherwise) f
 
         /// <summary>
@@ -570,7 +570,7 @@ type AdaptiveObject =
         /// is not marked as outOfDate.
         /// Note that this function takes care of appropriate locking
         /// </summary>
-        member inline x.EvaluateAlways (caller : IAdaptiveObject) (f : unit -> 'a) =
+        member x.EvaluateAlways (caller : IAdaptiveObject) (f : unit -> 'a) =
             x.evaluate caller None f
 
         abstract member Mark : unit -> bool

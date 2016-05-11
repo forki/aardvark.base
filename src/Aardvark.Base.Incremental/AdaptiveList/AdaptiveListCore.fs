@@ -495,7 +495,7 @@ module AListReaders =
         override x.GetDelta(caller) =
             lock inputReader (fun () ->
                 x.EvaluateIfNeeded caller [] (fun () ->
-                    let deltas = x.ComputeDelta()
+                    let deltas = x.ComputeDelta () // lügenbold here
                     let finalDeltas = deltas |> apply x.Content
 
                     if not (List.isEmpty finalDeltas) then
