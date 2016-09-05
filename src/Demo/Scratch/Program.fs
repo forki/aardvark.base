@@ -939,144 +939,144 @@ type InputStream<'a>() =
 
 
 
-
-module Urdar =
-
-
-    type Source = interface end
-
-    type RealSource(subscribe : (obj -> unit) -> IDisposable) =
-        interface Source
-        member x.Subscribe = subscribe
-
-    type CompositeSource(sources : list<Source>) =
-        interface Source
-        member x.Sources = sources
-
-    let (|Real|Composite|) (s : Source) =
-        match s with
-            | :? RealSource as s -> Real s.Subscribe
-            | :? CompositeSource as c -> Composite c.Sources 
-            | _ -> failwith ""
-
-
-    type Source<'a>(s : Source) =
-        inherit CompositeSource([s])
-
-    [<CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>]
-    module Source =
-        
-        let ofObservable (o : IObservable<'a>) =
-            let s (f : obj -> unit) = o.Subscribe(fun a -> f (a :> obj))
-            Source(RealSource(s))
-
-
-    type Occ = Source * obj
-    type Occ<'a> = Source<'a> * 'a
-
-    open Aardvark.Base.Monads.State
-
-    type React<'s,'a> =
-        | Await of Source * (Occ -> State<'s,React<'s,'a>>)
-        | Done of 'a
-
-    type State<'s> =
-        {
-            waitOn : PersistentHashSet<Source>
-            userState : 's
-        }
-
-    type Result<'s, 'a> = 
-        | Result of 'a
-        | Waiting of (Occ -> Option<React3<'s, 'a>>)
-
-    and React3<'s, 'a> = { run : State<State<'s>, Result<'s, 'a>> }
-
-
-
-
-
-
-    type React2<'s, 'a> =
-        abstract member Bind : ('a -> React2<'s,'b>) -> React2<'s,'b>
-
-    type Done<'s,'a>(v : 'a) =
-        interface React2<'s,'a> with
-            member x.Bind(f) = f v
-
-    type Await2<'s,'a,'b>(m : Source<'a>, f : 'a -> React2<'s,'b>) =
-        interface React2<'s,'b> with
-            member x.Bind(f) = 
-                let source : RealSource = failwith ""
-
-                
-
-
-    let AwaitT (s : Source<'a>, f : Occ<'a> -> State<'s, React<'s,'b>>) = 
-        let mutable self = Unchecked.defaultof<_>
-        self <- Await(s, fun (usource,uvalue) -> 
-            if System.Object.Equals(s,usource) then 
-                f (s, unbox<'a> uvalue) 
-            else State.value self )
-        self
-        
-
-    type SF<'s,'a> = State<'s,React<'s,'a>>
-
-    let await (o : IObservable<'e>) (f : Occ<'e> -> State<'s,React<'s,'b>>) =
-        AwaitT (Source.ofObservable o, f)
-
-    let rec bind (f : 'a -> SF<'s, 'b>) (m : SF<'s, 'a>) : SF<'s, 'b> =
-        state {
-            let! a = m
-            match a with
-                | Done value -> return! f value
-                | Await(source, cont) -> return Await(source, cont >> bind f)
-        }
-
-    let ofSource (o : Source<'a>) : SF<'s, 'a> =
-        state {
-            let self = ref Unchecked.defaultof<_>
-            self := Await (o, fun (source, value) -> 
-                state {
-                    if Object.Equals(o, source) then
-                        return Done (unbox<'a> value)
-                    else
-                        return !self
-                }
-            )
-
-            return !self
-        }
-
-
-    let amb (ms : list<'k * SF<'s, 'a>>) : SF<'s, 'k * 'a> =
-        state {
-            let! bla = ms |> List.mapS (fun (k, sf) -> sf |> State.map (fun sf -> k, sf))
-            
-            let finished = bla |> List.choose (function (k,Done v) -> Some (k,v) | _ -> None)
-            let pending = bla |> List.choose (function (k,Await(source, cont)) -> Some(k,source, cont) | _ -> None)
-
-            match finished with
-                | [] ->
-                    let any = pending |> List.map (fun (k,s,_) -> k,s) |> AnySource :> Source
-                    return Await(any, fun v -> 
-                        let (k, value) = unbox<'k * obj> v
-                        let value = unbox<'a> value
-                        state { return Done(k, value) }
-                    )
-                | finished :: _ ->
-                    return Done finished
-
-        }
-
-    let result r = Done r
-
-       
-    let repeatUntil (abortCriterion : SF<'s,'a>) (a : SF<'s,'b>) =
-        let! abort = abortCriterion
-        match abort with
-            | Done e -> 
+//
+//module Urdar =
+//
+//
+//    type Source = interface end
+//
+//    type RealSource(subscribe : (obj -> unit) -> IDisposable) =
+//        interface Source
+//        member x.Subscribe = subscribe
+//
+//    type CompositeSource(sources : list<Source>) =
+//        interface Source
+//        member x.Sources = sources
+//
+//    let (|Real|Composite|) (s : Source) =
+//        match s with
+//            | :? RealSource as s -> Real s.Subscribe
+//            | :? CompositeSource as c -> Composite c.Sources 
+//            | _ -> failwith ""
+//
+//
+//    type Source<'a>(s : Source) =
+//        inherit CompositeSource([s])
+//
+//    [<CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>]
+//    module Source =
+//        
+//        let ofObservable (o : IObservable<'a>) =
+//            let s (f : obj -> unit) = o.Subscribe(fun a -> f (a :> obj))
+//            Source(RealSource(s))
+//
+//
+//    type Occ = Source * obj
+//    type Occ<'a> = Source<'a> * 'a
+//
+//    open Aardvark.Base.Monads.State
+//
+//    type React<'s,'a> =
+//        | Await of Source * (Occ -> State<'s,React<'s,'a>>)
+//        | Done of 'a
+//
+//    type State<'s> =
+//        {
+//            waitOn : PersistentHashSet<Source>
+//            userState : 's
+//        }
+//
+//    type Result<'s, 'a> = 
+//        | Result of 'a
+//        | Waiting of (Occ -> Option<React3<'s, 'a>>)
+//
+//    and React3<'s, 'a> = { run : State<State<'s>, Result<'s, 'a>> }
+//
+//
+//
+//
+//
+//
+//    type React2<'s, 'a> =
+//        abstract member Bind : ('a -> React2<'s,'b>) -> React2<'s,'b>
+//
+//    type Done<'s,'a>(v : 'a) =
+//        interface React2<'s,'a> with
+//            member x.Bind(f) = f v
+//
+//    type Await2<'s,'a,'b>(m : Source<'a>, f : 'a -> React2<'s,'b>) =
+//        interface React2<'s,'b> with
+//            member x.Bind(f) = 
+//                let source : RealSource = failwith ""
+//
+//                
+//
+//
+//    let AwaitT (s : Source<'a>, f : Occ<'a> -> State<'s, React<'s,'b>>) = 
+//        let mutable self = Unchecked.defaultof<_>
+//        self <- Await(s, fun (usource,uvalue) -> 
+//            if System.Object.Equals(s,usource) then 
+//                f (s, unbox<'a> uvalue) 
+//            else State.value self )
+//        self
+//        
+//
+//    type SF<'s,'a> = State<'s,React<'s,'a>>
+//
+//    let await (o : IObservable<'e>) (f : Occ<'e> -> State<'s,React<'s,'b>>) =
+//        AwaitT (Source.ofObservable o, f)
+//
+//    let rec bind (f : 'a -> SF<'s, 'b>) (m : SF<'s, 'a>) : SF<'s, 'b> =
+//        state {
+//            let! a = m
+//            match a with
+//                | Done value -> return! f value
+//                | Await(source, cont) -> return Await(source, cont >> bind f)
+//        }
+//
+//    let ofSource (o : Source<'a>) : SF<'s, 'a> =
+//        state {
+//            let self = ref Unchecked.defaultof<_>
+//            self := Await (o, fun (source, value) -> 
+//                state {
+//                    if Object.Equals(o, source) then
+//                        return Done (unbox<'a> value)
+//                    else
+//                        return !self
+//                }
+//            )
+//
+//            return !self
+//        }
+//
+//
+//    let amb (ms : list<'k * SF<'s, 'a>>) : SF<'s, 'k * 'a> =
+//        state {
+//            let! bla = ms |> List.mapS (fun (k, sf) -> sf |> State.map (fun sf -> k, sf))
+//            
+//            let finished = bla |> List.choose (function (k,Done v) -> Some (k,v) | _ -> None)
+//            let pending = bla |> List.choose (function (k,Await(source, cont)) -> Some(k,source, cont) | _ -> None)
+//
+//            match finished with
+//                | [] ->
+//                    let any = pending |> List.map (fun (k,s,_) -> k,s) |> AnySource :> Source
+//                    return Await(any, fun v -> 
+//                        let (k, value) = unbox<'k * obj> v
+//                        let value = unbox<'a> value
+//                        state { return Done(k, value) }
+//                    )
+//                | finished :: _ ->
+//                    return Done finished
+//
+//        }
+//
+//    let result r = Done r
+//
+//       
+//    let repeatUntil (abortCriterion : SF<'s,'a>) (a : SF<'s,'b>) =
+//        let! abort = abortCriterion
+//        match abort with
+//            | Done e -> 
 
 
 module Test =

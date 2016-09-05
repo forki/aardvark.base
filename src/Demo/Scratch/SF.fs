@@ -30,6 +30,7 @@ module EventState =
 
 open System.Collections.Generic
 
+[<AllowNullLiteral>]
 type IEventSource =
     abstract member Subscribe : (obj -> unit) -> IDisposable
 
@@ -63,24 +64,29 @@ module EventSource =
 type IPattern =
     abstract member Relevant : PersistentHashSet<IEventSource>
     abstract member Run : IEventSource * obj-> Option<obj>
+    abstract member IsTime : bool
 
 [<AbstractClass>]
 type Pattern(relevant : PersistentHashSet<IEventSource>) =
     member x.Relevant = relevant
     abstract member Run : IEventSource * obj -> Option<obj>
-        
+    abstract member IsTime : bool
+     
     new(s : seq<IEventSource>) = Pattern(PersistentHashSet.ofSeq s)
     new(s : list<IEventSource>) = Pattern(PersistentHashSet.ofList s)
 
     interface IPattern with
         member x.Relevant = x.Relevant
         member x.Run(s,o) = x.Run(s,o)
+        member x.IsTime = x.IsTime
 
 type AnyPattern<'a>(e : IEventSource<'a>) =
     inherit Pattern([e :> IEventSource])
     override x.Run (s,v) =
         if Object.Equals(s,e) then Some v
         else None
+
+    override x.IsTime = false
 
 type AmbPattern<'a, 'b>(a : Pattern, b : Pattern) =
     inherit Pattern(PersistentHashSet.union a.Relevant b.Relevant)
@@ -92,19 +98,26 @@ type AmbPattern<'a, 'b>(a : Pattern, b : Pattern) =
                     | Some r -> Some (Choice<obj, obj>.Choice2Of2 r :> obj)
                     | None -> None
 
+    override x.IsTime = a.IsTime || b.IsTime
+
 type TimePattern private () =
     inherit Pattern(PersistentHashSet.empty)
     static let instance = TimePattern() :> Pattern
     static member Instance = instance
     
+    override x.IsTime = true
+
     override x.Run(s,v) =
-        Some null
+        if isNull s then Some null
+        else None
 
 type NeverPattern private () =
     inherit Pattern(PersistentHashSet.empty)
     static let instance = NeverPattern() :> Pattern
     static member Instance = instance
     
+    override x.IsTime = false
+
     override x.Run(s,v) =
         None
 
@@ -204,6 +217,10 @@ type Runner<'s>(state : 's) =
                 let removed     = oldEvents |> Seq.filter (newEvents.Contains >> not) |> Seq.toList
                 let added       = newEvents |> Seq.filter (oldEvents.Contains >> not) |> Seq.toList
 
+
+                if added.Length = newEvents.Count then
+                    printfn "all changed"
+
                 for a in added do
                     subscriptions.[a] <- a.Subscribe(fun o -> x.Push(a, o))
 
@@ -216,8 +233,7 @@ type Runner<'s>(state : 's) =
 
                 pending <- newPending
 
-            dependsOnTime <- pending.ContainsKey TimePattern.Instance
-
+            dependsOnTime <- pending.Keys |> Seq.exists (fun p -> p.IsTime)
         )
 
     member x.Evaluate() =
@@ -285,20 +301,26 @@ module SF =
             }
         }
 
+    open System.Reactive.Linq
+
     let rec amb (l : SF<'s, 'a>) (r : SF<'s, 'b>) =
         { run =
             state {
                 let! l' = l.run
-                let! r' = r.run
-                match l', r' with
-                    | Finished l,_ -> return Finished (Choice1Of2 l)
-                    | _, Finished r -> return Finished (Choice2Of2 r)
-                    | Continue(lp, lcont), Continue(rp, rcont) ->
-                        return Continue(AmbPattern(lp, rp), fun o ->
-                            match unbox<Choice<obj, obj>> o with
-                                | Choice1Of2 l -> amb (lcont l) r
-                                | Choice2Of2 r -> amb l (rcont r)
-                        )
+                match l' with
+                    | Finished l -> 
+                        return Finished (Choice1Of2 l)
+                    | Continue(lp, lcont) ->
+                        let! r' = r.run
+                        match r' with
+                            | Finished r -> 
+                                return Finished (Choice2Of2 r)
+                            | Continue(rp, rcont) ->
+                                return Continue(AmbPattern(lp, rp), fun o ->
+                                    match unbox<Choice<obj, obj>> o with
+                                        | Choice1Of2 l -> amb (lcont l) r
+                                        | Choice2Of2 r -> amb l (rcont r)
+                                )
                             
             }
         }
@@ -362,16 +384,35 @@ module SF =
             state {
                 let! g = guard.run
                 match g with
-                    | Finished true ->
-                        let! r = body.run
+                    | Finished v ->
+                        if v then
+                            let! r = body.run
+                            match r with
+                                | Finished () -> return! (repeatWhile guard body).run
+
+                                | Continue(p, c) ->
+                                    return Continue(p, fun o -> append (c o) (repeatWhile guard body))
+                        else
+                            return Finished ()
+                    | Continue(p,cont) ->
+                        return Continue(p, cont >> bind (fun v -> if v then append body (repeatWhile guard body) else value ()))
+
+            }
+        }
+
+    let rec foreach (input : SF<'s, 'a>) (body : 'a -> SF<'s, unit>) =
+        { run =
+            state {
+                let! g = input.run
+                match g with
+                    | Finished v ->
+                        let! r = body(v).run
                         match r with
-                            | Finished () -> return! (repeatWhile guard body).run
-
-                            | Continue(p, c) ->
-                                return Continue(p, fun o -> append (c o) (repeatWhile guard body))
-                    | _ ->
-                        return Finished ()
-
+                            | Finished () -> return! (foreach input body).run
+                            | Continue(p, cont) ->
+                                return Continue(p, fun o -> append (cont o) (foreach input body))
+                    | Continue(p, cont) ->
+                        return Continue(p, fun o -> append (bind body (cont o)) (foreach input body))
             }
         }
 
@@ -413,9 +454,6 @@ module ``SF Builders`` =
         member x.Bind(m : State<'s, 'a>, f : 'a -> SF<'s, 'b>) =
             SF.bind f { run = m |> EventState.lift |> State.map Finished }
 
-//        member x.Bind(m : Value<'s, 'a>, f : 'a -> SF<'s, 'b>) =
-//            SF.bind f { run = m.eval |> State.map Finished }
-
         member x.Return(v : 'a) = 
             SF.value v
 
@@ -429,9 +467,11 @@ module ``SF Builders`` =
         member x.While(guard : unit -> bool, body : SF<'s, unit>) =
             SF.repeatWhile { run = state { return guard() |> Finished } } body
 
-//        member x.While(guard : unit -> Value<'s, bool>, body : SF<'s, unit>) =
-//            SF.repeatWhile { eval = state { return! guard().eval }} body
+        member x.While(guard : unit -> SF<'s, bool>, body : SF<'s, unit>) =
+            SF.repeatWhile { run = state { return! guard().run } } body
 
+        member x.For(m : SF<'s, 'a>, f : 'a -> SF<'s, unit>) =
+            SF.foreach m f
 
         member x.Delay(f : unit -> SF<'s, 'a>) =
             { run =
@@ -496,17 +536,42 @@ module Test =
                 do! emit a
         }
 
-    let rec printTime (sumOfDeltas : float) : SF<'s, unit> =
+
+    open System.Diagnostics
+    [<AbstractClass;Sealed>]
+    type Time private() =
+
+        static let sw = Stopwatch()
+        static do sw.Start()
+        static let startTime = DateTime.Now
+
+        static member Now = startTime + sw.Elapsed 
+    
+    let rec printTime cancel delta : SF<SketchState, unit> =
         sf {
             let! t = SF.now
-            let! dt = SF.dt
-            printfn "%.4f: %.3fms" t (1000.0 * dt)
-            if t < 3.0 then 
-                return! printTime (sumOfDeltas + dt)
-            else
-                let err = abs(sumOfDeltas - t)
-                if err = 0.0 then printfn "no error"
-                else printfn "error: %.8fms" (1000.0 * abs(sumOfDeltas - t))
+            let! dt = SF.amb SF.dt cancel
+            match dt with
+              | Choice1Of2 dt ->
+                printfn "%.4f: %.3fms" t (1000.0 * dt)
+                if t < 3.0 then 
+                    return! printTime cancel (delta + dt)
+                else
+                    let err = abs (delta - t)
+                    if err = 0.0 then printfn "no error"
+                    else printfn "error: %.8fms" (1000.0 * err)
+              | _ -> return ()
+        }
+
+    let rec printClicks (cancel : IObservable<_>) (click : IObservable<_>) : SF<SketchState, unit> =
+        sf {
+            while Not (SF.ofObservable cancel) do
+                for p in SF.ofObservable click do
+                    do! append (V2i(1,1))
+                    printfn "click: %A" p
+
+            let! s = State.get
+            printfn "%A" s.current
         }
 
     module UI =
@@ -522,7 +587,7 @@ module Test =
                 match ps with
                     | [] | [_] -> ()
                     | _ ->            
-                        use p = new HatchBrush(HatchStyle.DottedGrid, color)
+                        use p = new SolidBrush(Color.FromArgb(127, int color.R, int color.G, int color.B))
                         x.FillPolygon(p, ps |> List.map (fun p -> Point(p.X, p.Y)) |> List.toArray)
 
         type PaintForm(m : IMod<SketchState>) as this =
@@ -549,7 +614,6 @@ module Test =
                 let g = e.Graphics
                 g.Clear(Color.Black)
 
-
                 for p in s.finished do
                     g.Polygon(Color.Green, p)
 
@@ -557,12 +621,13 @@ module Test =
 
     let run() =
         let runner = Runner { current = []; finished = [] }
-        use form = new UI.PaintForm(runner.State)
+        use form = new UI.PaintForm(runner)
 
 
         let thing = paintManyThings form.MouseDown form.MouseUp form.MouseMove
-        runner.Enqueue thing
-        runner.Enqueue (printTime 0.0) //(printTime 0.0)
-
+        //runner.Enqueue thing
+        //form.KeyDown.Add (fun _ -> printfn "asdas"; Console.ReadLine() |> ignore)
+        //runner.Enqueue (printTime (SF.ofObservable form.KeyDown) 0.0) //(printTime 0.0)
+        runner.Enqueue (printClicks form.KeyDown form.Click)
 
         Application.Run(form)
