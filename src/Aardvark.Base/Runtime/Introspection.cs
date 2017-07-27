@@ -117,6 +117,7 @@ namespace Aardvark.Base
         /// and its one or more T-attributes.
         /// </summary>
         public static IEnumerable<Tup<MethodInfo, T[]>> GetAllMethodsWithAttribute<T>()
+            where T : Attribute
         {
             return AllAssemblies
                 .SelectMany(a => GetAllMethodsWithAttribute<T>(a));
@@ -181,29 +182,173 @@ namespace Aardvark.Base
             return new T[0];
         }
 
+        public static bool ReflectionOnlyHasCustomAttribute<T>(MethodInfo m, bool inherited)
+        where T : Attribute
+        {
+            return ReflectionOnlyHasCustomAttribute(typeof(T), m, inherited);
+        }
+        public static bool ReflectionOnlyHasCustomAttribute(Type type, MethodInfo m, bool inherited)
+        {
+            return ReflectionOnlyGetCustomAttributes(m, inherited).Any(ad =>
+                type.IsAssignableFrom(ad.AttributeType));
+        }
+        public static IEnumerable<CustomAttributeData> ReflectionOnlyGetCustomAttributes(MethodInfo m, bool inherited)
+        {
+            foreach(var ad in m.GetCustomAttributesData())
+                yield return ad;
+            if (inherited && m.IsVirtual)
+                while (TryGetDirectlyOverwrittenMethod(m, ref m)) //already at the first definition of the method
+                {
+                    //m = m.DeclaringType.BaseType.GetMethod(m.Name, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, null, m.CallingConvention, m.GetParameters().Select(mi => mi.ParameterType).ToArray(), null);
+                    foreach (var ad in m.GetCustomAttributesData())
+                        if(ReflectionOnlyAttributeIsInherited(ad.AttributeType)) //check if the attribute is inherited
+                            yield return ad;
+                }
+        }
+
+        public static Type GetGenericTypeDefinition(Type t)
+        {
+            return t.IsGenericType ? t.GetGenericTypeDefinition() : t;
+        }
+
+        public static bool TryGetDirectlyOverwrittenMethod(MethodInfo method, ref MethodInfo overwrittenMethod)
+        {
+            var baseDefinition = method.GetBaseDefinition();
+            if (method.DeclaringType.Equals(baseDefinition.DeclaringType))
+                return false;
+            var para = method.GetParameters().Select(m => GetGenericTypeDefinition(m.ParameterType)).ToArray();
+            var genArgLen = method.GetGenericArguments().Length;
+            var methods = method.DeclaringType.BaseType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+            try
+            {
+                var om = methods.Where(m => 
+                    m.Name == method.Name && m.GetBaseDefinition() == baseDefinition).SingleOrDefault();
+                //var om = methods.Where(m => m.IsVirtual && IsSameMethod(m, method, para, genArgLen)).SingleOrDefault();
+                if (om != null)
+                {
+                    overwrittenMethod = om;
+                    return true;
+                }
+            }
+            catch (Exception)
+            {
+                //throw;
+            }
+            return false;
+        }
+
+        private static bool IsSameMethod(MethodInfo m, MethodInfo method, Type[] para, int genArgLen)
+        {
+            return m.Name == method.Name &&
+                m.GetParameters().Select(v => GetGenericTypeDefinition(v.ParameterType)).SequenceEqual(para) &&
+                m.GetGenericArguments().Length == genArgLen;
+        }
+
+        static Dictionary<Type, bool> _sReflectionOnlyAttributeIsInherited_cache = new Dictionary<Type, bool>();
+        /// <summary>
+        /// Returns whether a given attribute type is inherited, i.e. has the AttributeUsageAttribute with Inherited=true set on it, or on any of its base classes.
+        /// </summary>
+        private static bool ReflectionOnlyAttributeIsInherited(Type attributeType)
+        {
+            bool rv;
+            if (!_sReflectionOnlyAttributeIsInherited_cache.TryGetValue(attributeType, out rv))
+            {
+                rv = InternalReflectionOnlyAttributeIsInherited(attributeType);
+                _sReflectionOnlyAttributeIsInherited_cache.Add(attributeType, rv);
+            }
+            return rv;
+        }
+
+        private static bool InternalReflectionOnlyAttributeIsInherited(Type attributeType)
+        {
+            if (!attributeType.IsSubclassOf(typeof(Attribute)))
+                throw new ArgumentException("attributeType must be derived from Attribute.", "attributeType");
+            var aua = attributeType.GetCustomAttributesData().Where(ad =>
+                ad.AttributeType == typeof(AttributeUsageAttribute)).FirstOrDefault();
+            if (aua != null)
+            {
+                var inherited = aua.NamedArguments.Where(ad => ad.MemberName == "Inherited").FirstOrNull();
+                if (inherited != null)
+                    return (bool)inherited?.TypedValue.Value;
+                return false;
+            }
+            var baseType = attributeType.BaseType;
+            if (baseType != typeof(Attribute))
+                return ReflectionOnlyAttributeIsInherited(baseType);
+            return false;
+        }
+
+
+
         /// <summary>
         /// Enumerates all methods from the specified assembly
         /// decorated with attribute T as tuples of MethodInfo
         /// and its one or more T-attributes.
         /// </summary>
         public static Tup<MethodInfo, T[]>[] GetAllMethodsWithAttribute<T>(Assembly a)
+             where T : Attribute
         {
             return GetAll___<Tup<MethodInfo, T[]>>(a, typeof(T).FullName,
+                  //decode
                   lines => from line in lines
                            let t = Type.GetType(line)
                            from m in t.GetMethods()
                            let attribs = m.GetCustomAttributes(typeof(T), false)
                            where attribs.Length > 0
                            select Tup.Create(m, attribs.Select(x => (T)x).ToArray()),
+                  //createResult
                   types => from t in types
                            from m in t.GetMethods()
                            let attribs = m.GetCustomAttributes(typeof(T), false)
                            where attribs.Length > 0
                            select Tup.Create(m, attribs.Select(x => (T)x).ToArray()),
+                  //encode
                   result => result.Select(m => m.E0.DeclaringType.AssemblyQualifiedName)
                   );
         }
 
+        /// <summary>
+        /// Enumerates all methods from the specified assembly
+        /// decorated with attribute T as tuples of MethodInfo
+        /// and its one or more T-attributes.
+        /// </summary>
+        public static MethodInfo[] ReflectionOnlyGetAllMethodsWithAttribute<T>(Assembly a, bool respectInheritance = true)
+            where T : Attribute
+        {
+            return GetAll___<MethodInfo>(a, typeof(T).FullName,
+                  lines => from line in lines
+                           let t = Type.GetType(line)
+                           from m in t.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance)
+                           where ReflectionOnlyHasCustomAttribute<T>(m, respectInheritance)
+                           select m,
+                  types => from t in types
+                           from m in t.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance)
+                           where ReflectionOnlyHasCustomAttribute<T>(m, respectInheritance)
+                           select m,
+                  result => result.Select(m => m.DeclaringType.AssemblyQualifiedName)
+                  );
+        }
+
+        /// <summary>
+        /// Enumerates all methods from the specified assembly
+        /// decorated with attribute T as tuples of MethodInfo
+        /// and its one or more T-attributes.
+        /// </summary>
+        public static MethodInfo[] ReflectionOnlyGetAllMethodsWithAttribute(Type type, Assembly a, bool respectInheritance = true)
+        {
+            return GetAll___<MethodInfo>(a, type.FullName,
+                  lines => from line in lines
+                           let t = Type.GetType(line)
+                           from m in t.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance)
+                           where ReflectionOnlyHasCustomAttribute(type, m, respectInheritance)
+                           select m,
+                  types => from t in types
+                           from m in t.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance)
+                           where ReflectionOnlyHasCustomAttribute(type, m, respectInheritance)
+                           select m,
+                  result => result.Select(m => m.DeclaringType.AssemblyQualifiedName)
+                  );
+        }
 
         static Introspection()
         {
@@ -380,7 +525,7 @@ namespace Aardvark.Base
 
             try
             {
-                var assembly = customAssembly != null ? customAssembly : Assembly.Load(name);
+                var assembly = customAssembly != null ? customAssembly : Assembly.Load(name); //Note: This still Loads a lot of assemblies
                 s_assemblies[name] = assembly;
                 RegisterAssembly(assembly);
                 foreach (var a in assembly.GetReferencedAssemblies())
@@ -569,12 +714,15 @@ namespace Aardvark.Base
             }
         }
 
+        //The OnAardvarkInitAttribute's type as loaded in the ReflectionOnly Context. We need this to find the Attribute there. The type of the normal context does not work.
+        private static Type s_OnAardvarkInitAttribute_ReflectionOnlyType;
+
         private static bool IsPlugin(string file)
         {
             try
             {
                 var a = Assembly.ReflectionOnlyLoadFrom(file);
-                var empty = Introspection.GetAllMethodsWithAttribute<OnAardvarkInitAttribute>(a).IsEmpty();
+                var empty = Introspection.ReflectionOnlyGetAllMethodsWithAttribute(s_OnAardvarkInitAttribute_ReflectionOnlyType, a).IsEmpty();
                 if (!empty)
                 {
                     Report.Line(3, "[GetPluginAssemblyPaths] found plugins in: {0}", file);
@@ -582,6 +730,7 @@ namespace Aardvark.Base
                 }
                 else
                 {
+                    Report.Line(5, "[GetPluginAssemblyPaths] found NO plugins in: {0}", file);
                     return false;
                 }
             }
@@ -615,6 +764,11 @@ namespace Aardvark.Base
         public string[] GetPluginAssemblyPaths()
         {
             AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve += D_ReflectionOnlyAssemblyResolve;
+
+            var oaiaAss = Assembly.ReflectionOnlyLoad(typeof(OnAardvarkInitAttribute).Assembly.FullName);
+            s_OnAardvarkInitAttribute_ReflectionOnlyType = oaiaAss.GetType("Aardvark.Base.OnAardvarkInitAttribute");
+
+
             var cache = ReadCacheFile();
             var newCache = new Dictionary<string, Tuple<DateTime, bool>>();
 

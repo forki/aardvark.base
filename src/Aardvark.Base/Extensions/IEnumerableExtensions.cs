@@ -117,6 +117,31 @@ namespace Aardvark.Base
         }
 
         /// <summary>
+        /// Specialized version for IEnumerables of structs, to get a clear distinction between having a first element or not.
+        /// Except for this, it is the same code as in System.Linq.Enumerable.FirstOrDefault().
+        /// </summary>
+        public static T? FirstOrNull<T>(this IEnumerable<T> source)
+            where T : struct
+        {
+            if (source == null)
+                throw new ArgumentNullException("source");
+            var list = source as IList<T>;
+            if (list != null)
+            {
+                if (list.Count > 0)
+                    return list[0];
+            }
+            else
+            {
+                using (var enumerator = source.GetEnumerator())
+                    if (enumerator.MoveNext())
+                        return enumerator.Current;
+            }
+            return null;
+        }
+
+
+        /// <summary>
         /// Yields every stride-th element.
         /// </summary>
         public static IEnumerable<T> TakePeriodic<T>(
